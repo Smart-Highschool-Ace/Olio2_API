@@ -1,5 +1,5 @@
 {
-  "name": "Olio2 API",
+  "name": "Olio2-API",
   "version": "1.0.0",
   "description": "This is Olio API server repository",
   "main": "index.js",
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@prisma/cli": "^2.14.0",
+    "@prisma/client": "^2.14.0",
+    "apollo-server-koa": "^2.19.2",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
@@ -19,7 +21,9 @@
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",
-    "koa-router": "^10.0.0"
+    "koa-router": "^10.0.0",
+    "nexus": "^1.0.0",
+    "nexus-plugin-prisma": "^0.28.0"
   },
   "devDependencies": {
     "@types/joi": "^17.2.3",
