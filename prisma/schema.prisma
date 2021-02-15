@@ -7,10 +7,157 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model user {
-    id        Int      @id @default(autoincrement())
-    name      String
-    email     String   @unique
-    password  String
-    createdAt DateTime @default(now())
+model User {
+    uid            Int             @id @default(autoincrement())
+    email          String          @unique
+    password       String
+    name           String
+    school         School
+    profile_image  String?
+    introduction   String?
+    entrance_year  Int
+    createdAt      DateTime        @default(now())
+    Portfolio      Portfolio?
+    Project        Project[]
+    LikedPortfolio PortfolioLike[]
+    LikedProejct   ProejctLike[]
+    ProjectMember  ProjectMember[]
+}
+
+enum School {
+    Gwangju
+    Daejeon
+    Daegu
+    Busan
+}
+
+model Portfolio {
+    owner                User                   @relation(fields: [uid], references: [uid])
+    uid                  Int                    @id
+    PortfolioLike        PortfolioLike[]
+    PortfolioSkill       PortfolioSkill[]
+    PortfolioProject     PortfolioProject[]
+    PortfolioPrize       PortfolioPrize[]
+    PortfolioCertificate PortfolioCertificate[]
+}
+
+model PortfolioLike {
+    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
+    liked_by      User      @relation(fields: [liked_by_uid], references: [uid])
+    portfolio_uid Int
+    liked_by_uid  Int
+
+    @@id([portfolio_uid, liked_by_uid])
+}
+
+model PortfolioSkill {
+    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
+    portfolio_uid Int
+    name          String
+    level         Int
+
+    @@id([portfolio_uid, name])
+}
+
+model PortfolioProject {
+    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
+    portfolio_uid Int
+    project_uid   Int
+    order         Int
+
+    @@id([portfolio_uid, project_uid])
+}
+
+model PortfolioPrize {
+    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
+    portfolio_uid Int
+    name          String
+    institution   String?
+    prized_at     DateTime
+
+    @@id([portfolio_uid, name])
+}
+
+model PortfolioCertificate {
+    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
+    portfolio_uid Int
+    name          String
+    institution   String?
+    certified_at  DateTime
+
+    @@id([portfolio_uid, name])
+}
+
+model Project {
+    uid           Int             @id @default(autoincrement())
+    owner         User            @relation(fields: [owner_uid], references: [uid])
+    owner_uid     Int
+    name          String
+    introduction  String
+    description   String?
+    link          String?
+    logo          String?
+    start_at      DateTime?
+    end_at        DateTime?
+    created_at    DateTime
+    updated_at    DateTime
+    view          Int
+    ProjectSkill  ProjectSkill[]
+    ProjectMember ProjectMember[]
+    ProjectField  ProjectField[]
+    ProjectImage  ProjectImage[]
+    ProejctLike   ProejctLike[]
+}
+
+model ProjectSkill {
+    project     Project @relation(fields: [project_uid], references: [uid])
+    project_uid Int
+    name        String
+
+    @@id([project_uid, name])
+}
+
+model ProjectMember {
+    project     Project @relation(fields: [project_uid], references: [uid])
+    member      User    @relation(fields: [member_uid], references: [uid])
+    project_uid Int
+    member_uid  Int
+    role        String
+
+    @@id([project_uid, member_uid])
+}
+
+model ProjectField {
+    project     Project @relation(fields: [project_uid], references: [uid])
+    project_uid Int
+    name        Field
+
+    @@id([project_uid, name])
+}
+
+enum Field {
+    WEB
+    ANDROID
+    IOS
+    AI
+    IOT
+    GAME
+}
+
+model ProjectImage {
+    project     Project @relation(fields: [proejct_uid], references: [uid])
+    proejct_uid Int
+    link        String
+    order       Int
+
+    @@id([proejct_uid, link])
+}
+
+model ProejctLike {
+    proejct      Project @relation(fields: [project_uid], references: [uid])
+    liked_by     User    @relation(fields: [liked_by_uid], references: [uid])
+    project_uid  Int
+    liked_by_uid Int
+
+    @@id([project_uid, liked_by_uid])
 }
