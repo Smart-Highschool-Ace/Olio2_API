@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -13,7 +14,7 @@ model User {
     password       String
     name           String
     school         School
-    profile_image  String?
+    profile_image  String?         @db.Text
     introduction   String?
     entrance_year  Int
     createdAt      DateTime        @default(now())
@@ -42,50 +43,45 @@ model Portfolio {
 }
 
 model PortfolioLike {
+    id            Int       @id @default(autoincrement())
     portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
     liked_by      User      @relation(fields: [liked_by_uid], references: [uid])
     portfolio_uid Int
     liked_by_uid  Int
-
-    @@id([portfolio_uid, liked_by_uid])
 }
 
 model PortfolioSkill {
+    id            Int       @id @default(autoincrement())
     portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
     portfolio_uid Int
     name          String
     level         Int
-
-    @@id([portfolio_uid, name])
 }
 
 model PortfolioProject {
+    id            Int       @id @default(autoincrement())
     portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
     portfolio_uid Int
     project_uid   Int
     order         Int
-
-    @@id([portfolio_uid, project_uid])
 }
 
 model PortfolioPrize {
+    id            Int       @id @default(autoincrement())
     portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
     portfolio_uid Int
     name          String
     institution   String?
     prized_at     DateTime
-
-    @@id([portfolio_uid, name])
 }
 
 model PortfolioCertificate {
+    id            Int       @id @default(autoincrement())
     portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
     portfolio_uid Int
     name          String
     institution   String?
     certified_at  DateTime
-
-    @@id([portfolio_uid, name])
 }
 
 model Project {
@@ -95,8 +91,8 @@ model Project {
     name          String
     introduction  String
     description   String?
-    link          String?
-    logo          String?
+    link          String?         @db.Text
+    logo          String?         @db.Text
     start_at      DateTime?
     end_at        DateTime?
     created_at    DateTime
@@ -110,29 +106,26 @@ model Project {
 }
 
 model ProjectSkill {
+    id          Int     @id @default(autoincrement())
     project     Project @relation(fields: [project_uid], references: [uid])
     project_uid Int
     name        String
-
-    @@id([project_uid, name])
 }
 
 model ProjectMember {
+    id          Int     @id @default(autoincrement())
     project     Project @relation(fields: [project_uid], references: [uid])
     member      User    @relation(fields: [member_uid], references: [uid])
     project_uid Int
     member_uid  Int
     role        String
-
-    @@id([project_uid, member_uid])
 }
 
 model ProjectField {
+    id          Int     @id @default(autoincrement())
     project     Project @relation(fields: [project_uid], references: [uid])
     project_uid Int
     name        Field
-
-    @@id([project_uid, name])
 }
 
 enum Field {
@@ -145,19 +138,17 @@ enum Field {
 }
 
 model ProjectImage {
+    id          Int     @id @default(autoincrement())
     project     Project @relation(fields: [proejct_uid], references: [uid])
     proejct_uid Int
-    link        String
+    link        String  @db.Text
     order       Int
-
-    @@id([proejct_uid, link])
 }
 
 model ProejctLike {
+    id           Int     @id @default(autoincrement())
     proejct      Project @relation(fields: [project_uid], references: [uid])
     liked_by     User    @relation(fields: [liked_by_uid], references: [uid])
     project_uid  Int
     liked_by_uid Int
-
-    @@id([project_uid, liked_by_uid])
 }
