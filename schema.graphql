@@ -3,13 +3,16 @@
 
 
 type Query {
+  allUser: [User]
   user(id: Int): User
 }
 
 type User {
-  createdAt: String
-  email: String
-  id: ID
+  entrance_year: Int
+  grade: Int
+  id: Int
+  introduction: String
   name: String
-  password: String
+  profile_image: String
+  school: String
 }
