@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-    uid            Int             @id @default(autoincrement())
+    id             Int             @id @default(autoincrement())
     email          String          @unique
     password       String
     name           String
@@ -33,8 +33,8 @@ enum School {
 }
 
 model Portfolio {
-    owner                User                   @relation(fields: [uid], references: [uid])
-    uid                  Int                    @id
+    owner                User                   @relation(fields: [id], references: [id])
+    id                   Int                    @id
     PortfolioLike        PortfolioLike[]
     PortfolioSkill       PortfolioSkill[]
     PortfolioProject     PortfolioProject[]
@@ -43,51 +43,51 @@ model Portfolio {
 }
 
 model PortfolioLike {
-    id            Int       @id @default(autoincrement())
-    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
-    liked_by      User      @relation(fields: [liked_by_uid], references: [uid])
-    portfolio_uid Int
-    liked_by_uid  Int
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    user         User      @relation(fields: [user_id], references: [id])
+    portfolio_id Int
+    user_id      Int
 }
 
 model PortfolioSkill {
-    id            Int       @id @default(autoincrement())
-    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
-    portfolio_uid Int
-    name          String
-    level         Int
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    level        Int
 }
 
 model PortfolioProject {
-    id            Int       @id @default(autoincrement())
-    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
-    portfolio_uid Int
-    project_uid   Int
-    order         Int
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    project_id   Int
+    order        Int
 }
 
 model PortfolioPrize {
-    id            Int       @id @default(autoincrement())
-    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
-    portfolio_uid Int
-    name          String
-    institution   String?
-    prized_at     DateTime
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    institution  String?
+    prized_at    DateTime
 }
 
 model PortfolioCertificate {
-    id            Int       @id @default(autoincrement())
-    portfolio     Portfolio @relation(fields: [portfolio_uid], references: [uid])
-    portfolio_uid Int
-    name          String
-    institution   String?
-    certified_at  DateTime
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    institution  String?
+    certified_at DateTime
 }
 
 model Project {
-    uid           Int             @id @default(autoincrement())
-    owner         User            @relation(fields: [owner_uid], references: [uid])
-    owner_uid     Int
+    id            Int             @id @default(autoincrement())
+    owner         User            @relation(fields: [owner_id], references: [id])
+    owner_id      Int
     name          String
     introduction  String
     description   String?
@@ -106,26 +106,26 @@ model Project {
 }
 
 model ProjectSkill {
-    id          Int     @id @default(autoincrement())
-    project     Project @relation(fields: [project_uid], references: [uid])
-    project_uid Int
-    name        String
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id Int
+    name       String
 }
 
 model ProjectMember {
-    id          Int     @id @default(autoincrement())
-    project     Project @relation(fields: [project_uid], references: [uid])
-    member      User    @relation(fields: [member_uid], references: [uid])
-    project_uid Int
-    member_uid  Int
-    role        String
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    member     User    @relation(fields: [member_id], references: [id])
+    project_id Int
+    member_id  Int
+    role       String
 }
 
 model ProjectField {
-    id          Int     @id @default(autoincrement())
-    project     Project @relation(fields: [project_uid], references: [uid])
-    project_uid Int
-    name        Field
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id Int
+    name       Field
 }
 
 enum Field {
@@ -138,17 +138,17 @@ enum Field {
 }
 
 model ProjectImage {
-    id          Int     @id @default(autoincrement())
-    project     Project @relation(fields: [proejct_uid], references: [uid])
-    proejct_uid Int
-    link        String  @db.Text
-    order       Int
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [proejct_id], references: [id])
+    proejct_id Int
+    link       String  @db.Text
+    order      Int
 }
 
 model ProejctLike {
-    id           Int     @id @default(autoincrement())
-    proejct      Project @relation(fields: [project_uid], references: [uid])
-    liked_by     User    @relation(fields: [liked_by_uid], references: [uid])
-    project_uid  Int
-    liked_by_uid Int
+    id         Int     @id @default(autoincrement())
+    proejct    Project @relation(fields: [project_id], references: [id])
+    user       User    @relation(fields: [user_id], references: [id])
+    project_id Int
+    user_id    Int
 }
