@@ -23,6 +23,8 @@ model User {
     LikedPortfolio PortfolioLike[]
     LikedProejct   ProejctLike[]
     ProjectMember  ProjectMember[]
+    PortfolioView  PortfolioView[]
+    ProjectView    ProjectView[]
 }
 
 enum School {
@@ -40,6 +42,7 @@ model Portfolio {
     PortfolioProject     PortfolioProject[]
     PortfolioPrize       PortfolioPrize[]
     PortfolioCertificate PortfolioCertificate[]
+    PortfolioView        PortfolioView[]
 }
 
 model PortfolioLike {
@@ -48,6 +51,15 @@ model PortfolioLike {
     user         User      @relation(fields: [user_id], references: [id])
     portfolio_id Int
     user_id      Int
+}
+
+model PortfolioView {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    user         User      @relation(fields: [user_id], references: [id])
+    portfolio_id Int
+    user_id      Int
+    source_ip    String
 }
 
 model PortfolioSkill {
@@ -97,12 +109,29 @@ model Project {
     end_at        DateTime?
     created_at    DateTime
     updated_at    DateTime
-    view          Int
     ProjectSkill  ProjectSkill[]
     ProjectMember ProjectMember[]
     ProjectField  ProjectField[]
     ProjectImage  ProjectImage[]
     ProejctLike   ProejctLike[]
+    ProjectView   ProjectView[]
+}
+
+model ProejctLike {
+    id         Int     @id @default(autoincrement())
+    proejct    Project @relation(fields: [project_id], references: [id])
+    user       User    @relation(fields: [user_id], references: [id])
+    project_id Int
+    user_id    Int
+}
+
+model ProjectView {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    user       User    @relation(fields: [user_id], references: [id])
+    project_id Int
+    user_id    Int
+    source_ip  String
 }
 
 model ProjectSkill {
@@ -143,12 +172,4 @@ model ProjectImage {
     proejct_id Int
     link       String  @db.Text
     order      Int
-}
-
-model ProejctLike {
-    id         Int     @id @default(autoincrement())
-    proejct    Project @relation(fields: [project_id], references: [id])
-    user       User    @relation(fields: [user_id], references: [id])
-    project_id Int
-    user_id    Int
 }
