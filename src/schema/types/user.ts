@@ -42,6 +42,22 @@ export const QueryUser = queryType({
   },
 });
 
+export const MutationUser = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('createUser', {
+      type: 'User',
+      args: {
+        user : arg({type : UserCreateInput})
+      },
+      resolve(_, args, ctx) {
+        const mock_user = args.user // 일단 입력받은 값 그대로 돌려줌
+        return mock_user
+      }
+    })
+  }
+})
+
 const UserCreateInput = inputObjectType({
   name : 'UserCreateInput',
   definition(t){
