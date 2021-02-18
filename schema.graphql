@@ -2,17 +2,98 @@
 ### Do not make changes to this file directly
 
 
+type Portfolio {
+  certificates: [PortfolioCertificate]
+  email: String
+  id: Int
+  liked: Boolean
+  likes: [User]
+  link: String
+  owner: User
+  prizes: [PortfolioPrize]
+  projects: [Project]
+  skills: [PortfolioSkill]
+  view: Int
+}
+
+type PortfolioCertificate {
+  certified_at: String
+  institution: String
+  name: String
+}
+
+type PortfolioPrize {
+  institution: String
+  name: String
+  prized_at: String
+}
+
+type PortfolioProject {
+  order: Int
+  project: Project
+}
+
+type PortfolioSkill {
+  level: Int
+  skill: Skill
+}
+
+type Project {
+  created_at: String
+  description: String
+  end_at: String
+  fields: [ProjectField]
+  id: Int
+  images: [ProjectImage]
+  introduction: String
+  liked: Boolean
+  likes: [User]
+  link: String
+  logo: String
+  members: [ProjectMember]
+  name: String
+  owner: User
+  skills: [Skill]
+  start_at: String
+  updated_at: String
+  view: Int
+}
+
+type ProjectField {
+  name: String
+}
+
+type ProjectImage {
+  image: String
+  order: Int
+}
+
+type ProjectMember {
+  member: User
+  role: String
+}
+
 type Query {
-  allUser: [User]
-  user(id: Int): User
+  AllUser: [User]
+  User(id: Int): User
+}
+
+type Skill {
+  name: String
 }
 
 type User {
+  email: String
   entrance_year: Int
   grade: Int
   id: Int
   introduction: String
+  liked_portfolios: [Portfolio]
+  liked_projects: [Project]
   name: String
+  participated_projects: [Project]
+  portfolio: Portfolio
   profile_image: String
+  projects: [Project]
   school: String
 }
