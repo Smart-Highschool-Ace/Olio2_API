@@ -55,6 +55,17 @@ export const MutationUser = extendType({
         return mock_user
       }
     })
+
+    t.nonNull.field('updateUser', {
+      type: 'User',
+      args: {
+        user : arg({type : UserUpdateInput})
+      },
+      resolve(_, args, ctx) {
+        const mock_user = args.user // 일단 입력받은 값 그대로 돌려줌
+        return mock_user
+      }
+    })
   }
 })
 
