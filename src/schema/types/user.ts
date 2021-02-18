@@ -20,7 +20,7 @@ export const User = objectType({
   },
 });
 
-export const Query = queryType({
+export const QueryUser = queryType({
   definition(t) {
     t.list.field("allUser", {
       type: User,
