@@ -22,11 +22,22 @@ export const User = objectType({
     });
     t.field("portfolio", {
       type: Portfolio,
+      resolve: async (root, _, __) => {
+        return await prisma.portfolio.findFirst({
+          where: {
+            id: root.id,
+          },
+        });
+      },
     });
     t.list.field("projects", {
       type: Project,
-      resolve: () => {
-        return "these are my own projects";
+      resolve: async (root, _, __) => {
+        return await prisma.project.findMany({
+          where: {
+            owner_id: root.id,
+          },
+        });
       },
     });
     t.list.field("participated_projects", {
