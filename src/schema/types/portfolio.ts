@@ -14,6 +14,16 @@ export const MutationPortfolio = extendType({
         return mock_link 
       }
     })
+
+    t.nonNull.field('likePortfolio',{
+        type: 'Boolean',
+        args: {
+            id : nonNull(intArg())
+        },
+        resolve(_, args, ctx){ // 후에 좋아요 로직 구현
+            return true 
+        }
+    })
   }
 });
 
