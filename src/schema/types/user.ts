@@ -99,7 +99,7 @@ const UserCreateInput = inputObjectType({
 })
 
 const UserUpdateInput = inputObjectType({
-  name : 'UserCreateInput',
+  name : 'UserUpdateInput',
   definition(t){
     t.nonNull.int('school')
     t.nonNull.string('name')
