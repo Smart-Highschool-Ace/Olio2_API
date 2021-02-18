@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { objectType, queryType, intArg } from "nexus";
+import { objectType, queryType, intArg, extendType, inputObjectType, arg } from "nexus";
 
 const prisma = new PrismaClient();
 
@@ -41,3 +41,16 @@ export const QueryUser = queryType({
     });
   },
 });
+
+const UserCreateInput = inputObjectType({
+  name : 'UserCreateInput',
+  definition(t){
+    t.nonNull.string('email')
+    t.nonNull.string('password')
+    t.nonNull.int('school')
+    t.nonNull.string('name')
+    t.nonNull.int('entrance_year')
+    t.string('profile_image')
+    t.string('introduction')
+  },
+})
