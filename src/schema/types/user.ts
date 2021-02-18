@@ -66,6 +66,22 @@ export const MutationUser = extendType({
         return mock_user
       }
     })
+
+    t.nonNull.field('deleteUser', {
+      type: 'User',
+      resolve(_, args, ctx) {
+        const mock_user = { // 임의의 유저를 반환 (제거된 유저)
+          id : 1,
+          name : "mock_user-name",
+          school : 1,
+          profile_image : "mock_user-profile_image",
+          introduction : "mock_user-introduction",
+          entrance_year : 2020,
+          grade : 1,
+        }
+        return mock_user
+      }
+    })
   }
 })
 
