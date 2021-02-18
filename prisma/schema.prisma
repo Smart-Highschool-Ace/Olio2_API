@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -7,10 +8,168 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model user {
-    id        Int      @id @default(autoincrement())
-    name      String
-    email     String   @unique
-    password  String
-    createdAt DateTime @default(now())
+model User {
+    id             Int             @id @default(autoincrement())
+    email          String          @unique
+    password       String
+    name           String
+    school         School
+    profile_image  String?         @db.Text
+    introduction   String?
+    entrance_year  Int
+    createdAt      DateTime        @default(now())
+    Portfolio      Portfolio?
+    Project        Project[]
+    LikedPortfolio PortfolioLike[]
+    LikedProejct   ProejctLike[]
+    ProjectMember  ProjectMember[]
+    PortfolioView  PortfolioView[]
+    ProjectView    ProjectView[]
+}
+
+enum School {
+    Gwangju
+    Daejeon
+    Daegu
+    Busan
+}
+
+model Portfolio {
+    owner                User                   @relation(fields: [id], references: [id])
+    id                   Int                    @id
+    PortfolioLike        PortfolioLike[]
+    PortfolioSkill       PortfolioSkill[]
+    PortfolioProject     PortfolioProject[]
+    PortfolioPrize       PortfolioPrize[]
+    PortfolioCertificate PortfolioCertificate[]
+    PortfolioView        PortfolioView[]
+}
+
+model PortfolioLike {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    user         User      @relation(fields: [user_id], references: [id])
+    portfolio_id Int
+    user_id      Int
+}
+
+model PortfolioView {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    user         User      @relation(fields: [user_id], references: [id])
+    portfolio_id Int
+    user_id      Int
+    source_ip    String
+}
+
+model PortfolioSkill {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    level        Int
+}
+
+model PortfolioProject {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    project_id   Int
+    order        Int
+}
+
+model PortfolioPrize {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    institution  String?
+    prized_at    DateTime
+}
+
+model PortfolioCertificate {
+    id           Int       @id @default(autoincrement())
+    portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
+    portfolio_id Int
+    name         String
+    institution  String?
+    certified_at DateTime
+}
+
+model Project {
+    id            Int             @id @default(autoincrement())
+    owner         User            @relation(fields: [owner_id], references: [id])
+    owner_id      Int
+    name          String
+    introduction  String
+    description   String?
+    link          String?         @db.Text
+    logo          String?         @db.Text
+    start_at      DateTime?
+    end_at        DateTime?
+    created_at    DateTime
+    updated_at    DateTime
+    ProjectSkill  ProjectSkill[]
+    ProjectMember ProjectMember[]
+    ProjectField  ProjectField[]
+    ProjectImage  ProjectImage[]
+    ProejctLike   ProejctLike[]
+    ProjectView   ProjectView[]
+}
+
+model ProejctLike {
+    id         Int     @id @default(autoincrement())
+    proejct    Project @relation(fields: [project_id], references: [id])
+    user       User    @relation(fields: [user_id], references: [id])
+    project_id Int
+    user_id    Int
+}
+
+model ProjectView {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    user       User    @relation(fields: [user_id], references: [id])
+    project_id Int
+    user_id    Int
+    source_ip  String
+}
+
+model ProjectSkill {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id Int
+    name       String
+}
+
+model ProjectMember {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    member     User    @relation(fields: [member_id], references: [id])
+    project_id Int
+    member_id  Int
+    role       String
+}
+
+model ProjectField {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id Int
+    name       Field
+}
+
+enum Field {
+    WEB
+    ANDROID
+    IOS
+    AI
+    IOT
+    GAME
+}
+
+model ProjectImage {
+    id         Int     @id @default(autoincrement())
+    project    Project @relation(fields: [proejct_id], references: [id])
+    proejct_id Int
+    link       String  @db.Text
+    order      Int
 }
