@@ -70,3 +70,14 @@ const UserCreateInput = inputObjectType({
     t.string('introduction')
   },
 })
+
+const UserUpdateInput = inputObjectType({
+  name : 'UserCreateInput',
+  definition(t){
+    t.nonNull.int('school')
+    t.nonNull.string('name')
+    t.nonNull.int('entrance_year')
+    t.nonNull.string('profile_image')
+    t.nonNull.string('introduction')
+  },
+})
