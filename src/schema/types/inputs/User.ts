@@ -1,6 +1,6 @@
 import { inputObjectType } from "nexus";
 
-const UserCreateInput = inputObjectType({
+export const UserCreateInput = inputObjectType({
   name : 'UserCreateInput',
   definition(t){
     t.nonNull.string('email')
@@ -13,7 +13,7 @@ const UserCreateInput = inputObjectType({
   },
 })
 
-const UserUpdateInput = inputObjectType({
+export const UserUpdateInput = inputObjectType({
   name : 'UserUpdateInput',
   definition(t){
     t.nonNull.int('school')
