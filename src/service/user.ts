@@ -50,8 +50,3 @@ export const login : Function = async (userId : string, password : string) : Pro
     }
 
 }
-
-const jwt = login("qudwls185@naver.com", "qwer")
-jwt.then(function(result : Object){
-    console.log(result);
-});
