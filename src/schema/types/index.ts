@@ -1,4 +1,11 @@
-export * from "./user";
-export * from "./portfolio";
-export * from "./project";
-export * from "./skill";
+import { Mutation } from "./Mutation";
+import { Query } from "./Query";
+import * as Input from './inputs' ;
+import * as Model from './models' ;
+
+export const resolvers = {
+    Mutation,
+    Query,
+    ...Input,
+    ...Model
+}
