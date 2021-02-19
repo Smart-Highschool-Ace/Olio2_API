@@ -17,7 +17,6 @@ export const login : Function = async (userId : string, password : string) : Pro
     });//받는 값의 형식을 검사하는 구문
     
     console.log(userId);
-    // 위의 규칙에 알맞지않은 값이 들어올 경우 400을 리턴한다.
     if(bodyForm.validate({userId, password}).error){
         return {
             error: "에러, 잘못된 요청 또는 잘못된 값입니다."
@@ -32,7 +31,7 @@ export const login : Function = async (userId : string, password : string) : Pro
         await prisma.user.findFirst({
             where: {
                 email: userId,
-                password: password //hashedPassword,
+                password: hashedPassword,
             }
         })
     );
@@ -50,8 +49,3 @@ export const login : Function = async (userId : string, password : string) : Pro
     }
 
 }
-
-const jwt = login("qudwls185@naver.com", "qwer")
-jwt.then(function(result : Object){
-    console.log(result);
-});
