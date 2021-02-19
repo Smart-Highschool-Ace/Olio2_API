@@ -14,6 +14,7 @@ const transporter: nodemailer.Transporter = nodemailer.createTransport({
 });
 
 export const emailAuth: Function = async (receiver: string) => {
+    //사용자의 이메일주소
     const authCode: number = genearteAuthCode(); //인증 번호 생성
 
     const mailOptions: nodemailer.SendMailOptions = {
