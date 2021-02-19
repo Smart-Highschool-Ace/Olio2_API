@@ -50,3 +50,38 @@ const addAuthInfo: Function = async (user: string, auth_code: string) => {
         },
     });
 };
+
+//인증 코드 확인
+export const checkAuthCode: Function = async (
+    user: string,
+    auth_code: string
+) => {
+    const prisma = new PrismaClient();
+    const auth_info = await prisma.emailAuth.findFirst({
+        // 인증번호 존재 확인
+        where: {
+            email: user,
+            auth_code: auth_code,
+        },
+        select: {
+            id: true,
+        },
+    });
+    if (auth_info) {
+        //인증 확인되면 삭제
+        deleteAuthCode(auth_info.id);
+        return true;
+    } else {
+        false;
+    }
+};
+
+//인증코드 정보 삭제
+export const deleteAuthCode: Function = async (id: number) => {
+    const prisma = new PrismaClient();
+    await prisma.emailAuth.delete({
+        where: {
+            id: id,
+        },
+    });
+};
