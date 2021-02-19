@@ -2,7 +2,11 @@
 ### Do not make changes to this file directly
 
 
-<<<<<<< Updated upstream
+type Mutation {
+  likePortfolio(id: Int!): Boolean!
+  updatePortfolio(portfolio: PortfolioUpdateInput): String!
+}
+
 type Portfolio {
   certificates: [PortfolioCertificate]
   email: String
@@ -12,7 +16,7 @@ type Portfolio {
   link: String
   owner: User
   prizes: [PortfolioPrize]
-  projects: [Project]
+  projects: [PortfolioProject]
   skills: [PortfolioSkill]
   view: Int
 }
@@ -23,10 +27,22 @@ type PortfolioCertificate {
   name: String
 }
 
+input PortfolioCertificateInput {
+  certified_at: Int!
+  institution: String!
+  name: String!
+}
+
 type PortfolioPrize {
   institution: String
   name: String
   prized_at: String
+}
+
+input PortfolioPrizeInput {
+  institution: String!
+  name: String!
+  prized_at: Int!
 }
 
 type PortfolioProject {
@@ -34,9 +50,27 @@ type PortfolioProject {
   project: Project
 }
 
+input PortfolioProjectInput {
+  order: Int!
+  project: Int!
+}
+
 type PortfolioSkill {
   level: Int
   skill: Skill
+}
+
+input PortfolioSkillInput {
+  level: Int!
+  skill: String!
+}
+
+input PortfolioUpdateInput {
+  certificates: [PortfolioCertificateInput]!
+  email: String!
+  prizes: [PortfolioPrizeInput]!
+  projects: [PortfolioProjectInput]!
+  skils: [PortfolioSkillInput]!
 }
 
 type Project {
@@ -72,12 +106,6 @@ type ProjectImage {
 type ProjectMember {
   member: User
   role: String
-=======
-type Mutation {
-  createUser(user: UserCreateInput): User!
-  deleteUser: User!
-  updateUser(user: UserUpdateInput): User!
->>>>>>> Stashed changes
 }
 
 type Query {
@@ -103,22 +131,4 @@ type User {
   profile_image: String
   projects: [Project]
   school: String
-}
-
-input UserCreateInput {
-  email: String!
-  entrance_year: Int!
-  introduction: String
-  name: String!
-  password: String!
-  profile_image: String
-  school: Int!
-}
-
-input UserUpdateInput {
-  entrance_year: Int!
-  introduction: String!
-  name: String!
-  profile_image: String!
-  school: Int!
 }
