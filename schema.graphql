@@ -2,6 +2,7 @@
 ### Do not make changes to this file directly
 
 
+<<<<<<< Updated upstream
 type Portfolio {
   certificates: [PortfolioCertificate]
   email: String
@@ -71,6 +72,12 @@ type ProjectImage {
 type ProjectMember {
   member: User
   role: String
+=======
+type Mutation {
+  createUser(user: UserCreateInput): User!
+  deleteUser: User!
+  updateUser(user: UserUpdateInput): User!
+>>>>>>> Stashed changes
 }
 
 type Query {
@@ -96,4 +103,22 @@ type User {
   profile_image: String
   projects: [Project]
   school: String
+}
+
+input UserCreateInput {
+  email: String!
+  entrance_year: Int!
+  introduction: String
+  name: String!
+  password: String!
+  profile_image: String
+  school: Int!
+}
+
+input UserUpdateInput {
+  entrance_year: Int!
+  introduction: String!
+  name: String!
+  profile_image: String!
+  school: Int!
 }
