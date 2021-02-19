@@ -2,14 +2,10 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import * as AWS from "aws-sdk";
 
-const bucketName = process.env.AWS_BUCKET_NAME;
-const accessKeyId = process.env.ACCESS_KEY_ID;
-const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-
 const s3bucket = new AWS.S3({
-  accessKeyId: accessKeyId,
-  secretAccessKey: secretAccessKey,
-  params: { Bucket: bucketName },
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  params: { Bucket: process.env.AWS_BUCKET_NAME },
 });
 
 export const uploadToS3: Function = async (fileName: string) => {
@@ -32,7 +28,7 @@ export const uploadToS3: Function = async (fileName: string) => {
 
   // 올해년도 폴더 안에 key의 이름을 가진 파일로 저장
   const params = {
-    Bucket: bucketName,
+    Bucket: process.env.AWS_BUCKET_NAME,
     Key: year + "/" + key,
     Body: readStream,
   };
