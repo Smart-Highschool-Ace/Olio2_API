@@ -10,7 +10,7 @@ interface loginResult{
     error?: string;
 }
 
-export const login : Function = async (userId : string, password : string) => {
+export const login : Function = async (userId : string, password : string) : Promise<loginResult> => {
     const bodyForm = Joi.object().keys({
         userId: Joi.string().email().required(),
         password: Joi.string().required(),
