@@ -32,7 +32,7 @@ export const login : Function = async (userId : string, password : string) : Pro
         await prisma.user.findFirst({
             where: {
                 email: userId,
-                password: password //hashedPassword,
+                password: hashedPassword,
             }
         })
     );
