@@ -35,8 +35,18 @@ export const sendAuthCode: Function = async (receiver: string) => {
 
     await transporter //메일 보내기
         .sendMail(mailOptions)
-        .then((info) => info.messageId)
+        .then(() => addAuthInfo(receiver, auth_code))
         .catch((err) => {
             throw new Error(err);
         });
+};
+// 인증정보 DB에 추가
+const addAuthInfo: Function = async (user: string, auth_code: string) => {
+    const prisma = new PrismaClient();
+    await prisma.emailAuth.create({
+        data: {
+            email: user,
+            auth_code: auth_code,
+        },
+    });
 };
