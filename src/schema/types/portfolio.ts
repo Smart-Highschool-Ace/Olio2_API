@@ -35,10 +35,10 @@ const PortfolioUpdateInput = inputObjectType({
         type: PortfolioSkill
     })
     t.nonNull.field('PortfolioProject', {
-        type: PortfolioSkill
+        type: PortfolioProject
     })
     t.nonNull.field('PortfolioPrize', {
-        type: PortfolioSkill
+        type: PortfolioPrize
     })
     t.nonNull.field('PortfolioCertificate', {
         type: PortfolioCertificate
