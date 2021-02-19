@@ -1,7 +1,6 @@
 import { inputObjectType } from "nexus";
-import { TLSSocket } from "tls";
 
-const ProjectCreateInput = inputObjectType({
+export const ProjectCreateInput = inputObjectType({
   name : 'ProjectCreateInput',
   definition(t){
     t.nonNull.string('name')
@@ -25,7 +24,7 @@ const ProjectCreateInput = inputObjectType({
   },
 })
 
-const ProjectMemberInput = inputObjectType({
+export const ProjectMemberInput = inputObjectType({
   name : 'ProjectMemberInput',
   definition(t){
       t.nonNull.int('id')
@@ -33,14 +32,14 @@ const ProjectMemberInput = inputObjectType({
   }
 })
 
-const ProjectFieldInput = inputObjectType({
+export const ProjectFieldInput = inputObjectType({
   name : 'ProjectFieldInput',
   definition(t){
       t.nonNull.string('name')
   }
 })
 
-const ProjectImageInput = inputObjectType({
+export const ProjectImageInput = inputObjectType({
   name : 'ProjectImageInput',
   definition(t){
       t.nonNull.string('image')
