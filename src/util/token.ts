@@ -4,6 +4,6 @@ import * as jwt from 'jsonwebtoken';
 
 const jwtSecret = process.env.JWT_SECRET_KEY;
 
-export const generateToken : Function = ( email : Object ) : String => {
-    return jwt.sign(email, jwtSecret);
+export const generateToken : Function = ( payload : Object ) : String => {
+    return jwt.sign(payload, jwtSecret);
 }

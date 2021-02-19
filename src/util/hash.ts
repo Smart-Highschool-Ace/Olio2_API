@@ -5,6 +5,6 @@ import * as crypto from 'crypto';
 
 const salt = process.env.SALT;
 
-export const hashSha512 : Function = (password : String) : String => {
-    return crypto.createHash('sha512').update(password + salt).digest('base64');
+export const hashSha512 : Function = (password : string) : String => {
+    return crypto.createHmac('sha512', salt).update(password).digest('base64');
 }

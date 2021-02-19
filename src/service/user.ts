@@ -3,26 +3,24 @@ import { PrismaClient } from '@prisma/client';
 import * as Joi from 'joi';
 
 import { generateToken } from '../util/token';
-import { hashSha512 } from 'util/hash';
+import { hashSha512 } from '../util/hash';
 
 interface loginResult{
     token?: string;
     error?: string;
-    errorCode?: number;
 }
 
-export const login : Function = async (email : string, password : string) => {
+export const login : Function = async (userId : string, password : string) => {
     const bodyForm = Joi.object().keys({
-        email: Joi.string().email().required(),
+        userId: Joi.string().email().required(),
         password: Joi.string().required(),
     });//받는 값의 형식을 검사하는 구문
     
-    console.log(email);
+    console.log(userId);
     // 위의 규칙에 알맞지않은 값이 들어올 경우 400을 리턴한다.
-    if(bodyForm.validate({email, password}).error){
+    if(bodyForm.validate({userId, password}).error){
         return {
-            error: "Bad Request",
-            errorCode: 400,
+            error: "에러, 잘못된 요청 또는 잘못된 값입니다."
         };
     }
 
@@ -31,23 +29,29 @@ export const login : Function = async (email : string, password : string) => {
     const hashedPassword = hashSha512(password);
 
     const user = (
-        await prisma.user.findMany({
+        await prisma.user.findFirst({
             where: {
-                email: email,
-                password: hashedPassword,
+                email: userId,
+                password: password //hashedPassword,
             }
         })
-    )[0];
+    );
     
 
     if(user){
-        const token = { token : generateToken({"email" : email})};
+        // TDOO generatePayload 추가
+        const payload = { "userId" : user.id };
+        const token = { token : generateToken(payload)};
         return token;
     }else{
         return {
-            error: "Not Found",
-            errorCode : 404,
+            error: "에러, 잘못된 요청 또는 잘못된 값입니다."
         };
     }
 
 }
+
+const jwt = login("qudwls185@naver.com", "qwer")
+jwt.then(function(result : Object){
+    console.log(result);
+});
