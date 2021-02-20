@@ -8,9 +8,8 @@ export interface context {
     userId : Number;
 }
 
-export let createContext = async (ctx : Context) => {
+export let createContext = async ({ctx} : Context) => {
     const prisma = new PrismaClient();
-    console.log(ctx.header)
 
     if (ctx.header.Authorization) {
         const { userId } = decodeToken(ctx.header.Authorization);
