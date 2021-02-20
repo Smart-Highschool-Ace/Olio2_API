@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { objectType } from "nexus";
 
+import { PortfolioService, ProjectService, UserService } from "service";
+
 const prisma = new PrismaClient();
 
 export const User = objectType({
@@ -21,39 +23,31 @@ export const User = objectType({
     t.field("portfolio", {
       type: "Portfolio",
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-        });
+        return await PortfolioService.getPortfolio(root.id);
       },
     });
     t.list.field("projects", {
       type: "Project",
       resolve: async (root, _, __) => {
-        return await prisma.project.findMany({
-          where: {
-            owner_id: root.id,
-          },
-        });
+        return await ProjectService.getOwnProjectsOfUser(root.id);
       },
     });
     t.list.field("participated_projects", {
       type: "Project",
-      resolve: () => {
-        return "these are my projects participated";
+      resolve: async (root, _, __) => {
+        return await ProjectService.getParticipatedProjectsOfUser(root.id);
       },
     });
     t.list.field("liked_projects", {
       type: "Project",
-      resolve: () => {
-        return "these are my favorite projects";
+      resolve: async (root, _, __) => {
+        return await ProjectService.getLikedProjectsOfUser(root.id);
       },
     });
     t.list.field("liked_portfolios", {
       type: "Portfolio",
-      resolve: () => {
-        return "these are my favorite portfolios";
+      resolve: async (root, _, __) => {
+        return await PortfolioService.getLikedPortfoliosOfUser(root.id);
       },
     });
   },
