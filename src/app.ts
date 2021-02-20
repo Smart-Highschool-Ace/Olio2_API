@@ -4,11 +4,11 @@ import * as helmet from "koa-helmet";
 import { ApolloServer } from "apollo-server-koa";
 
 import { schema } from "./schema";
-import { authToken } from "./middleware/authToken";
+import { createContext } from "context";
 const app = new Koa();
 
-const apollo = new ApolloServer({ schema });
+const apollo = new ApolloServer({ schema, context : createContext});
 
-app.use(helmet()).use(bodyParser()).use(apollo.getMiddleware()).use(authToken);
+app.use(helmet()).use(bodyParser()).use(apollo.getMiddleware());
 
 export default app;
