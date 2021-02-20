@@ -33,14 +33,12 @@ export const sendAuthCode: Function = async (receiver: string) => {
                 <h2>인증번호: ${auth_code}</h2>`,
     };
 
-    await transporter //메일 보내기
-        .sendMail(mailOptions)
-        .then((info) => info.messageId)
-        .catch((err) => {
-            throw new Error(err);
-        });
-    // 메일 인증 후 DB에 추가
-    addAuthInfo(receiver, auth_code);
+    try {
+        await transporter.sendMail(mailOptions); //메일 보내기
+    } catch (err) {
+        throw new Error(err);
+    }
+    await addAuthInfo(receiver, auth_code);
 };
 // 인증정보 DB에 추가
 const addAuthInfo: Function = async (user: string, auth_code: string) => {
