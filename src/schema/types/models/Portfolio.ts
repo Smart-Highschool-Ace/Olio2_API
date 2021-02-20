@@ -5,7 +5,7 @@ export const Portfolio = objectType({
   definition(t) {
     t.int("id");
     t.field("owner", {
-      type: 'User',
+      type: "User",
       resolve: () => {
         return "he or she is the owner of this portfolio";
       },
@@ -13,19 +13,19 @@ export const Portfolio = objectType({
     t.string("email");
     t.string("link");
     t.list.field("likes", {
-      type: 'User',
+      type: "User",
       resolve: () => {
         return "they like my portfolio";
       },
     });
     t.list.field("skills", {
-      type: 'PortfolioSkill',
+      type: "PortfolioSkill",
       resolve: () => {
         return "I can use these skills";
       },
     });
     t.list.field("projects", {
-      type: 'Project',
+      type: "Project",
       resolve: () => {
         return "this is my projects";
       },
@@ -57,12 +57,12 @@ export const Portfolio = objectType({
     });
   },
 });
-  
+
 export const PortfolioSkill = objectType({
   name: "PortfolioSkill",
   definition(t) {
     t.field("skill", {
-      type: 'Skill',
+      type: "Skill",
       resolve: () => {
         return "Typescript or something";
       },
@@ -75,7 +75,7 @@ export const PortfolioProject = objectType({
   name: "PortfolioProject",
   definition(t) {
     t.field("project", {
-      type: 'Project',
+      type: "Project",
     });
     t.int("order");
   },

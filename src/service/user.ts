@@ -1,52 +1,51 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
-import { generateToken } from '../util/token';
-import { hashSha512 } from '../util/hash';
+import { generateToken } from "../util/token";
+import { hashSha512 } from "../util/hash";
 
-interface loginResult{
-    token?: string;
-    error?: string;
+interface loginResult {
+  token?: string;
+  error?: string;
 }
 
-export const login : Function = async (userId : string, password : string) : Promise<loginResult> => {
-    const bodyForm = Joi.object().keys({
-        userId: Joi.string().email().required(),
-        password: Joi.string().required(),
-    });//받는 값의 형식을 검사하는 구문
-    
-    console.log(userId);
-    // 위의 규칙에 알맞지않은 값이 들어올 경우 400을 리턴한다.
-    if(bodyForm.validate({userId, password}).error){
-        return {
-            error: "에러, 잘못된 요청 또는 잘못된 값입니다."
-        };
-    }
+export const login: Function = async (
+  userId: string,
+  password: string
+): Promise<loginResult> => {
+  const bodyForm = Joi.object().keys({
+    userId: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }); //받는 값의 형식을 검사하는 구문
 
-    const prisma = new PrismaClient();
+  console.log(userId);
+  // 위의 규칙에 알맞지않은 값이 들어올 경우 400을 리턴한다.
+  if (bodyForm.validate({ userId, password }).error) {
+    return {
+      error: "에러, 잘못된 요청 또는 잘못된 값입니다.",
+    };
+  }
 
-    const hashedPassword = hashSha512(password);
+  const prisma = new PrismaClient();
 
-    const user = (
-        await prisma.user.findFirst({
-            where: {
-                email: userId,
-                password: hashedPassword,
-            }
-        })
-    );
-    
+  const hashedPassword = hashSha512(password);
 
-    if(user){
-        // TDOO generatePayload 추가
-        const payload = { "userId" : user.id };
-        const token = { token : generateToken(payload)};
-        return token;
-    }else{
-        return {
-            error: "에러, 잘못된 요청 또는 잘못된 값입니다."
-        };
-    }
+  const user = await prisma.user.findFirst({
+    where: {
+      email: userId,
+      password: hashedPassword,
+    },
+  });
 
-}
+  if (user) {
+    // TDOO generatePayload 추가
+    const payload = { userId: user.id };
+    const token = { token: generateToken(payload) };
+    return token;
+  } else {
+    return {
+      error: "에러, 잘못된 요청 또는 잘못된 값입니다.",
+    };
+  }
+};
