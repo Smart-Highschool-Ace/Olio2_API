@@ -35,10 +35,12 @@ export const sendAuthCode: Function = async (receiver: string) => {
 
     await transporter //메일 보내기
         .sendMail(mailOptions)
-        .then(() => addAuthInfo(receiver, auth_code))
+        .then((info) => info.messageId)
         .catch((err) => {
             throw new Error(err);
         });
+    // 메일 인증 후 DB에 추가
+    addAuthInfo(receiver, auth_code);
 };
 // 인증정보 DB에 추가
 const addAuthInfo: Function = async (user: string, auth_code: string) => {
