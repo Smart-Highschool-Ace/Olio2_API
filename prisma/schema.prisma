@@ -173,3 +173,9 @@ model ProjectImage {
     link       String  @db.Text
     order      Int
 }
+
+model EmailAuth {
+    id        Int    @id @default(autoincrement())
+    email     String
+    auth_code String
+}

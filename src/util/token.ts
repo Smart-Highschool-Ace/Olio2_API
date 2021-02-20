@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+import * as jwt from "jsonwebtoken";
 // import * as dotenv from "dotenv";
 // dotenv.config();
 

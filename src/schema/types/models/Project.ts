@@ -1,16 +1,11 @@
-import { PrismaClient } from "@prisma/client";
 import { objectType } from "nexus";
-
-import { User, Portfolio, Skill } from "schema/types";
-
-const prisma = new PrismaClient();
 
 export const Project = objectType({
   name: "Project",
   definition(t) {
     t.int("id");
     t.field("owner", {
-      type: User,
+      type: "User",
       resolve: () => {
         return "I am a owner";
       },
@@ -30,31 +25,31 @@ export const Project = objectType({
       },
     });
     t.list.field("skills", {
-      type: Skill,
+      type: "Skill",
       resolve: () => {
         return "these are used in this project";
       },
     });
     t.list.field("members", {
-      type: ProjectMember,
+      type: "ProjectMember",
       resolve: () => {
         return "they participated in this project";
       },
     });
     t.list.field("fields", {
-      type: ProjectField,
+      type: "ProjectField",
       resolve: () => {
         return "this is web project";
       },
     });
     t.list.field("images", {
-      type: ProjectImage,
+      type: "ProjectImage",
       resolve: () => {
         return "here are some images";
       },
     });
     t.list.field("likes", {
-      type: User,
+      type: "User",
       resolve: () => {
         return "they liked this project";
       },
@@ -71,7 +66,7 @@ export const ProjectMember = objectType({
   name: "ProjectMember",
   definition(t) {
     t.field("member", {
-      type: User,
+      type: "User",
       resolve: () => {
         return "I am user";
       },
