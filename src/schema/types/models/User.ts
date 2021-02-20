@@ -19,7 +19,7 @@ export const User = objectType({
       },
     });
     t.field("portfolio", {
-      type: 'Portfolio',
+      type: "Portfolio",
       resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
@@ -29,7 +29,7 @@ export const User = objectType({
       },
     });
     t.list.field("projects", {
-      type: 'Project',
+      type: "Project",
       resolve: async (root, _, __) => {
         return await prisma.project.findMany({
           where: {
@@ -39,19 +39,19 @@ export const User = objectType({
       },
     });
     t.list.field("participated_projects", {
-      type: 'Project',
+      type: "Project",
       resolve: () => {
         return "these are my projects participated";
       },
     });
     t.list.field("liked_projects", {
-      type: 'Project',
+      type: "Project",
       resolve: () => {
         return "these are my favorite projects";
       },
     });
     t.list.field("liked_portfolios", {
-      type: 'Portfolio',
+      type: "Portfolio",
       resolve: () => {
         return "these are my favorite portfolios";
       },
