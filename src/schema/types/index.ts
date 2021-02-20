@@ -1,4 +1,4 @@
-export * from "./user";
-export * from "./portfolio";
-export * from "./project";
-export * from "./skill";
+export { Mutation } from "./Mutation";
+export { Query } from "./Query";
+export *  from './inputs' ;
+export *  from './models' ;
