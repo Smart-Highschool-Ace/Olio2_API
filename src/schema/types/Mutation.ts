@@ -1,28 +1,18 @@
 import { mutationType } from 'nexus'
-import {
-  updatePortfolio,
-  likePortfolio,
-  createProject,
-  updateProject,
-  deleteProject,
-  likeProject,
-  createUser,
-  updateUser,
-  deleteUser
-} from './mutations'
+import * as m from './mutations'
 
 export const Mutation = mutationType({
   definition(t) {
-    t.field('updatePortfolio', updatePortfolio)
-    t.field('likePortfolio', likePortfolio)
+    t.field('updatePortfolio', m.updatePortfolio)
+    t.field('likePortfolio', m.likePortfolio)
 
-    t.field('createProject', createProject)
-    t.field('createProject', updateProject)
-    t.field('createProject', deleteProject)
-    t.field('createProject', likeProject)
+    t.field('createProject', m.createProject)
+    t.field('createProject', m.updateProject)
+    t.field('createProject', m.deleteProject)
+    t.field('createProject', m.likeProject)
 
-    t.field('createUser', createUser)
-    t.field('updateUser', updateUser)
-    t.field('deleteUser', deleteUser)
+    t.field('createUser', m.createUser)
+    t.field('updateUser', m.updateUser)
+    t.field('deleteUser', m.deleteUser)
   },
 })
