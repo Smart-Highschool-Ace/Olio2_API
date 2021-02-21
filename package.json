@@ -16,21 +16,25 @@
   "dependencies": {
     "@prisma/cli": "^2.17.0",
     "@prisma/client": "2.17.0",
+    "@types/nodemailer": "^6.4.0",
     "apollo-server-koa": "^2.19.2",
     "aws-sdk": "^2.846.0",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
-    "joi": "^17.3.0",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-helmet": "^6.0.0",
     "koa-router": "^10.0.0",
     "nexus": "^1.0.0",
-    "nexus-plugin-prisma": "^0.28.0"
+    "nexus-plugin-prisma": "^0.28.0",
+    "nodemailer": "^6.4.18"
   },
   "devDependencies": {
     "@types/joi": "^17.2.3",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/koa": "^2.11.6",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-helmet": "^6.0.1",

@@ -2,17 +2,199 @@
 ### Do not make changes to this file directly
 
 
+type Mutation {
+  createProject(id: Int!): Boolean
+  createUser(user: UserCreateInput): User
+  deleteUser: User
+  likePortfolio(id: Int!): Boolean
+  updatePortfolio(portfolio: PortfolioUpdateInput): String
+  updateUser(user: UserUpdateInput): User
+}
+
+type Portfolio {
+  certificates: [PortfolioCertificate]
+  email: String
+  id: Int
+  liked: Boolean
+  likes: [User]
+  link: String
+  owner: User
+  prizes: [PortfolioPrize]
+  projects: [Project]
+  skills: [PortfolioSkill]
+  view: Int
+}
+
+type PortfolioCertificate {
+  certified_at: String
+  institution: String
+  name: String
+}
+
+input PortfolioCertificateInput {
+  certified_at: Int!
+  institution: String!
+  name: String!
+}
+
+type PortfolioPrize {
+  institution: String
+  name: String
+  prized_at: String
+}
+
+input PortfolioPrizeInput {
+  institution: String!
+  name: String!
+  prized_at: Int!
+}
+
+type PortfolioProject {
+  order: Int
+  project: Project
+}
+
+input PortfolioProjectInput {
+  order: Int!
+  project: Int!
+}
+
+type PortfolioSkill {
+  level: Int
+  skill: Skill
+}
+
+input PortfolioSkillInput {
+  level: Int!
+  skill: String!
+}
+
+input PortfolioUpdateInput {
+  certificates: [PortfolioCertificateInput]!
+  email: String!
+  prizes: [PortfolioPrizeInput]!
+  projects: [PortfolioProjectInput]!
+  skils: [PortfolioSkillInput]!
+}
+
+type Project {
+  created_at: String
+  description: String
+  end_at: String
+  fields: [ProjectField]
+  id: Int
+  images: [ProjectImage]
+  introduction: String
+  liked: Boolean
+  likes: [User]
+  link: String
+  logo: String
+  members: [ProjectMember]
+  name: String
+  owner: User
+  skills: [Skill]
+  start_at: String
+  updated_at: String
+  view: Int
+}
+
+input ProjectCreateInput {
+  description: String
+  end_at: String
+  fields: [ProjectFieldInput]
+  images: [ProjectImageInput]
+  introduction: String!
+  link: String
+  members: [ProjectMemberInput]
+  name: String!
+  skils: [SkillInput]
+  start_at: String
+}
+
+type ProjectField {
+  name: String
+}
+
+input ProjectFieldInput {
+  name: String!
+}
+
+type ProjectImage {
+  image: String
+  order: Int
+}
+
+input ProjectImageInput {
+  image: String!
+  order: Int
+}
+
+type ProjectMember {
+  member: User
+  role: String
+}
+
+input ProjectMemberInput {
+  id: Int!
+  role: String
+}
+
+input ProjectUpdateInput {
+  description: String
+  end_at: String
+  fields: [ProjectFieldInput]
+  images: [ProjectImageInput]
+  introduction: String!
+  link: String
+  members: [ProjectMemberInput]
+  name: String!
+  skils: [SkillInput]
+  start_at: String
+}
+
 type Query {
   allUser: [User]
   user(id: Int): User
 }
 
+type Skill {
+  name: String
+}
+
+input SkillInput {
+  name: String!
+}
+
 type User {
+  email: String
   entrance_year: Int
   grade: Int
   id: Int
   introduction: String
+  liked_portfolios: [Portfolio]
+  liked_projects: [Project]
   name: String
+  participated_projects: [Project]
+  portfolio: Portfolio
   profile_image: String
+  projects: [Project]
   school: String
+}
+
+input UserCreateInput {
+  email: String!
+  entrance_year: Int!
+  introduction: String
+  name: String!
+  password: String!
+  profile_image: String
+  school: Int!
+}
+
+input UserUpdateInput {
+  entrance_year: Int!
+  introduction: String!
+  name: String!
+  profile_image: String!
+  school: Int!
 }
