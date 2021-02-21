@@ -3,17 +3,17 @@ import { inputObjectType } from "nexus";
 export const PortfolioUpdateInput = inputObjectType({
   name: "PortfolioUpdateInput",
   definition(t) {
-    t.nonNull.string("email");
-    t.nonNull.list.field("skils", {
+    t.string("email");
+    t.list.field("skils", {
       type: "PortfolioSkillInput",
     });
-    t.nonNull.list.field("projects", {
+    t.list.field("projects", {
       type: "PortfolioProjectInput",
     });
-    t.nonNull.list.field("prizes", {
+    t.list.field("prizes", {
       type: "PortfolioPrizeInput",
     });
-    t.nonNull.list.field("certificates", {
+    t.list.field("certificates", {
       type: "PortfolioCertificateInput",
     });
   },
