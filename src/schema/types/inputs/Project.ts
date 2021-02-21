@@ -27,8 +27,8 @@ export const ProjectCreateInput = inputObjectType({
 export const ProjectUpdateInput = inputObjectType({
   name: "ProjectUpdateInput",
   definition(t) {
-    t.nonNull.string("name");
-    t.nonNull.string("introduction");
+    t.string("name");
+    t.string("introduction");
     t.string("description");
     t.string("link");
     t.string("start_at");
