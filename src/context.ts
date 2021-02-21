@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "util/token";
 
 export interface context {
-  userId: Number;
+  userId: number;
 }
 
 export let createContext = async ({ ctx }: Context) => {
