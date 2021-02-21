@@ -8,6 +8,10 @@ export const schema = makeSchema({
     schema: __dirname + "/../../schema.graphql",
     typegen: __dirname + "/generated/nexus.ts",
   },
+  contextType: {
+    module: require.resolve("../context"),
+    export: "context",
+  },
   sourceTypes: {
     modules: [
       {
