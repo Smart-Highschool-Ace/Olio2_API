@@ -2,6 +2,8 @@ import { arg, nonNull, intArg } from "nexus";
 
 import { context } from "../../../context";
 import {
+  getPortfolioByUser,
+  modifyPortfolio,
   getLikePortfolio,
   createLikePortfolio,
   deleteLikePortfolio,
@@ -11,11 +13,18 @@ export const updatePortfolio = {
   args: {
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
-  resolve: (_: any, args: any, ctx: context) => {
-    // 후에 포트폴리오 수정 구현
-
-    const mock_link = "http://mock-example.com";
-    return mock_link;
+  resolve: async (_: any, args: any, ctx: context) => {
+    const portfolio_id = (await getPortfolioByUser(ctx.userId)).id;
+    const { email, skils, projects, prizes, certificates } = args.portfolio;
+    await modifyPortfolio(
+      portfolio_id,
+      email,
+      skils,
+      projects,
+      prizes,
+      certificates
+    );
+    return String(portfolio_id);
   },
   type: "String",
 };
