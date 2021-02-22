@@ -11,6 +11,7 @@ import {
 
 export const updatePortfolio = {
   args: {
+    id: nonNull(intArg()),
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
   resolve: async (_: any, args: any, ctx: context) => {

@@ -15,7 +15,7 @@ export const createProject = {
 export const updateProject = {
   args: {
     id: nonNull(intArg()),
-    project: nonNull(arg({ type: "ProjectUpdateInput" })),
+    project: arg({ type: "ProjectUpdateInput" }),
   },
   resolve(_: any, args: any, ctx: any) {
     // 후에 프로젝트 수정 구현

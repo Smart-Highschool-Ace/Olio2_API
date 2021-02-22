@@ -1,8 +1,8 @@
-import { arg, mutationType } from "nexus";
+import { arg, nonNull } from "nexus";
 
 export const createUser = {
   args: {
-    user: arg({ type: "UserCreateInput" }),
+    user: nonNull(arg({ type: "UserCreateInput" })),
   },
   resolve(_: any, args: any, ctx: any) {
     // TODO : prisma로 create user 구현
@@ -13,7 +13,7 @@ export const createUser = {
 };
 export const updateUser = {
   args: {
-    user: arg({ type: "UserUpdateInput" }),
+    user: nonNull(arg({ type: "UserUpdateInput" })),
   },
   resolve(_: any, args: any, ctx: any) {
     // TODO : prisma로 update user 구현
