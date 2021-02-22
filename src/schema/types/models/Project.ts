@@ -89,3 +89,13 @@ export const ProjectImage = objectType({
     t.int("order");
   },
 });
+
+export const MyProjectsQueryType = objectType({
+  name: "MyProjectsQueryType",
+  definition(t) {
+    t.list.field("projects", {
+      type: "Project",
+    });
+    t.list.int("order");
+  },
+});
