@@ -1,7 +1,7 @@
 import { objectType } from "nexus";
 
-export const NameSearchType = objectType({
-  name: "NameSearchType",
+export const NameSearchQueryType = objectType({
+  name: "NameSearchQueryType",
   definition(t) {
     t.list.field("portfolio", {
       type: "Portfolio",
@@ -12,8 +12,8 @@ export const NameSearchType = objectType({
   },
 });
 
-export const ExploreType = objectType({
-  name: "ExploreType",
+export const ExploreQueryType = objectType({
+  name: "ExploreQueryType",
   definition(t) {
     t.list.field("portfolio", {
       type: "Portfolio",
