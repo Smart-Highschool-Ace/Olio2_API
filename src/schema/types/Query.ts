@@ -7,6 +7,7 @@ export const Query = queryType({
     t.field("user", q.user);
 
     t.list.field("allProject", q.allProject);
+    t.list.field("myProjects", q.myProjects);
     t.field("project", q.project);
 
     t.list.field("allPortfolio", q.allPortfolio);
