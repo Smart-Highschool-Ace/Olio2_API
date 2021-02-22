@@ -9,7 +9,7 @@ export const Portfolio = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             owner: {
@@ -23,7 +23,7 @@ export const Portfolio = objectType({
     t.string("link");
     t.list.field("likes", {
       type: "User",
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             id: root.id,
@@ -36,7 +36,7 @@ export const Portfolio = objectType({
     });
     t.list.field("skills", {
       type: "PortfolioSkill",
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             id: root.id,
@@ -49,7 +49,7 @@ export const Portfolio = objectType({
     });
     t.list.field("projects", {
       type: "Project",
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             id: root.id,
@@ -62,7 +62,7 @@ export const Portfolio = objectType({
     });
     t.list.field("prizes", {
       type: PortfolioPrize,
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             id: root.id,
@@ -75,7 +75,7 @@ export const Portfolio = objectType({
     });
     t.list.field("certificates", {
       type: PortfolioCertificate,
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolio.findFirst({
           where: {
             id: root.id,
@@ -87,7 +87,7 @@ export const Portfolio = objectType({
       },
     });
     t.int("view", {
-      resolve: async (root, _, _) => {
+      resolve: async (root, _, __) => {
         return await prisma.portfolioView.count({
           where: {
             portfolio_id: root.id,
