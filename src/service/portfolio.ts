@@ -1,4 +1,5 @@
 import {
+  PortfolioCertificate,
   PortfolioPrize,
   PortfolioProject,
   PortfolioSkill,
@@ -7,35 +8,49 @@ import {
 
 const prisma = new PrismaClient();
 
-// export const modifyPortfolio = async (
-//     id: number,
-//     email: string,
-//     skils: PortfolioSkill,
-//     projects: PortfolioProject,
-//     prize: PortfolioPrize
-//   ) => {
-//     await prisma.portfolio.update({
-//       where: {
-//         id: id,
-//       },
-//       data: {
-//         owner: {
-//           update: {
-//             email: email,
-//           },
-//         },
-//         PortfolioSkill: {
-//           set: skils,
-//         },
-//         PortfolioProject: {
-//           set: projects,
-//         },
-//         PortfolioPrize: {
-//           set: prize,
-//         },
-//       },
-//     });
-//   };
+export const getPortfolioByUser = async (id: number) => {
+  return await prisma.portfolio.findFirst({
+    where: {
+      owner: {
+        id: id,
+      },
+    },
+  });
+};
+
+export const modifyPortfolio = async (
+  id: number,
+  email: string,
+  skils: PortfolioSkill,
+  projects: PortfolioProject,
+  prize: PortfolioPrize,
+  certificates: PortfolioCertificate
+) => {
+  await prisma.portfolio.update({
+    where: {
+      id: id,
+    },
+    data: {
+      owner: {
+        update: {
+          email: email,
+        },
+      },
+      PortfolioSkill: {
+        set: skils,
+      },
+      PortfolioProject: {
+        set: projects,
+      },
+      PortfolioPrize: {
+        set: prize,
+      },
+      PortfolioCertificate: {
+        set: certificates,
+      },
+    },
+  });
+};
 
 export const getLikePortfolio = async (
   user_id: number,
