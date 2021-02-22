@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type ExploreQueryType {
+  portfolio: [Portfolio]
+  project: [Project]
+}
+
 type Mutation {
   createProject(id: Int!): Boolean
   createUser(user: UserCreateInput): User
@@ -9,6 +14,16 @@ type Mutation {
   likePortfolio(id: Int!): Boolean
   updatePortfolio(portfolio: PortfolioUpdateInput): String
   updateUser(user: UserUpdateInput): User
+}
+
+type MyProjectsQueryType {
+  order: [Int]
+  projects: [Project]
+}
+
+type NameSearchQueryType {
+  portfolio: [Portfolio]
+  user: [User]
 }
 
 type Portfolio {
@@ -153,7 +168,12 @@ input ProjectUpdateInput {
 }
 
 type Query {
+  allPortfolio: [Portfolio]
+  allProject: [Project]
   allUser: [User]
+  myProjects: [MyProjectsQueryType]
+  portfolio(id: Int): Portfolio
+  project(id: Int): Project
   user(id: Int): User
 }
 
