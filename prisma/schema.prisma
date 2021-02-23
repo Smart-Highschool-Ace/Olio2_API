@@ -168,7 +168,7 @@ enum Field {
 
 model ProjectImage {
     id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [proejct_id], references: [id])
+    project    Project @relation(fields: [project_id], references: [id])
     project_id Int
     link       String  @db.Text
     order      Int
