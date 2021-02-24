@@ -1,6 +1,5 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["nativeTypes"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -21,7 +20,7 @@ model User {
     Portfolio      Portfolio?
     Project        Project[]
     LikedPortfolio PortfolioLike[]
-    LikedProejct   ProejctLike[]
+    LikedProject   ProjectLike[]
     ProjectMember  ProjectMember[]
     PortfolioView  PortfolioView[]
     ProjectView    ProjectView[]
@@ -113,11 +112,11 @@ model Project {
     ProjectMember ProjectMember[]
     ProjectField  ProjectField[]
     ProjectImage  ProjectImage[]
-    ProejctLike   ProejctLike[]
+    ProjectLike   ProjectLike[]
     ProjectView   ProjectView[]
 }
 
-model ProejctLike {
+model ProjectLike {
     id         Int     @id @default(autoincrement())
     project    Project @relation(fields: [project_id], references: [id])
     user       User    @relation(fields: [user_id], references: [id])
