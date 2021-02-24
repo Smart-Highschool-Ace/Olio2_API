@@ -2,6 +2,7 @@ import { arg, nonNull, intArg } from "nexus";
 
 export const updatePortfolio = {
   args: {
+    id: nonNull(intArg()),
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
   resolve: (_: any, args: any, ctx: any) => {
