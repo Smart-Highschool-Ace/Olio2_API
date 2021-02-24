@@ -21,8 +21,8 @@ export const Project = objectType({
     t.string("created_at");
     t.string("updated_at");
     t.int("view", {
-      resolve: () => {
-        return 999;
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectView.length;
       },
     });
     t.list.field("skills", {
