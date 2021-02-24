@@ -44,17 +44,17 @@ export const getParticipatedProjectsOfUser = async (userId: number) => {
 };
 
 export const getLikedProjectsOfUser = async (userId: number) => {
-  const result = await prisma.proejctLike.findMany({
+  const result = await prisma.projectLike.findMany({
     where: {
       user_id: userId,
     },
     select: {
-      proejct: true,
+      project: true,
     },
   });
 
   return result.map((item) => {
-    return item.proejct;
+    return item.project;
   });
 };
 
@@ -74,13 +74,13 @@ export const getProject = async (projectId: number) => {
         },
       },
       ProjectSkill: true,
-      ProejctLike: true,
+      ProjectLike: true,
     },
   });
 };
 
 export const isLikedByUser = async (projectId: number, userId: number) => {
-  const result = await prisma.proejctLike.findFirst({
+  const result = await prisma.projectLike.findFirst({
     where: {
       project_id: projectId,
       user_id: userId,

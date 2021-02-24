@@ -52,7 +52,7 @@ export const Project = objectType({
     t.list.field("likes", {
       type: "User",
       resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProejctLike;
+        return (await ProjectService.getProject(root.id)).ProjectLike;
       },
     });
     t.boolean("liked", {
