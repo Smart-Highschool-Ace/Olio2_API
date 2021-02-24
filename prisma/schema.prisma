@@ -119,7 +119,7 @@ model Project {
 
 model ProejctLike {
     id         Int     @id @default(autoincrement())
-    proejct    Project @relation(fields: [project_id], references: [id])
+    project    Project @relation(fields: [project_id], references: [id])
     user       User    @relation(fields: [user_id], references: [id])
     project_id Int
     user_id    Int
@@ -168,8 +168,8 @@ enum Field {
 
 model ProjectImage {
     id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [proejct_id], references: [id])
-    proejct_id Int
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id Int
     link       String  @db.Text
     order      Int
 }
