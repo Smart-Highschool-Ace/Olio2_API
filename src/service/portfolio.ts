@@ -1,11 +1,6 @@
-import {
-  PortfolioCertificate,
-  PortfolioPrize,
-  PortfolioProject,
-  PortfolioSkill,
-  PrismaClient,
-} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
+import { PortfolioUpdateArgs } from "schema/types/mutations/Portfolio";
 const prisma = new PrismaClient();
 
 export const portfolioHaveLike = async (
@@ -42,11 +37,7 @@ export const getLikesAboutPortfolioByPortfolio = async (id: number) => {
 };
 export const modifyPortfolio = async (
   id: number,
-  email: string,
-  skils: PortfolioSkill,
-  projects: PortfolioProject,
-  prize: PortfolioPrize,
-  certificates: PortfolioCertificate
+  updateArgs: PortfolioUpdateArgs
 ) => {
   await prisma.portfolio.update({
     where: {
@@ -55,20 +46,20 @@ export const modifyPortfolio = async (
     data: {
       owner: {
         update: {
-          email: email,
+          email: updateArgs.email,
         },
       },
       PortfolioSkill: {
-        set: skils,
+        set: updateArgs.skils,
       },
       PortfolioProject: {
-        set: projects,
+        set: updateArgs.projects,
       },
       PortfolioPrize: {
-        set: prize,
+        set: updateArgs.prizes,
       },
       PortfolioCertificate: {
-        set: certificates,
+        set: updateArgs.certificates,
       },
     },
   });

@@ -2,7 +2,21 @@ import { arg, nonNull, intArg } from "nexus";
 
 import { context } from "context";
 import { PortfolioService } from "service";
+import {
+  PortfolioCertificate,
+  PortfolioPrize,
+  PortfolioProject,
+  PortfolioSkill,
+} from "@prisma/client";
 
+export interface PortfolioUpdateArgs {
+  portfolio_id: number;
+  email: string;
+  certificates: PortfolioCertificate;
+  prizes: PortfolioPrize;
+  projects: PortfolioProject;
+  skils: PortfolioSkill;
+}
 export const updatePortfolio = {
   args: {
     id: nonNull(intArg()),
@@ -11,15 +25,8 @@ export const updatePortfolio = {
   resolve: async (_: any, args: any, ctx: context) => {
     const portfolio_id = (await PortfolioService.getPortfolioByUser(ctx.userId))
       .id;
-    const { email, skils, projects, prizes, certificates } = args.portfolio;
-    await PortfolioService.modifyPortfolio(
-      portfolio_id,
-      email,
-      skils,
-      projects,
-      prizes,
-      certificates
-    );
+    const updateArgs: PortfolioUpdateArgs = args.portfolio;
+    await PortfolioService.modifyPortfolio(portfolio_id, updateArgs);
     return String(portfolio_id);
   },
   type: "String",
