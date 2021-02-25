@@ -1,13 +1,7 @@
 import { arg, nonNull, intArg } from "nexus";
 
 import { context } from "context";
-import {
-  getPortfolioByUser,
-  modifyPortfolio,
-  getLikePortfolio,
-  createLikePortfolio,
-  deleteLikePortfolio,
-} from "service/portfolio";
+import { PortfolioService } from "service";
 
 export const updatePortfolio = {
   args: {
@@ -15,9 +9,10 @@ export const updatePortfolio = {
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
   resolve: async (_: any, args: any, ctx: context) => {
-    const portfolio_id = (await getPortfolioByUser(ctx.userId)).id;
+    const portfolio_id = (await PortfolioService.getPortfolioByUser(ctx.userId))
+      .id;
     const { email, skils, projects, prizes, certificates } = args.portfolio;
-    await modifyPortfolio(
+    await PortfolioService.modifyPortfolio(
       portfolio_id,
       email,
       skils,
@@ -35,12 +30,12 @@ export const likePortfolio = {
     id: nonNull(intArg()),
   },
   resolve: async (_: any, args: any, ctx: context) => {
-    const result = await getLikePortfolio(ctx.userId, args.id);
+    const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
     if (result) {
-      await deleteLikePortfolio(ctx.userId, args.id);
+      await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
       return false;
     } else {
-      await createLikePortfolio(ctx.userId, args.id);
+      await PortfolioService.createLikePortfolio(ctx.userId, args.id);
       return true;
     }
   },

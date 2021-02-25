@@ -126,6 +126,16 @@ export const getPortfolio = async (id: number) => {
   });
 };
 
+export const getPortfolioByUser = async (user_id: number) => {
+  return await prisma.portfolio.findFirst({
+    where: {
+      owner: {
+        id: user_id,
+      },
+    },
+  });
+};
+
 export const getLikedPortfoliosOfUser = async (userId: number) => {
   const result = await prisma.portfolioLike.findMany({
     where: {
