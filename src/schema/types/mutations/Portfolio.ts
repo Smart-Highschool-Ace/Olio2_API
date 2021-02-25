@@ -1,6 +1,6 @@
 import { arg, nonNull, intArg } from "nexus";
 
-import { context } from "../../../context";
+import { context } from "context";
 import {
   getPortfolioByUser,
   modifyPortfolio,
