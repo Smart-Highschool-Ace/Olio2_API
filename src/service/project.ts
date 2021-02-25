@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from "@prisma/client";
+import { Project } from "schema/types";
 
 const prisma = new PrismaClient();
 
@@ -43,16 +44,47 @@ export const getParticipatedProjectsOfUser = async (userId: number) => {
 };
 
 export const getLikedProjectsOfUser = async (userId: number) => {
-  const result = await prisma.proejctLike.findMany({
+  const result = await prisma.projectLike.findMany({
     where: {
       user_id: userId,
     },
     select: {
-      proejct: true,
+      project: true,
     },
   });
 
   return result.map((item) => {
-    return item.proejct;
+    return item.project;
   });
+};
+
+export const getProject = async (projectId: number) => {
+  return await prisma.project.findFirst({
+    where: {
+      id: projectId,
+    },
+    include: {
+      owner: true,
+      ProjectView: true,
+      ProjectField: true,
+      ProjectImage: true,
+      ProjectMember: {
+        include: {
+          member: true,
+        },
+      },
+      ProjectSkill: true,
+      ProjectLike: true,
+    },
+  });
+};
+
+export const isLikedByUser = async (projectId: number, userId: number) => {
+  const result = await prisma.projectLike.findFirst({
+    where: {
+      project_id: projectId,
+      user_id: userId,
+    },
+  });
+  return Boolean(result);
 };

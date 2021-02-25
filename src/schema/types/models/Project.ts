@@ -1,4 +1,5 @@
 import { objectType } from "nexus";
+import { ProjectService } from "service";
 
 export const Project = objectType({
   name: "Project",
@@ -6,8 +7,8 @@ export const Project = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: () => {
-        return "I am a owner";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).owner;
       },
     });
     t.string("name");
@@ -20,42 +21,45 @@ export const Project = objectType({
     t.string("created_at");
     t.string("updated_at");
     t.int("view", {
-      resolve: () => {
-        return 999;
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectView.length;
       },
     });
     t.list.field("skills", {
       type: "Skill",
-      resolve: () => {
-        return "these are used in this project";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectSkill;
       },
     });
     t.list.field("members", {
       type: "ProjectMember",
-      resolve: () => {
-        return "they participated in this project";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectMember;
       },
     });
     t.list.field("fields", {
       type: "ProjectField",
-      resolve: () => {
-        return "this is web project";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectField;
       },
     });
     t.list.field("images", {
       type: "ProjectImage",
-      resolve: () => {
-        return "here are some images";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectImage;
       },
     });
     t.list.field("likes", {
       type: "User",
-      resolve: () => {
-        return "they liked this project";
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getProject(root.id)).ProjectLike;
       },
     });
     t.boolean("liked", {
-      resolve: (_, __, ctx) => {
+      resolve: async (root, _, ctx) => {
+        if (ctx.userId) {
+          return await ProjectService.isLikedByUser(root.id, ctx.userId);
+        }
         return false;
       },
     });
@@ -67,9 +71,6 @@ export const ProjectMember = objectType({
   definition(t) {
     t.field("member", {
       type: "User",
-      resolve: () => {
-        return "I am user";
-      },
     });
     t.string("role");
   },
