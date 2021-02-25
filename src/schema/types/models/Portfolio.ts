@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { objectType } from "nexus";
 
+import { PortfolioService } from "service";
 const prisma = new PrismaClient();
 
 export const Portfolio = objectType({
@@ -10,13 +11,7 @@ export const Portfolio = objectType({
     t.field("owner", {
       type: "User",
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            owner: {
-              id: root.id,
-            },
-          },
-        });
+        return (await PortfolioService.getPortfolio(root.id)).owner;
       },
     });
     t.string("email");
@@ -24,91 +19,44 @@ export const Portfolio = objectType({
     t.list.field("likes", {
       type: "User",
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-          select: {
-            owner: true,
-          },
-        });
+        return await PortfolioService.getLikesAboutPortfolioByPortfolio(
+          root.id
+        );
       },
     });
     t.list.field("skills", {
       type: "PortfolioSkill",
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-          select: {
-            PortfolioSkill: true,
-          },
-        });
+        return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
       },
     });
     t.list.field("projects", {
       type: "Project",
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-          select: {
-            PortfolioProject: true,
-          },
-        });
+        return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
       },
     });
     t.list.field("prizes", {
       type: PortfolioPrize,
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-          select: {
-            PortfolioPrize: true,
-          },
-        });
+        return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
       },
     });
     t.list.field("certificates", {
       type: PortfolioCertificate,
       resolve: async (root, _, __) => {
-        return await prisma.portfolio.findFirst({
-          where: {
-            id: root.id,
-          },
-          select: {
-            PortfolioCertificate: true,
-          },
-        });
+        return (await PortfolioService.getPortfolio(root.id))
+          .PortfolioCertificate;
       },
     });
     t.int("view", {
       resolve: async (root, _, __) => {
-        return await prisma.portfolioView.count({
-          where: {
-            portfolio_id: root.id,
-          },
-        });
+        return await PortfolioService.getViewAboutPortfolio(root.id);
       },
     });
     t.boolean("liked", {
-      resolve: (root, __, ctx) => {
-        if (ctx.userId) {
-          const liked = prisma.portfolioLike.findFirst({
-            where: {
-              portfolio_id: root.id,
-              user_id: ctx.user_id,
-            },
-          });
-          if (liked) {
-            return true;
-          }
-        }
-        return false;
+      resolve: async (root, __, ctx) => {
+        return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
       },
     });
   },

@@ -1,4 +1,3 @@
-
 import {
   PortfolioCertificate,
   PortfolioPrize,
@@ -9,16 +8,38 @@ import {
 
 const prisma = new PrismaClient();
 
-export const getPortfolioByUser = async (id: number) => {
-  return await prisma.portfolio.findFirst({
+export const portfolioHaveLike = async (
+  portfolio_id: number,
+  user_id: number
+) => {
+  const liked = await prisma.portfolioLike.findFirst({
     where: {
-      owner: {
-        id: id,
-      },
+      portfolio_id: portfolio_id,
+      user_id: user_id,
+    },
+  });
+  if (liked) {
+    return true;
+  }
+  return false;
+};
+export const getViewAboutPortfolio = async (id: number): Promise<number> => {
+  return await prisma.portfolioView.count({
+    where: {
+      portfolio_id: id,
     },
   });
 };
-
+export const getLikesAboutPortfolioByPortfolio = async (id: number) => {
+  return await prisma.portfolioLike.findMany({
+    where: {
+      portfolio_id: id,
+    },
+    select: {
+      user: true,
+    },
+  });
+};
 export const modifyPortfolio = async (
   id: number,
   email: string,
@@ -88,12 +109,19 @@ export const deleteLikePortfolio = async (
       portfolio_id: portfolio_id,
     },
   });
-}
+};
 
 export const getPortfolio = async (id: number) => {
   return await prisma.portfolio.findFirst({
     where: {
       id: id,
+    },
+    include: {
+      owner: true,
+      PortfolioSkill: true,
+      PortfolioProject: true,
+      PortfolioPrize: true,
+      PortfolioCertificate: true,
     },
   });
 };
