@@ -7,10 +7,14 @@ export const Query = queryType({
     t.field("user", q.user);
 
     t.list.field("allProject", q.allProject);
-    t.list.field("myProjects", q.myProjects);
     t.field("project", q.project);
 
     t.list.field("allPortfolio", q.allPortfolio);
     t.field("portfolio", q.portfolio);
+
+    t.field("skillSearch", q.skillSearch);
+    t.field("nameSearch", q.nameSearch);
+    t.field("emailSearch", q.emailSearch);
+    t.field("explore", q.explore);
   },
 });
