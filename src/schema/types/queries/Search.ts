@@ -12,7 +12,7 @@ export const skillSearch = {
 };
 
 export const nameSearch = {
-  type: "NameSearchType",
+  type: "NameSearchResult",
   args: {
     search_word: nonNull(stringArg()),
   },
@@ -34,7 +34,7 @@ export const emailSearch = {
 };
 
 export const explore = {
-  type: "ExploreType",
+  type: "ExploreResult",
   resolve: async () => {
     // TODO : explore(메인화면에 표시될 객체들) 구현
     return;
