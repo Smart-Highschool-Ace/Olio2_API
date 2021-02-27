@@ -5,14 +5,13 @@ import { PrismaClient } from "@prisma/client";
 import { verifyToken } from "util/token";
 
 export interface context {
-  userId: Number;
+  userId: number;
 }
 
 export let createContext = async ({ ctx }: Context) => {
   const prisma = new PrismaClient();
-
-  if (ctx.header.Authorization) {
-    const { userId } = verifyToken(ctx.header.Authorization);
+  if (ctx.request.header.authorization) {
+    const { userId } = verifyToken(ctx.request.header.authorization);
 
     const user = await prisma.user.findFirst({
       where: {

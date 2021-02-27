@@ -7,9 +7,9 @@ export const Mutation = mutationType({
     t.field("likePortfolio", m.likePortfolio);
 
     t.field("createProject", m.createProject);
-    t.field("createProject", m.updateProject);
-    t.field("createProject", m.deleteProject);
-    t.field("createProject", m.likeProject);
+    t.field("updateProject", m.updateProject);
+    t.field("deleteProject", m.deleteProject);
+    t.field("likeProject", m.likeProject);
 
     t.field("createUser", m.createUser);
     t.field("updateUser", m.updateUser);
