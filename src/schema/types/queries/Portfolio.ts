@@ -11,11 +11,3 @@ export const portfolio = {
     return await PortfolioService.getPortfolio(args.id);
   },
 };
-
-export const allPortfolio = {
-  type: "Portfolio",
-  resolve: async () => {
-    // TODO : 모든 Portfolio 조회 Service 구현 및 적용
-    return await prisma.portfolio.findMany();
-  },
-};

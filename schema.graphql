@@ -5,12 +5,15 @@
 union ExploreResult = Portfolio | Project
 
 type Mutation {
-  createProject(id: Int!): Boolean
-  createUser(user: UserCreateInput): User
+  createProject(project: ProjectCreateInput): String
+  createUser(user: UserCreateInput!): User
+  deleteProject(id: Int!): String
   deleteUser: User
   likePortfolio(id: Int!): Boolean
-  updatePortfolio(portfolio: PortfolioUpdateInput): String
-  updateUser(user: UserUpdateInput): User
+  likeProject(id: Int!): Boolean
+  updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
+  updateProject(id: Int!, project: ProjectUpdateInput): String
+  updateUser(user: UserUpdateInput!): User
 }
 
 type MyProjectsQueryType {
@@ -79,11 +82,11 @@ input PortfolioSkillInput {
 }
 
 input PortfolioUpdateInput {
-  certificates: [PortfolioCertificateInput]!
-  email: String!
-  prizes: [PortfolioPrizeInput]!
-  projects: [PortfolioProjectInput]!
-  skils: [PortfolioSkillInput]!
+  certificates: [PortfolioCertificateInput]
+  email: String
+  prizes: [PortfolioPrizeInput]
+  projects: [PortfolioProjectInput]
+  skils: [PortfolioSkillInput]
 }
 
 type Project {
@@ -153,17 +156,15 @@ input ProjectUpdateInput {
   end_at: String
   fields: [ProjectFieldInput]
   images: [ProjectImageInput]
-  introduction: String!
+  introduction: String
   link: String
   members: [ProjectMemberInput]
-  name: String!
+  name: String
   skils: [SkillInput]
   start_at: String
 }
 
 type Query {
-  allPortfolio: [Portfolio]
-  allProject: [Project]
   allUser: [User]
   emailSearch(email: String!): User
   explore: ExploreResult

@@ -11,10 +11,3 @@ export const project = {
     return await ProjectService.getProject(args.id);
   },
 };
-
-export const allProject = {
-  type: "Project",
-  resolve: async () => {
-    return await prisma.project.findMany();
-  },
-};
