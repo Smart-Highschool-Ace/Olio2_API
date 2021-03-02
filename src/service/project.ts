@@ -1,5 +1,8 @@
 import { PrismaClient, Prisma } from "@prisma/client";
+import { fieldAuthorizePlugin } from "nexus";
 import { Project } from "schema/types";
+
+import { ProjectCreateArgs } from "schema/types/mutations/Project";
 
 const prisma = new PrismaClient();
 
@@ -87,4 +90,42 @@ export const isLikedByUser = async (projectId: number, userId: number) => {
     },
   });
   return Boolean(result);
+};
+
+export const createProject = async (
+  user_id: number,
+  createArgs: ProjectCreateArgs
+) => {
+  return await prisma.project.create({
+    data: {
+      owner_id: user_id,
+      name: createArgs.name,
+      introduction: createArgs.introduction,
+      description: createArgs.description,
+      link: createArgs.link,
+      logo: createArgs.logo,
+      start_at: createArgs.start_at,
+      end_at: createArgs.end_at,
+      ProjectSkill: {
+        create: createArgs.skills.map((skill) => {
+          return { name: skill.name };
+        }),
+      },
+      ProjectMember: {
+        create: createArgs.members.map((m) => {
+          return { member: m.member_id, role: m.role };
+        }),
+      },
+      ProjectField: {
+        create: createArgs.fields.map((field) => {
+          return { name: field.name };
+        }),
+      },
+      ProjectImage: {
+        create: createArgs.images.map((image) => {
+          return { link: image.link, order: image.order };
+        }),
+      },
+    },
+  });
 };
