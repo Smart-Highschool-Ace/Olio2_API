@@ -129,3 +129,35 @@ export const createProject = async (
     },
   });
 };
+
+export const updateProject = async (
+  id: number,
+  updateArgs: ProjectCreateArgs
+) => {
+  return await prisma.project.update({
+    where: {
+      id: id,
+    },
+    data: {
+      name: updateArgs.name,
+      introduction: updateArgs.introduction,
+      description: updateArgs.description,
+      link: updateArgs.link,
+      logo: updateArgs.logo,
+      start_at: updateArgs.start_at,
+      end_at: updateArgs.end_at,
+      ProjectSkill: {
+        set: updateArgs.skills,
+      },
+      ProjectMember: {
+        set: updateArgs.members,
+      },
+      ProjectField: {
+        set: updateArgs.fields,
+      },
+      ProjectImage: {
+        set: updateArgs.images,
+      },
+    },
+  });
+};

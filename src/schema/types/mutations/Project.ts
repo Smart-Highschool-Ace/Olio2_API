@@ -40,10 +40,13 @@ export const updateProject = {
     id: nonNull(intArg()),
     project: arg({ type: "ProjectUpdateInput" }),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 수정 구현
-    const mock_link = "http://mock-example.com";
-    return mock_link;
+  resolve: async (_: any, args: any, ctx: any) => {
+    const updateArgs: ProjectCreateArgs = args.project;
+    const updated_project = await ProjectService.updateProject(
+      args.id,
+      updateArgs
+    );
+    return String(updated_project.id);
   },
   type: "String",
 };
