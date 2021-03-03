@@ -161,3 +161,35 @@ export const updateProject = async (
     },
   });
 };
+
+export const deleteProject = async (id: number) => {
+  return await prisma.project.delete({
+    where: {
+      id: id,
+    },
+  });
+};
+
+export const createLikeProject = async (
+  user_id: number,
+  project_id: number
+) => {
+  await prisma.proejctLike.create({
+    data: {
+      user_id: user_id,
+      project_id: project_id,
+    },
+  });
+};
+
+export const deleteLikeProject = async (
+  user_id: number,
+  project_id: number
+) => {
+  await prisma.proejctLike.deleteMany({
+    where: {
+      user_id: user_id,
+      project_id: project_id,
+    },
+  });
+};

@@ -55,10 +55,9 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 삭제 구현
-    const mock_error = "mock error!";
-    return mock_error;
+  resolve: async (_: any, args: any, ctx: any) => {
+    const deleted_project = await ProjectService.deleteProject(args.id);
+    return String(deleted_project.id);
   },
   type: "String",
 };
@@ -67,10 +66,18 @@ export const likeProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 좋아요 구현
-    const mock_liked = true;
-    return mock_liked;
+  resolve: async (_: any, args: any, ctx: any) => {
+    const is_followed = await ProjectService.isLikedByUser(
+      args.id,
+      ctx.user_id
+    );
+    if (is_followed) {
+      await ProjectService.deleteLikeProject(ctx.user_id, args.id);
+      return false;
+    } else {
+      await ProjectService.createLikeProject(ctx.user_id, args.id);
+      return true;
+    }
   },
   type: "Boolean",
 };
