@@ -49,24 +49,24 @@ export const login: Function = async (
     }
 };
 
-export const createUser: Function = async (userInput: UserCreateArgs) => {
+export const createUser: Function = async ({ user }: UserCreateArgs) => {
     const prisma = new PrismaClient();
     return await prisma.user.create({
         data: {
-            email: userInput.email,
-            password: userInput.password,
-            school: userInput.school,
-            name: userInput.name,
-            entrance_year: userInput.entrance_year,
-            profile_image: userInput.profile_image,
-            introduction: userInput.introduction,
+            email: user.email,
+            password: user.password,
+            school: user.school,
+            name: user.name,
+            entrance_year: user.entrance_year,
+            profile_image: user.profile_image,
+            introduction: user.introduction,
         },
     });
 };
 
 export const updateUser: Function = async (
     user_id: number,
-    updateArgs: UserUpdateArgs
+    { user }: UserUpdateArgs
 ) => {
     const prisma = new PrismaClient();
     return await prisma.user.update({
@@ -74,10 +74,10 @@ export const updateUser: Function = async (
             id: user_id,
         },
         data: {
-            name: updateArgs.name,
-            introduction: updateArgs.introduction,
-            school: updateArgs.school,
-            profile_image: updateArgs.profile_image,
+            name: user.name,
+            introduction: user.introduction,
+            school: user.school,
+            profile_image: user.profile_image,
         },
     });
 };
