@@ -54,7 +54,7 @@ export const createUser: Function = async (userInput: UserCreateArgs) => {
     return await prisma.user.create({
         data: {
             email: userInput.email,
-            password: userInput.email,
+            password: userInput.password,
             school: userInput.school,
             name: userInput.name,
             entrance_year: userInput.entrance_year,
