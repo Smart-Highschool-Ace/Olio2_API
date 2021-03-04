@@ -25,14 +25,22 @@ export const createUser = {
     type: "User",
 };
 
+export interface UserUpdateArgs {
+    school?: School;
+    name?: string;
+    profile_image?: string;
+    introduction?: string;
+}
+
 export const updateUser = {
     args: {
         user: nonNull(arg({ type: "UserUpdateInput" })),
     },
-    resolve(_: any, args: any, ctx: any) {
-        // TODO : prisma로 update user 구현
-        const mock_user = args.user;
-        return mock_user;
+    resolve: async (_: any, args: any, ctx: any) => {
+        const user_id = ctx.user_id;
+        const updateArgs: UserUpdateArgs = args.user;
+        const updated_user = await UserService.updateUser(user_id, updateArgs);
+        return updated_user;
     },
     type: "User",
 };
@@ -40,6 +48,7 @@ export const updateUser = {
 export const deleteUser = {
     resolve(_: any, args: any, ctx: any) {
         // TODO : prisma로 delete user 구현
+
         const mock_user = {
             id: 1,
             name: "mock_user-name",
