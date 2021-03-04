@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 import * as Joi from "joi";
 
@@ -78,6 +78,15 @@ export const updateUser: Function = async (
             introduction: updateArgs.introduction,
             school: updateArgs.school,
             profile_image: updateArgs.profile_image,
+        },
+    });
+};
+
+export const deleteUser: Function = async (user_id: number) => {
+    const prisma = new PrismaClient();
+    return await prisma.user.delete({
+        where: {
+            id: user_id,
         },
     });
 };
