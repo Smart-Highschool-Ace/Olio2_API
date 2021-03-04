@@ -4,7 +4,7 @@ import * as Joi from "joi";
 
 import { generateToken } from "../util/token";
 import { hashSha512 } from "../util/hash";
-import { UserCreateArgs } from "schema/types/mutations";
+import { UserCreateArgs, UserUpdateArgs } from "schema/types/mutations";
 
 interface loginResult {
     token?: string;
@@ -60,6 +60,24 @@ export const createUser: Function = async (userInput: UserCreateArgs) => {
             entrance_year: userInput.entrance_year,
             profile_image: userInput.profile_image,
             introduction: userInput.introduction,
+        },
+    });
+};
+
+export const updateUser: Function = async (
+    user_id: number,
+    updateArgs: UserUpdateArgs
+) => {
+    const prisma = new PrismaClient();
+    return await prisma.user.update({
+        where: {
+            id: user_id,
+        },
+        data: {
+            name: updateArgs.name,
+            introduction: updateArgs.introduction,
+            school: updateArgs.school,
+            profile_image: updateArgs.profile_image,
         },
     });
 };
