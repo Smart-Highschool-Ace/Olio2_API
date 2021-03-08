@@ -4,7 +4,7 @@ import * as Joi from "joi";
 
 import { generateToken } from "../util/token";
 import { hashSha512 } from "../util/hash";
-import { UserCreateArgs, UserUpdateArgs } from "schema/types/mutations";
+import { UserCreateArgs, UserUpdateArgs } from "interface/User";
 
 interface loginResult {
     token?: string;
@@ -12,15 +12,15 @@ interface loginResult {
 }
 
 export const login: Function = async (
-    userId: string,
+    email: string,
     password: string
 ): Promise<loginResult> => {
     const bodyForm = Joi.object().keys({
-        userId: Joi.string().email().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required(),
     }); //받는 값의 형식을 검사하는 구문
 
-    if (bodyForm.validate({ userId, password }).error) {
+    if (bodyForm.validate({ email, password }).error) {
         return {
             error: "에러, 잘못된 요청 또는 잘못된 값입니다.",
         };
@@ -32,7 +32,7 @@ export const login: Function = async (
 
     const user = await prisma.user.findFirst({
         where: {
-            email: userId,
+            email: email,
             password: hashedPassword,
         },
     });
@@ -49,8 +49,9 @@ export const login: Function = async (
     }
 };
 
-export const createUser: Function = async ({ user }: UserCreateArgs) => {
+export const createUser: Function = async (data: UserCreateArgs) => {
     const prisma = new PrismaClient();
+    const user = data.user;
     return await prisma.user.create({
         data: {
             email: user.email,
