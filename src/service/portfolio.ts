@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { PortfolioUpdateArgs } from "interface";
+import { PortfolioUpdateArgs } from "interface/Portfolio";
 const prisma = new PrismaClient();
 
 export const portfolioHaveLike = async (
