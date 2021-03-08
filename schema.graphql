@@ -4,6 +4,11 @@
 
 union ExploreResult = Portfolio | Project
 
+interface loginResult {
+  error: String
+  token: String
+}
+
 type Mutation {
   createProject(project: ProjectCreateInput): String
   createUser(user: UserCreateInput!): User
@@ -11,6 +16,7 @@ type Mutation {
   deleteUser: User
   likePortfolio(id: Int!): Boolean
   likeProject(id: Int!): Boolean
+  login(email: String!, password: String!): loginResult
   updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
@@ -206,13 +212,13 @@ input UserCreateInput {
   name: String!
   password: String!
   profile_image: String
-  school: Int!
+  school: String!
 }
 
 input UserUpdateInput {
-  entrance_year: Int!
-  introduction: String!
-  name: String!
-  profile_image: String!
-  school: Int!
+  entrance_year: Int
+  introduction: String
+  name: String
+  profile_image: String
+  school: Int
 }
