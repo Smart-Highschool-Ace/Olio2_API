@@ -1,8 +1,6 @@
 import { PrismaClient, Prisma } from "@prisma/client";
-import { fieldAuthorizePlugin } from "nexus";
 import { Project } from "schema/types";
-
-import { ProjectCreateArgs } from "schema/types/mutations/Project";
+import { ProjectCreateArgs } from "../interface/project";
 
 const prisma = new PrismaClient();
 
@@ -174,7 +172,7 @@ export const createLikeProject = async (
   user_id: number,
   project_id: number
 ) => {
-  await prisma.proejctLike.create({
+  await prisma.projectLike.create({
     data: {
       user_id: user_id,
       project_id: project_id,
@@ -186,7 +184,7 @@ export const deleteLikeProject = async (
   user_id: number,
   project_id: number
 ) => {
-  await prisma.proejctLike.deleteMany({
+  await prisma.projectLike.delete({
     where: {
       user_id: user_id,
       project_id: project_id,

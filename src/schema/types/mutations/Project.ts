@@ -1,5 +1,4 @@
 import { arg, intArg, nonNull } from "nexus";
-
 import { Project } from "@prisma/client";
 import { ProjectService } from "service";
 import {
@@ -8,19 +7,6 @@ import {
   ProjectImage,
   ProjectField,
 } from "@prisma/client";
-export interface ProjectCreateArgs {
-  name: string;
-  introduction: string;
-  description: string;
-  link: string;
-  logo: string;
-  start_at: Date;
-  end_at: Date;
-  skills: ProjectSkill[];
-  members: ProjectMember[];
-  fields: ProjectField[];
-  images: ProjectImage[];
-}
 
 export const createProject = {
   args: {
