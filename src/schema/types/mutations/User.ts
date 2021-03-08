@@ -1,39 +1,30 @@
-import { arg, nonNull } from "nexus";
+import { arg, nonNull, stringArg } from "nexus";
 
-import { School } from "@prisma/client";
 import { UserService } from "service";
+import { UserCreateArgs, UserUpdateArgs } from "interface/User";
 
-export interface UserCreateArgs {
-    user: {
-        email: string;
-        password: string;
-        school: School;
-        name: string;
-        entrance_year: number;
-        profile_image?: string;
-        introduction?: string;
-    };
-}
+export const login = {
+    args: {
+        email: nonNull(stringArg()),
+        password: nonNull(stringArg()),
+    },
+    resolve: async (_: any, args: any, ctx: any) => {
+        const result = await UserService.login(args.email, args.password);
+        return result;
+    },
+    type: "loginResult",
+};
 
 export const createUser = {
     args: {
         user: nonNull(arg({ type: "UserCreateInput" })),
     },
-    resolve: async (_: any, { user }: UserCreateArgs, ctx: any) => {
+    resolve: async (_: any, user: UserCreateArgs, ctx: any) => {
         const new_user = await UserService.createUser(user);
         return new_user;
     },
     type: "User",
 };
-
-export interface UserUpdateArgs {
-    user: {
-        school?: School;
-        name?: string;
-        profile_image?: string;
-        introduction?: string;
-    };
-}
 
 export const updateUser = {
     args: {
