@@ -9,14 +9,6 @@ import {
   PortfolioSkill,
 } from "@prisma/client";
 
-export interface PortfolioUpdateArgs {
-  portfolio_id: number;
-  email: string;
-  certificates: PortfolioCertificate;
-  prizes: PortfolioPrize;
-  projects: PortfolioProject;
-  skils: PortfolioSkill;
-}
 export const updatePortfolio = {
   args: {
     id: nonNull(intArg()),
