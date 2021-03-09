@@ -94,6 +94,7 @@ export const createProject = async (
   user_id: number,
   createArgs: ProjectCreateArgs
 ) => {
+  console.log(user_id);
   return await prisma.project.create({
     data: {
       owner_id: user_id,
@@ -111,7 +112,7 @@ export const createProject = async (
       },
       ProjectMember: {
         create: createArgs.members.map((m) => {
-          return { member: m.member_id, role: m.role };
+          return { member_id: m.member_id, role: m.role };
         }),
       },
       ProjectField: {
@@ -184,7 +185,7 @@ export const deleteLikeProject = async (
   user_id: number,
   project_id: number
 ) => {
-  await prisma.projectLike.delete({
+  await prisma.projectLike.deleteMany({
     where: {
       user_id: user_id,
       project_id: project_id,

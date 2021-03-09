@@ -110,7 +110,7 @@ input ProjectCreateInput {
   link: String
   members: [ProjectMemberInput]
   name: String!
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -128,7 +128,7 @@ type ProjectImage {
 }
 
 input ProjectImageInput {
-  image: String!
+  link: String!
   order: Int
 }
 
@@ -138,7 +138,7 @@ type ProjectMember {
 }
 
 input ProjectMemberInput {
-  id: Int!
+  member_id: Int!
   role: String
 }
 

@@ -1,12 +1,6 @@
 import { arg, intArg, nonNull } from "nexus";
-import { Project } from "@prisma/client";
 import { ProjectService } from "service";
-import {
-  ProjectSkill,
-  ProjectMember,
-  ProjectImage,
-  ProjectField,
-} from "@prisma/client";
+import { ProjectCreateArgs } from "../../../interface/project";
 
 export const createProject = {
   args: {
@@ -26,7 +20,7 @@ export const updateProject = {
     id: nonNull(intArg()),
     project: arg({ type: "ProjectUpdateInput" }),
   },
-  resolve: async (_: any, args: any, ctx: any) => {
+  resolve: async (_: any, args: any, __: any) => {
     const updateArgs: ProjectCreateArgs = args.project;
     const updated_project = await ProjectService.updateProject(
       args.id,
@@ -41,7 +35,7 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, ctx: any) => {
+  resolve: async (_: any, args: any, __: any) => {
     const deleted_project = await ProjectService.deleteProject(args.id);
     return String(deleted_project.id);
   },

@@ -1,3 +1,10 @@
+import {
+  ProjectSkill,
+  ProjectMember,
+  ProjectImage,
+  ProjectField,
+} from "@prisma/client";
+
 export interface ProjectCreateArgs {
   name: string;
   introduction: string;
