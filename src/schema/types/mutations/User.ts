@@ -37,6 +37,17 @@ export const sendAuthEmail = {
     },
     type: "Boolean",
 };
+export const authenticateEmail = {
+    args: {
+        email: nonNull(stringArg()),
+        code: nonNull(stringArg()),
+    },
+    resolve: async (_: any, args: any, ctx: any) => {
+        const result = await checkAuthCode(args.email, args.code);
+        return result;
+    },
+    type: "Boolean",
+};
 
 export const createUser = {
     args: {
