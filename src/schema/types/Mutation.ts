@@ -11,6 +11,9 @@ export const Mutation = mutationType({
         t.field("deleteProject", m.deleteProject);
         t.field("likeProject", m.likeProject);
 
+        t.field("authenticateEmail", m.authenticateEmail);
+        t.field("sendAuthEmail", m.sendAuthEmail);
+        t.field("checkEmail", m.checkEmail);
         t.field("login", m.login);
         t.field("createUser", m.createUser);
         t.field("updateUser", m.updateUser);

@@ -15,6 +15,8 @@ type loginResult {
 }
 
 type Mutation {
+  authenticateEmail(code: String!, email: String!): Boolean
+  checkEmail(email: String!): Boolean
   createProject(project: ProjectCreateInput): String
   createUser(user: UserCreateInput!): User
   deleteProject(id: Int!): String
@@ -22,6 +24,7 @@ type Mutation {
   likePortfolio(id: Int!): Boolean
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
+  sendAuthEmail(email: String!): Boolean
   updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
