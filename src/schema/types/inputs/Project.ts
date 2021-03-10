@@ -33,7 +33,7 @@ export const ProjectUpdateInput = inputObjectType({
     t.string("link");
     t.string("start_at");
     t.string("end_at");
-    t.list.field("skils", {
+    t.list.field("skills", {
       type: "SkillInput",
     });
     t.list.field("members", {

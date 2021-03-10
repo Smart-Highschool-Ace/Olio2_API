@@ -151,7 +151,7 @@ input ProjectUpdateInput {
   link: String
   members: [ProjectMemberInput]
   name: String
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
