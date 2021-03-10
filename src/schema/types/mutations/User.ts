@@ -2,6 +2,7 @@ import { arg, nonNull, stringArg } from "nexus";
 
 import { UserService } from "service";
 import { UserCreateArgs, UserUpdateArgs } from "interface/User";
+import { checkAuthCode, sendAuthCode } from "util/emailAuth";
 
 export const login = {
     args: {
@@ -20,7 +21,18 @@ export const checkEmail = {
         email: nonNull(stringArg()),
     },
     resolve: async (_: any, args: any, ctx: any) => {
-        const result = UserService.checkEmail(args.email);
+        const result = await UserService.checkEmail(args.email);
+        return result;
+    },
+    type: "Boolean",
+};
+
+export const sendAuthEmail = {
+    args: {
+        email: nonNull(stringArg()),
+    },
+    resolve: async (_: any, args: any, ctx: any) => {
+        const result = await sendAuthCode(args.email);
         return result;
     },
     type: "Boolean",
