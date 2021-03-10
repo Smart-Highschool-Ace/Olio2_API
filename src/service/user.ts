@@ -75,7 +75,8 @@ export const checkEmail: Function = async (email: string) => {
             error: "에러, 이메일 형식이 유효하지 않습니다.",
         };
     }
-    return true;
+    const isAvailable = { is_available: true };
+    return isAvailable;
 };
 
 export const createUser: Function = async (data: UserCreateArgs) => {
