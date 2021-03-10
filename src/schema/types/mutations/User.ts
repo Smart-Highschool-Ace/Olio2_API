@@ -15,6 +15,17 @@ export const login = {
     type: "loginResult",
 };
 
+export const checkEmail = {
+    args: {
+        email: nonNull(stringArg()),
+    },
+    resolve: async (_: any, args: any, ctx: any) => {
+        const result = UserService.checkEmail(args.email);
+        return result;
+    },
+    type: "Boolean",
+};
+
 export const createUser = {
     args: {
         user: nonNull(arg({ type: "UserCreateInput" })),
