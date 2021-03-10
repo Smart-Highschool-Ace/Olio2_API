@@ -29,14 +29,12 @@ export const login: Function = async (
     const prisma = new PrismaClient();
 
     const hashedPassword = hashSha512(password);
-
     const user = await prisma.user.findFirst({
         where: {
             email: email,
             password: hashedPassword,
         },
     });
-
     if (user) {
         // TDOO generatePayload 추가
         const payload = { userId: user.id };
@@ -49,13 +47,45 @@ export const login: Function = async (
     }
 };
 
+export const checkEmail: Function = async (email: string) => {
+    const prisma = new PrismaClient();
+    // 1. 중복 이메일일경우
+    const isDuplicate = prisma.user.findFirst({
+        where: {
+            email: email,
+        },
+    });
+    if (isDuplicate) {
+        return {
+            error: "에러 , 이미 등록된 이메일입니다.",
+        };
+    }
+    // 학교 계정이 아닐 경우
+    if (email.slice(-10) !== "@gsm.hs.kr") {
+        return {
+            error:
+                "에러, 광주소프트웨어마이스터고등학교에서 발급한 학교 이메일이어야 합니다.",
+        };
+    }
+
+    // 이메일 형식이 아닐 경우
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    if (!re.test(email)) {
+        return {
+            error: "에러, 이메일 형식이 유효하지 않습니다.",
+        };
+    }
+    return true;
+};
+
 export const createUser: Function = async (data: UserCreateArgs) => {
     const prisma = new PrismaClient();
     const user = data.user;
+    const hashedPassword = hashSha512(user.password);
     return await prisma.user.create({
         data: {
             email: user.email,
-            password: hashSha512(user.password),
+            password: hashedPassword,
             school: user.school,
             name: user.name,
             entrance_year: user.entrance_year,
