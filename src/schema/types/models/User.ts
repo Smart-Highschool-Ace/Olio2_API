@@ -52,13 +52,18 @@ export const User = objectType({
     },
 });
 
-export const loginResult = interfaceType({
+export const loginResult = objectType({
     name: "loginResult",
-    resolveType(data) {
-        return "String";
-    },
     definition(t) {
         t.string("token");
+        t.string("error");
+    },
+});
+
+export const checkEmailResult = objectType({
+    name: "CheckEmailResult",
+    definition(t) {
+        t.boolean("is_available");
         t.string("error");
     },
 });

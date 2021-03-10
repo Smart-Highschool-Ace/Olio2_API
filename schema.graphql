@@ -2,9 +2,14 @@
 ### Do not make changes to this file directly
 
 
+type CheckEmailResult {
+  error: String
+  is_available: Boolean
+}
+
 union ExploreResult = Portfolio | Project
 
-interface loginResult {
+type loginResult {
   error: String
   token: String
 }
