@@ -39,8 +39,8 @@ export const sendAuthCode: Function = async (receiver: string) => {
         console.log(err);
         return { status: false };
     }
-    addAuthInfo(receiver, auth_code);
-    return { status: true };
+    await addAuthInfo(receiver, auth_code);
+    return { status: false };
 };
 // 인증정보 DB에 추가
 const addAuthInfo: Function = async (user: string, auth_code: string) => {
@@ -72,9 +72,9 @@ export const checkAuthCode: Function = async (
     if (auth_info) {
         //인증 확인되면 삭제
         deleteAuthCode(auth_info.id);
-        return { is_authenticated: true };
+        return { status: true };
     }
-    return { is_authenticated: false };
+    return { status: false };
 };
 
 //인증코드 정보 삭제

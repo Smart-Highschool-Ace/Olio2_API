@@ -2,11 +2,6 @@
 ### Do not make changes to this file directly
 
 
-type CheckEmailResult {
-  error: String
-  is_available: Boolean
-}
-
 union ExploreResult = Portfolio | Project
 
 type loginResult {
@@ -15,8 +10,8 @@ type loginResult {
 }
 
 type Mutation {
-  authenticateEmail(code: String!, email: String!): Boolean
-  checkEmail(email: String!): Boolean
+  authenticateEmail(code: String!, email: String!): statusResult
+  checkEmail(email: String!): statusResult
   createProject(project: ProjectCreateInput): String
   createUser(user: UserCreateInput!): User
   deleteProject(id: Int!): String
@@ -24,7 +19,7 @@ type Mutation {
   likePortfolio(id: Int!): Boolean
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
-  sendAuthEmail(email: String!): Boolean
+  sendAuthEmail(email: String!): statusResult
   updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
@@ -195,6 +190,11 @@ type Skill {
 
 input SkillInput {
   name: String!
+}
+
+type statusResult {
+  error: String
+  status: Boolean
 }
 
 type User {

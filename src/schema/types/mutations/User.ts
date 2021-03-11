@@ -24,7 +24,7 @@ export const checkEmail = {
         const result = await UserService.checkEmail(args.email);
         return result;
     },
-    type: "Boolean",
+    type: "statusResult",
 };
 
 export const sendAuthEmail = {
@@ -35,7 +35,7 @@ export const sendAuthEmail = {
         const result = await sendAuthCode(args.email);
         return result;
     },
-    type: "Boolean",
+    type: "statusResult",
 };
 export const authenticateEmail = {
     args: {
@@ -46,7 +46,7 @@ export const authenticateEmail = {
         const result = await checkAuthCode(args.email, args.code);
         return result;
     },
-    type: "Boolean",
+    type: "statusResult",
 };
 
 export const createUser = {

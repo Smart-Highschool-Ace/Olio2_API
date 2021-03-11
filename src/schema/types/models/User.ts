@@ -60,10 +60,10 @@ export const loginResult = objectType({
     },
 });
 
-export const checkEmailResult = objectType({
-    name: "CheckEmailResult",
+export const statusResult = objectType({
+    name: "statusResult",
     definition(t) {
-        t.boolean("is_available");
+        t.boolean("status");
         t.string("error");
     },
 });
