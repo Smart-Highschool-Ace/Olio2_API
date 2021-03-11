@@ -64,8 +64,8 @@ export const updateUser = {
     args: {
         user: nonNull(arg({ type: "UserUpdateInput" })),
     },
-    resolve: async (_: any, { user }: UserUpdateArgs, ctx: any) => {
-        const updated_user = await UserService.updateUser(ctx.user_id, user);
+    resolve: async (_: any, user: UserUpdateArgs, ctx: any) => {
+        const updated_user = await UserService.updateUser(ctx.userId, user);
         return updated_user;
     },
     type: "User",
