@@ -2,10 +2,10 @@ import { School } from "@prisma/client";
 
 export interface UserUpdateArgs {
     user: {
-        school?: School;
-        name?: string;
+        school: School;
+        name: string;
         profile_image?: string;
-        introduction?: string;
+        introduction: string;
     };
 }
 
