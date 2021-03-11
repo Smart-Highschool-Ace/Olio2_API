@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, School } from "@prisma/client";
 
 import * as Joi from "joi";
 
@@ -81,6 +81,7 @@ export const checkEmail: Function = async (email: string) => {
 export const createUser: Function = async (data: UserCreateArgs) => {
     const prisma = new PrismaClient();
     const user = data.user;
+    console.log(School[user.school]);
     const hashedPassword = hashSha512(user.password);
     return await prisma.user.create({
         data: {
@@ -97,18 +98,19 @@ export const createUser: Function = async (data: UserCreateArgs) => {
 
 export const updateUser: Function = async (
     user_id: number,
-    { user }: UserUpdateArgs
+    data: UserUpdateArgs
 ) => {
     const prisma = new PrismaClient();
+    const user = data.user;
     return await prisma.user.update({
         where: {
             id: user_id,
         },
         data: {
             name: user.name,
-            introduction: user.introduction,
             school: user.school,
             profile_image: user.profile_image,
+            introduction: user.introduction,
         },
     });
 };
