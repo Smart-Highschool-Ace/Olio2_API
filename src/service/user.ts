@@ -50,7 +50,7 @@ export const login: Function = async (
 export const checkEmail: Function = async (email: string) => {
     const prisma = new PrismaClient();
     // 1. 중복 이메일일경우
-    const isDuplicate = prisma.user.findFirst({
+    const isDuplicate = await prisma.user.findFirst({
         where: {
             email: email,
         },
@@ -58,6 +58,13 @@ export const checkEmail: Function = async (email: string) => {
     if (isDuplicate) {
         return {
             error: "에러 , 이미 등록된 이메일입니다.",
+        };
+    }
+    // 이메일 형식이 아닐 경우
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    if (!re.test(email)) {
+        return {
+            error: "에러, 이메일 형식이 유효하지 않습니다.",
         };
     }
     // 학교 계정이 아닐 경우
@@ -68,15 +75,7 @@ export const checkEmail: Function = async (email: string) => {
         };
     }
 
-    // 이메일 형식이 아닐 경우
-    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if (!re.test(email)) {
-        return {
-            error: "에러, 이메일 형식이 유효하지 않습니다.",
-        };
-    }
-    const isAvailable = { is_available: true };
-    return isAvailable;
+    return { status: true };
 };
 
 export const createUser: Function = async (data: UserCreateArgs) => {
