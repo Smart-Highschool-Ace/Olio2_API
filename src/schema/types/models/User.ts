@@ -13,7 +13,7 @@ export const User = objectType({
         t.string("introduction");
         t.int("entrance_year");
         t.int("grade", {
-            resolve: (root) => {
+            resolve: (root, _, __) => {
                 return new Date().getFullYear() - root.entrance_year;
             },
         });
