@@ -72,7 +72,7 @@ export const updateUser = {
 };
 export const deleteUser = {
     resolve: async (_: any, args: any, ctx: any) => {
-        const deleted_user = await UserService.deleteUser(ctx.user_id);
+        const deleted_user = await UserService.deleteUser(ctx.userId);
         return deleted_user;
     },
     type: "User",
