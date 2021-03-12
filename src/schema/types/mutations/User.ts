@@ -10,7 +10,7 @@ export const login = {
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, __: any) => {
     const result = await UserService.login(args.email, args.password);
     return result;
   },
@@ -21,7 +21,7 @@ export const checkEmail = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, __: any) => {
     const result = await UserService.checkEmail(args.email);
     return result;
   },
@@ -32,7 +32,7 @@ export const sendAuthEmail = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, __: any) => {
     const result = await sendAuthCode(args.email);
     return result;
   },
@@ -43,7 +43,7 @@ export const authenticateEmail = {
     email: nonNull(stringArg()),
     code: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, __: any) => {
     const result = await checkAuthCode(args.email, args.code);
     return result;
   },
@@ -54,7 +54,7 @@ export const createUser = {
   args: {
     user: nonNull(arg({ type: "UserCreateInput" })),
   },
-  resolve: async (_: any, user: UserCreateArgs, ctx: context) => {
+  resolve: async (_: any, user: UserCreateArgs, __: any) => {
     const new_user = await UserService.createUser(user);
     return new_user;
   },
