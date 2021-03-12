@@ -9,7 +9,7 @@ export const login = {
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
     },
-    resolve: async (_: any, args: any, ctx: any) => {
+    resolve: async (_: any, args: any, __ : any) => {
         const result = await UserService.login(args.email, args.password);
         return result;
     },
