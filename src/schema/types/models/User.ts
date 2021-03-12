@@ -1,4 +1,4 @@
-import { interfaceType, objectType } from "nexus";
+import { objectType } from "nexus";
 
 import { PortfolioService, ProjectService } from "service";
 
