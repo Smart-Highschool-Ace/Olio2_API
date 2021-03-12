@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, School } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import * as Joi from "joi";
 
@@ -36,7 +36,6 @@ export const login: Function = async (
         },
     });
     if (user) {
-        // TDOO generatePayload 추가
         const payload = { userId: user.id };
         const token = { token: generateToken(payload) };
         return token;
@@ -57,19 +56,23 @@ export const checkEmail: Function = async (email: string) => {
     });
     if (isDuplicate) {
         return {
+            status: false,
             error: "에러 , 이미 등록된 이메일입니다.",
         };
     }
     // 이메일 형식이 아닐 경우
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     if (!re.test(email)) {
+        // 이메일 형식 확인 정규표현식
         return {
+            status: false,
             error: "에러, 이메일 형식이 유효하지 않습니다.",
         };
     }
     // 학교 계정이 아닐 경우
     if (email.slice(-10) !== "@gsm.hs.kr") {
         return {
+            status: false,
             error:
                 "에러, 광주소프트웨어마이스터고등학교에서 발급한 학교 이메일이어야 합니다.",
         };
@@ -81,7 +84,6 @@ export const checkEmail: Function = async (email: string) => {
 export const createUser: Function = async (data: UserCreateArgs) => {
     const prisma = new PrismaClient();
     const user = data.user;
-    console.log(School[user.school]);
     const hashedPassword = hashSha512(user.password);
     return await prisma.user.create({
         data: {
@@ -117,6 +119,8 @@ export const updateUser: Function = async (
 
 export const deleteUser: Function = async (user_id: number) => {
     const prisma = new PrismaClient();
+    console.log(user_id);
+
     return await prisma.user.delete({
         where: {
             id: user_id,
