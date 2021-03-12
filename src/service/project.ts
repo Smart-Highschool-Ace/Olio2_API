@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from "@prisma/client";
-import { Project } from "schema/types";
 
 const prisma = new PrismaClient();
 

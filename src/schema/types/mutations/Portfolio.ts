@@ -2,21 +2,7 @@ import { arg, nonNull, intArg } from "nexus";
 
 import { context } from "context";
 import { PortfolioService } from "service";
-import {
-  PortfolioCertificate,
-  PortfolioPrize,
-  PortfolioProject,
-  PortfolioSkill,
-} from "@prisma/client";
-
-export interface PortfolioUpdateArgs {
-  portfolio_id: number;
-  email: string;
-  certificates: PortfolioCertificate;
-  prizes: PortfolioPrize;
-  projects: PortfolioProject;
-  skils: PortfolioSkill;
-}
+import { PortfolioUpdateArgs } from "interface/Portfolio";
 export const updatePortfolio = {
   args: {
     id: nonNull(intArg()),
