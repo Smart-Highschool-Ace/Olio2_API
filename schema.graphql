@@ -228,5 +228,5 @@ input UserUpdateInput {
   introduction: String
   name: String
   profile_image: String
-  school: Int
+  school: String
 }

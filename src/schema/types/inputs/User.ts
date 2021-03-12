@@ -16,7 +16,7 @@ export const UserCreateInput = inputObjectType({
 export const UserUpdateInput = inputObjectType({
     name: "UserUpdateInput",
     definition(t) {
-        t.int("school");
+        t.string("school");
         t.string("name");
         t.int("entrance_year");
         t.string("profile_image");
