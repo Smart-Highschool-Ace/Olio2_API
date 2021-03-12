@@ -119,7 +119,6 @@ export const updateUser: Function = async (
 
 export const deleteUser: Function = async (user_id: number) => {
   const prisma = new PrismaClient();
-  console.log(user_id);
 
   return await prisma.user.delete({
     where: {
