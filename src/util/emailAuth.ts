@@ -37,10 +37,10 @@ export const sendAuthCode: Function = async (receiver: string) => {
         await transporter.sendMail(mailOptions); //메일 보내기
     } catch (err) {
         console.log(err);
-        return { status: false };
+        return { status: false, error: "이메일을 보내지 못했습니다." };
     }
     await addAuthInfo(receiver, auth_code);
-    return { status: false };
+    return { status: true };
 };
 // 인증정보 DB에 추가
 const addAuthInfo: Function = async (user: string, auth_code: string) => {
@@ -65,16 +65,13 @@ export const checkAuthCode: Function = async (
             email: user,
             auth_code: auth_code,
         },
-        select: {
-            id: true,
-        },
     });
     if (auth_info) {
         //인증 확인되면 삭제
         deleteAuthCode(auth_info.id);
         return { status: true };
     }
-    return { status: false };
+    return { status: false, error: "맞지 않은 인증정보입니다." };
 };
 
 //인증코드 정보 삭제
