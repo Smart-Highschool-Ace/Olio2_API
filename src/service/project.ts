@@ -146,16 +146,24 @@ export const updateProject = async (
       start_at: updateArgs.start_at,
       end_at: updateArgs.end_at,
       ProjectSkill: {
-        set: updateArgs.skills,
+        create: updateArgs.skills.map((skill) => {
+          return { name: skill.name };
+        }),
       },
       ProjectMember: {
-        set: updateArgs.members,
+        create: updateArgs.members.map((m) => {
+          return { member_id: m.member_id, role: m.role };
+        }),
       },
       ProjectField: {
-        set: updateArgs.fields,
+        create: updateArgs.fields.map((field) => {
+          return { name: field.name };
+        }),
       },
       ProjectImage: {
-        set: updateArgs.images,
+        create: updateArgs.images.map((image) => {
+          return { link: image.link, order: image.order };
+        }),
       },
     },
   });
