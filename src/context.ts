@@ -4,10 +4,6 @@ import { PrismaClient } from "@prisma/client";
 
 import { verifyToken } from "util/token";
 
-export interface context {
-  userId: number;
-}
-
 export let createContext = async ({ ctx }: Context) => {
   const prisma = new PrismaClient();
   if (ctx.request.header.authorization) {
