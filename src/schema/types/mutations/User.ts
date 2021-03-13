@@ -1,6 +1,6 @@
 import { arg, nonNull, stringArg } from "nexus";
 
-import { UserService } from "service";
+import { PortfolioService, UserService } from "service";
 import { UserCreateArgs, UserUpdateArgs } from "interface/User";
 import { checkAuthCode, sendAuthCode } from "util/emailAuth";
 import { context } from "context";
@@ -56,6 +56,7 @@ export const createUser = {
   },
   resolve: async (_: any, user: UserCreateArgs, __: any) => {
     const new_user = await UserService.createUser(user);
+    const new_portfolio = await PortfolioService.createPortfolio(new_user.id);
     return new_user;
   },
   type: "User",
