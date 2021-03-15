@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from "@prisma/client";
+
 import { Project } from "schema/types";
 import { ProjectCreateArgs } from "../interface/project";
 

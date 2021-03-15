@@ -1,41 +1,81 @@
-import { arg, nonNull } from "nexus";
+import { arg, nonNull, stringArg } from "nexus";
+
+import { PortfolioService, UserService } from "service";
+import { UserCreateArgs, UserUpdateArgs } from "interface/User";
+import { checkAuthCode, sendAuthCode } from "util/emailAuth";
+import { context } from "context";
+
+export const login = {
+  args: {
+    email: nonNull(stringArg()),
+    password: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    const result = await UserService.login(args.email, args.password);
+    return result;
+  },
+  type: "loginResult",
+};
+
+export const checkEmail = {
+  args: {
+    email: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    const result = await UserService.checkEmail(args.email);
+    return result;
+  },
+  type: "statusResult",
+};
+
+export const sendAuthEmail = {
+  args: {
+    email: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    const result = await sendAuthCode(args.email);
+    return result;
+  },
+  type: "statusResult",
+};
+export const authenticateEmail = {
+  args: {
+    email: nonNull(stringArg()),
+    code: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    const result = await checkAuthCode(args.email, args.code);
+    return result;
+  },
+  type: "statusResult",
+};
 
 export const createUser = {
   args: {
     user: nonNull(arg({ type: "UserCreateInput" })),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // TODO : prisma로 create user 구현
-    const mock_user = args.user;
-    return mock_user;
-  },
-  type: "User",
-};
-export const updateUser = {
-  args: {
-    user: nonNull(arg({ type: "UserUpdateInput" })),
-  },
-  resolve(_: any, args: any, ctx: any) {
-    // TODO : prisma로 update user 구현
-    const mock_user = args.user;
-    return mock_user;
+  resolve: async (_: any, user: UserCreateArgs, __: any) => {
+    const new_user = await UserService.createUser(user);
+    const new_portfolio = await PortfolioService.createPortfolio(new_user.id);
+    return new_user;
   },
   type: "User",
 };
 
+export const updateUser = {
+  args: {
+    user: nonNull(arg({ type: "UserUpdateInput" })),
+  },
+  resolve: async (_: any, user: UserUpdateArgs, ctx: context) => {
+    const updated_user = await UserService.updateUser(ctx.userId, user);
+    return updated_user;
+  },
+  type: "User",
+};
 export const deleteUser = {
-  resolve(_: any, args: any, ctx: any) {
-    // TODO : prisma로 delete user 구현
-    const mock_user = {
-      id: 1,
-      name: "mock_user-name",
-      school: 1,
-      profile_image: "mock_user-profile_image",
-      introduction: "mock_user-introduction",
-      entrance_year: 2020,
-      grade: 1,
-    };
-    return mock_user;
+  resolve: async (_: any, args: any, ctx: context) => {
+    const deleted_user = await UserService.deleteUser(ctx.userId);
+    return deleted_user;
   },
   type: "User",
 };
