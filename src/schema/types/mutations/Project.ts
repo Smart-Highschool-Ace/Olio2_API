@@ -7,7 +7,7 @@ export const createProject = {
     project: arg({ type: "ProjectCreateInput" }),
   },
   resolve: async (_: any, args: any, ctx: any) => {
-    const user_id = ctx.user_id;
+    const user_id = ctx.userId;
     const createArgs: ProjectCreateArgs = args.project;
     const new_project = await ProjectService.createProject(user_id, createArgs);
     return String(new_project.id);

@@ -94,7 +94,11 @@ export const createProject = async (
   user_id: number,
   createArgs: ProjectCreateArgs
 ) => {
-  console.log(user_id);
+  createArgs.skills = createArgs.skills || [];
+  createArgs.members = createArgs.members || [];
+  createArgs.fields = createArgs.fields || [];
+  createArgs.images = createArgs.images || [];
+
   return await prisma.project.create({
     data: {
       owner_id: user_id,
@@ -133,6 +137,11 @@ export const updateProject = async (
   id: number,
   updateArgs: ProjectCreateArgs
 ) => {
+  updateArgs.skills = updateArgs.skills || [];
+  updateArgs.members = updateArgs.members || [];
+  updateArgs.fields = updateArgs.fields || [];
+  updateArgs.images = updateArgs.images || [];
+
   return await prisma.project.update({
     where: {
       id: id,
@@ -146,21 +155,25 @@ export const updateProject = async (
       start_at: updateArgs.start_at,
       end_at: updateArgs.end_at,
       ProjectSkill: {
+        deleteMany: {},
         create: updateArgs.skills.map((skill) => {
           return { name: skill.name };
         }),
       },
       ProjectMember: {
-        create: updateArgs.members.map((m) => {
-          return { member_id: m.member_id, role: m.role };
+        deleteMany: {},
+        create: updateArgs.members.map((member) => {
+          return { member_id: member.member_id, role: member.role };
         }),
       },
       ProjectField: {
+        deleteMany: {},
         create: updateArgs.fields.map((field) => {
           return { name: field.name };
         }),
       },
       ProjectImage: {
+        deleteMany: {},
         create: updateArgs.images.map((image) => {
           return { link: image.link, order: image.order };
         }),
