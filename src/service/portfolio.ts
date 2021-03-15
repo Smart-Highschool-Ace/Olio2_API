@@ -3,6 +3,16 @@ import { PrismaClient } from "@prisma/client";
 import { PortfolioUpdateArgs } from "interface/Portfolio";
 const prisma = new PrismaClient();
 
+export const createPortfolio = async (user_id: number) => {
+  return await prisma.portfolio.create({
+    data: {
+      owner: {
+        connect: { id: user_id },
+      },
+    },
+  });
+};
+
 export const portfolioHaveLike = async (
   portfolio_id: number,
   user_id: number

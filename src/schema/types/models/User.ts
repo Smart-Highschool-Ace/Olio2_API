@@ -1,9 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { objectType } from "nexus";
 
-import { PortfolioService, ProjectService, UserService } from "service";
-
-const prisma = new PrismaClient();
+import { PortfolioService, ProjectService } from "service";
 
 export const User = objectType({
   name: "User",
@@ -16,7 +13,7 @@ export const User = objectType({
     t.string("introduction");
     t.int("entrance_year");
     t.int("grade", {
-      resolve: (root) => {
+      resolve: (root, _, __) => {
         return new Date().getFullYear() - root.entrance_year;
       },
     });
@@ -50,5 +47,21 @@ export const User = objectType({
         return await PortfolioService.getLikedPortfoliosOfUser(root.id);
       },
     });
+  },
+});
+
+export const loginResult = objectType({
+  name: "loginResult",
+  definition(t) {
+    t.string("token");
+    t.string("error");
+  },
+});
+
+export const statusResult = objectType({
+  name: "statusResult",
+  definition(t) {
+    t.boolean("status");
+    t.string("error");
   },
 });
