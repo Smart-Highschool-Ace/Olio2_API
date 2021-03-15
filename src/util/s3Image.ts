@@ -31,6 +31,7 @@ export const uploadToS3: Function = async (fileName: string) => {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: year + "/" + key,
     Body: readStream,
+    ACL: "public-read",
   };
 
   const upload = await s3bucket.upload(params).promise();
