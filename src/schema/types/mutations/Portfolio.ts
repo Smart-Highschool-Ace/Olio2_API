@@ -1,13 +1,13 @@
 import { arg, nonNull, intArg } from "nexus";
 
-import { context } from "context";
+import { Context } from "interface";
 import { PortfolioService, UserService } from "service";
 import { PortfolioUpdateArgs } from "interface/Portfolio";
 export const updatePortfolio = {
   args: {
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, ctx: Context) => {
     const updateArgs: PortfolioUpdateArgs = args.portfolio;
 
     await UserService.modifyEmail(ctx.userId, updateArgs.email);
@@ -21,7 +21,7 @@ export const likePortfolio = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, ctx: Context) => {
     const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
     if (result) {
       await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
