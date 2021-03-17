@@ -25,11 +25,11 @@ export const likePortfolio = {
     const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
     if (result) {
       await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
-      return false;
+      return { status: false };
     } else {
       await PortfolioService.createLikePortfolio(ctx.userId, args.id);
-      return true;
+      return { status: true };
     }
   },
-  type: "Boolean",
+  type: "statusResult",
 };
