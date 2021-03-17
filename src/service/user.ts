@@ -11,6 +11,13 @@ interface loginResult {
   error?: string;
 }
 
+export const modifyEmail: Function = async (id: number, email: string) => {
+  const prisma = new PrismaClient();
+  await prisma.user.update({
+    where: { id: id },
+    data: { email: email },
+  });
+};
 export const login: Function = async (
   email: string,
   password: string
