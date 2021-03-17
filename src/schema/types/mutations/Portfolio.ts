@@ -8,10 +8,7 @@ export const updatePortfolio = {
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
   resolve: async (_: any, args: any, ctx: Context) => {
-    const updateArgs: PortfolioUpdateArgs = args.portfolio;
-
-    await UserService.modifyEmail(ctx.userId, updateArgs.email);
-    await PortfolioService.modifyPortfolio(ctx.userId, updateArgs);
+    await PortfolioService.modifyPortfolio(ctx.userId, args.portfolio);
     return { status: true };
   },
   type: "statusResult",
