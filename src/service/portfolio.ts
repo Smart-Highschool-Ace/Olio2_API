@@ -63,7 +63,6 @@ export const modifyPortfolio = async (
   updateArgs.certificates = updateArgs.certificates || [];
   updateArgs.prizes = updateArgs.prizes || [];
   updateArgs.projects = updateArgs.projects || [];
-  console.log(updateArgs);
 
   await prisma.portfolio.update({
     where: {
