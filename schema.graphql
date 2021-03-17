@@ -20,7 +20,7 @@ type Mutation {
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
   sendAuthEmail(email: String!): statusResult
-  updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
+  updatePortfolio(portfolio: PortfolioUpdateInput): statusResult
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
 }
@@ -53,7 +53,7 @@ type PortfolioCertificate {
 }
 
 input PortfolioCertificateInput {
-  certified_at: Int!
+  certified_at: String!
   institution: String!
   name: String!
 }
@@ -67,7 +67,7 @@ type PortfolioPrize {
 input PortfolioPrizeInput {
   institution: String!
   name: String!
-  prized_at: Int!
+  prized_at: String!
 }
 
 type PortfolioProject {
@@ -77,7 +77,7 @@ type PortfolioProject {
 
 input PortfolioProjectInput {
   order: Int!
-  project: Int!
+  project_id: Int!
 }
 
 type PortfolioSkill {
@@ -87,7 +87,7 @@ type PortfolioSkill {
 
 input PortfolioSkillInput {
   level: Int!
-  skill: String!
+  name: String!
 }
 
 input PortfolioUpdateInput {
