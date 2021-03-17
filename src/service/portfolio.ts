@@ -37,14 +37,12 @@ export const getViewAboutPortfolio = async (id: number): Promise<number> => {
   });
 };
 export const getLikesAboutPortfolioByPortfolio = async (id: number) => {
-  return await prisma.portfolioLike.findMany({
+  const like = await prisma.portfolioLike.findMany({
     where: {
       portfolio_id: id,
     },
-    select: {
-      user: true,
-    },
   });
+  return like;
 };
 
 const parse_yyyy_mm_dd = (dateString: any) => {
@@ -69,6 +67,7 @@ export const modifyPortfolio = async (
       id: id,
     },
     data: {
+      email: updateArgs.email,
       PortfolioCertificate: {
         deleteMany: {},
         create: updateArgs.certificates.map((certificateArgs) => {
@@ -155,6 +154,7 @@ export const getPortfolio = async (id: number) => {
     },
     include: {
       owner: true,
+      PortfolioView: true,
       PortfolioSkill: true,
       PortfolioProject: true,
       PortfolioPrize: true,
