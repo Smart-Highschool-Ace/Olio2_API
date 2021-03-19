@@ -11,3 +11,10 @@ export const portfolio = {
     return await PortfolioService.getPortfolio(args.id);
   },
 };
+
+export const allPortfolio = {
+  type: "Portfolio",
+  resolve: async (_: any, args: any, __: any) => {
+    return await PortfolioService.getPortfolios();
+  },
+};

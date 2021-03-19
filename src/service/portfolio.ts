@@ -150,3 +150,7 @@ export const getLikedPortfoliosOfUser = async (userId: number) => {
     return item.portfolio;
   });
 };
+
+export const getPortfolios = async () => {
+  return await prisma.portfolio.findMany({});
+};
