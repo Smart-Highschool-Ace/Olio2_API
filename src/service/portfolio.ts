@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { PortfolioUpdateArgs } from "interface/Portfolio";
+
 const prisma = new PrismaClient();
 
 export const createPortfolio = async (user_id: number) => {
@@ -116,23 +117,6 @@ export const getPortfolio = async (id: number) => {
   return await prisma.portfolio.findFirst({
     where: {
       id: id,
-    },
-    include: {
-      owner: true,
-      PortfolioSkill: true,
-      PortfolioProject: true,
-      PortfolioPrize: true,
-      PortfolioCertificate: true,
-    },
-  });
-};
-
-export const getPortfolioByUser = async (user_id: number) => {
-  return await prisma.portfolio.findFirst({
-    where: {
-      owner: {
-        id: user_id,
-      },
     },
   });
 };

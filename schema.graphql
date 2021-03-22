@@ -25,13 +25,6 @@ type Mutation {
   updateUser(user: UserUpdateInput!): User
 }
 
-type MyProjectsQueryType {
-  order: Int
-  projects: Project
-}
-
-union NameSearchResult = Portfolio | User
-
 type Portfolio {
   certificates: [PortfolioCertificate]
   email: String
@@ -128,7 +121,7 @@ input ProjectCreateInput {
   link: String
   members: [ProjectMemberInput]
   name: String!
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -146,7 +139,7 @@ type ProjectImage {
 }
 
 input ProjectImageInput {
-  image: String!
+  link: String!
   order: Int
 }
 
@@ -156,7 +149,7 @@ type ProjectMember {
 }
 
 input ProjectMemberInput {
-  id: Int!
+  member_id: Int!
   role: String
 }
 
@@ -169,18 +162,12 @@ input ProjectUpdateInput {
   link: String
   members: [ProjectMemberInput]
   name: String
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
 type Query {
   allUser: [User]
-  emailSearch(email: String!): User
-  explore: ExploreResult
-  nameSearch(search_word: String!): NameSearchResult
-  portfolio(id: Int): Portfolio
-  project(id: Int): Project
-  skillSearch(search_word: String!): Skill
   user(id: Int): User
 }
 
