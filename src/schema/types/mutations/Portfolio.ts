@@ -1,26 +1,32 @@
 import { arg, nonNull, intArg } from "nexus";
 
+import { Context } from "interface";
+import { PortfolioService } from "service";
+
 export const updatePortfolio = {
   args: {
-    id: nonNull(intArg()),
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
-  resolve: (_: any, args: any, ctx: any) => {
-    // 후에 포트폴리오 수정 구현
-
-    const mock_link = "http://mock-example.com";
-    return mock_link;
+  resolve: async (_: any, args: any, ctx: Context) => {
+    await PortfolioService.modifyPortfolio(ctx.userId, args.portfolio);
+    return { status: true };
   },
-  type: "String",
+  type: "statusResult",
 };
 
 export const likePortfolio = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: (_: any, args: any, ctx: any) => {
-    // 후에 좋아요 로직 구현
-    return true;
+  resolve: async (_: any, args: any, ctx: Context) => {
+    const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
+    if (result) {
+      await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
+      return { status: false };
+    } else {
+      await PortfolioService.createLikePortfolio(ctx.userId, args.id);
+      return { status: true };
+    }
   },
-  type: "Boolean",
+  type: "statusResult",
 };

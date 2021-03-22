@@ -16,11 +16,11 @@ type Mutation {
   createUser(user: UserCreateInput!): User
   deleteProject(id: Int!): String
   deleteUser: User
-  likePortfolio(id: Int!): Boolean
+  likePortfolio(id: Int!): statusResult
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
   sendAuthEmail(email: String!): statusResult
-  updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
+  updatePortfolio(portfolio: PortfolioUpdateInput): statusResult
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
 }
@@ -37,11 +37,11 @@ type Portfolio {
   email: String
   id: Int
   liked: Boolean
-  likes: [User]
+  likes: [PortfolioLike]
   link: String
   owner: User
   prizes: [PortfolioPrize]
-  projects: [Project]
+  projects: [PortfolioProject]
   skills: [PortfolioSkill]
   view: Int
 }
@@ -53,9 +53,15 @@ type PortfolioCertificate {
 }
 
 input PortfolioCertificateInput {
-  certified_at: Int!
+  certified_at: String!
   institution: String!
   name: String!
+}
+
+type PortfolioLike {
+  id: Int
+  user: User
+  user_id: Int
 }
 
 type PortfolioPrize {
@@ -67,27 +73,31 @@ type PortfolioPrize {
 input PortfolioPrizeInput {
   institution: String!
   name: String!
-  prized_at: Int!
+  prized_at: String!
 }
 
 type PortfolioProject {
+  id: Int
   order: Int
+  portfolio_id: Int
   project: Project
 }
 
 input PortfolioProjectInput {
   order: Int!
-  project: Int!
+  project_id: Int!
 }
 
 type PortfolioSkill {
+  id: Int
   level: Int
-  skill: Skill
+  name: String
+  portfolio_id: Int
 }
 
 input PortfolioSkillInput {
   level: Int!
-  skill: String!
+  name: String!
 }
 
 input PortfolioUpdateInput {
@@ -95,7 +105,7 @@ input PortfolioUpdateInput {
   email: String
   prizes: [PortfolioPrizeInput]
   projects: [PortfolioProjectInput]
-  skils: [PortfolioSkillInput]
+  skills: [PortfolioSkillInput]
 }
 
 type Project {
@@ -178,7 +188,7 @@ type Query {
   emailSearch(email: String!): User
   explore: ExploreResult
   nameSearch(search_word: String!): NameSearchResult
-  portfolyaio(id: Int): Portfolio
+  portfolio(id: Int): Portfolio
   project(id: Int): Project
   skillSearch(search_word: String!): Skill
   user(id: Int): User

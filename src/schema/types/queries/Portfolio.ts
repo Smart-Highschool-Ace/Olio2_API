@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { intArg } from "nexus";
 import { PortfolioService } from "service";
-
-const prisma = new PrismaClient();
 
 export const portfolio = {
   type: "Portfolio",
