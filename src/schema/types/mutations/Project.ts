@@ -1,13 +1,16 @@
 import { arg, intArg, nonNull } from "nexus";
+import { ProjectService } from "service";
+import { ProjectCreateArgs } from "../../../interface/project";
 
 export const createProject = {
   args: {
     project: arg({ type: "ProjectCreateInput" }),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 생성 구현
-    const mock_link = "http://mock-example.com";
-    return mock_link;
+  resolve: async (_: any, args: any, ctx: any) => {
+    const user_id = ctx.userId;
+    const createArgs: ProjectCreateArgs = args.project;
+    const new_project = await ProjectService.createProject(user_id, createArgs);
+    return String(new_project.id);
   },
   type: "String",
 };
@@ -17,10 +20,13 @@ export const updateProject = {
     id: nonNull(intArg()),
     project: arg({ type: "ProjectUpdateInput" }),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 수정 구현
-    const mock_link = "http://mock-example.com";
-    return mock_link;
+  resolve: async (_: any, args: any, __: any) => {
+    const updateArgs: ProjectCreateArgs = args.project;
+    const updated_project = await ProjectService.updateProject(
+      args.id,
+      updateArgs
+    );
+    return String(updated_project.id);
   },
   type: "String",
 };
@@ -29,10 +35,9 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 삭제 구현
-    const mock_error = "mock error!";
-    return mock_error;
+  resolve: async (_: any, args: any, __: any) => {
+    const deleted_project = await ProjectService.deleteProject(args.id);
+    return String(deleted_project.id);
   },
   type: "String",
 };
@@ -41,10 +46,18 @@ export const likeProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve(_: any, args: any, ctx: any) {
-    // 후에 프로젝트 좋아요 구현
-    const mock_liked = true;
-    return mock_liked;
+  resolve: async (_: any, args: any, ctx: any) => {
+    const is_followed = await ProjectService.isLikedByUser(
+      args.id,
+      ctx.user_id
+    );
+    if (is_followed) {
+      await ProjectService.deleteLikeProject(ctx.user_id, args.id);
+      return false;
+    } else {
+      await ProjectService.createLikeProject(ctx.user_id, args.id);
+      return true;
+    }
   },
   type: "Boolean",
 };

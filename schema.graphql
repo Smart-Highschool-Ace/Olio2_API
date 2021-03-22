@@ -128,7 +128,7 @@ input ProjectCreateInput {
   link: String
   members: [ProjectMemberInput]
   name: String!
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -146,7 +146,7 @@ type ProjectImage {
 }
 
 input ProjectImageInput {
-  image: String!
+  link: String!
   order: Int
 }
 
@@ -156,7 +156,7 @@ type ProjectMember {
 }
 
 input ProjectMemberInput {
-  id: Int!
+  member_id: Int!
   role: String
 }
 
@@ -169,7 +169,7 @@ input ProjectUpdateInput {
   link: String
   members: [ProjectMemberInput]
   name: String
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -178,7 +178,7 @@ type Query {
   emailSearch(email: String!): User
   explore: ExploreResult
   nameSearch(search_word: String!): NameSearchResult
-  portfolio(id: Int): Portfolio
+  portfolyaio(id: Int): Portfolio
   project(id: Int): Project
   skillSearch(search_word: String!): Skill
   user(id: Int): User

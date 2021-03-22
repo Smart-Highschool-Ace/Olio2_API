@@ -33,6 +33,8 @@ enum School {
     Busan
 }
 
+}
+
 model Portfolio {
     owner                User                   @relation(fields: [id], references: [id])
     id                   Int                    @id
@@ -106,8 +108,8 @@ model Project {
     logo          String?         @db.Text
     start_at      DateTime?
     end_at        DateTime?
-    created_at    DateTime
-    updated_at    DateTime
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @default(now())
     ProjectSkill  ProjectSkill[]
     ProjectMember ProjectMember[]
     ProjectField  ProjectField[]

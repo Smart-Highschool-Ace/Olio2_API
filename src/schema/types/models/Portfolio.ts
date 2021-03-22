@@ -1,60 +1,58 @@
 import { objectType } from "nexus";
 
-import { PortfolioService } from "service";
-
 export const Portfolio = objectType({
   name: "Portfolio",
   definition(t) {
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).owner;
+      resolve: () => {
+        return "he or she is the owner of this portfolio";
       },
     });
     t.string("email");
     t.string("link");
     t.list.field("likes", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getLikesAboutPortfolioByPortfolio(
-          root.id
-        );
+      resolve: () => {
+        return "they like my portfolio";
       },
     });
     t.list.field("skills", {
       type: "PortfolioSkill",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
+      resolve: () => {
+        return "I can use these skills";
       },
     });
     t.list.field("projects", {
       type: "Project",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
+      resolve: () => {
+        return "this is my projects";
       },
     });
     t.list.field("prizes", {
       type: PortfolioPrize,
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
+      resolve: () => {
+        return "my prizes";
       },
     });
     t.list.field("certificates", {
       type: PortfolioCertificate,
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id))
-          .PortfolioCertificate;
+      resolve: () => {
+        return "my certificates";
       },
     });
     t.int("view", {
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getViewAboutPortfolio(root.id);
+      resolve: () => {
+        return 999;
       },
     });
     t.boolean("liked", {
-      resolve: async (root, __, ctx) => {
-        return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
+      resolve: (_, __, ctx) => {
+        if (ctx.header.userId) {
+          return false;
+        }
+        return false;
       },
     });
   },

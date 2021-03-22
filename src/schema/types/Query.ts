@@ -8,11 +8,12 @@ export const Query = queryType({
 
     t.field("project", q.project);
 
-    t.field("portfolio", q.portfolio);
+    t.field("portfolyaio", q.portfolio);
 
     t.field("skillSearch", q.skillSearch);
     t.field("nameSearch", q.nameSearch);
     t.field("emailSearch", q.emailSearch);
     t.field("explore", q.explore);
+    
   },
 });
