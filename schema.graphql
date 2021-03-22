@@ -16,7 +16,7 @@ type Mutation {
   createUser(user: UserCreateInput!): User
   deleteProject(id: Int!): String
   deleteUser: User
-  likePortfolio(id: Int!): Boolean
+  likePortfolio(id: Int!): statusResult
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
   sendAuthEmail(email: String!): statusResult
@@ -37,7 +37,7 @@ type Portfolio {
   email: String
   id: Int
   liked: Boolean
-  likes: [User]
+  likes: [PortfolioLike]
   link: String
   owner: User
   prizes: [PortfolioPrize]
@@ -58,6 +58,15 @@ input PortfolioCertificateInput {
   name: String!
 }
 
+type PortfolioLike {
+  email: String
+  entrance_year: String
+  id: Int
+  name: String
+  profile_image: String
+  user_id: Int
+}
+
 type PortfolioPrize {
   institution: String
   name: String
@@ -71,8 +80,11 @@ input PortfolioPrizeInput {
 }
 
 type PortfolioProject {
+  id: Int
   order: Int
   project: Project
+  project_id: Int
+  protfolio_id: Int
 }
 
 input PortfolioProjectInput {
@@ -81,8 +93,10 @@ input PortfolioProjectInput {
 }
 
 type PortfolioSkill {
+  id: Int
   level: Int
-  skill: Skill
+  name: String
+  portfolio_id: Int
 }
 
 input PortfolioSkillInput {
@@ -178,7 +192,7 @@ type Query {
   emailSearch(email: String!): User
   explore: ExploreResult
   nameSearch(search_word: String!): NameSearchResult
-  portfolyaio(id: Int): Portfolio
+  portfolio(id: Int): Portfolio
   project(id: Int): Project
   skillSearch(search_word: String!): Skill
   user(id: Int): User
