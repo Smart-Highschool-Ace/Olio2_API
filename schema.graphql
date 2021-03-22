@@ -41,7 +41,7 @@ type Portfolio {
   link: String
   owner: User
   prizes: [PortfolioPrize]
-  projects: [Project]
+  projects: [PortfolioProject]
   skills: [PortfolioSkill]
   view: Int
 }
@@ -59,11 +59,8 @@ input PortfolioCertificateInput {
 }
 
 type PortfolioLike {
-  email: String
-  entrance_year: String
   id: Int
-  name: String
-  profile_image: String
+  user: User
   user_id: Int
 }
 
@@ -82,9 +79,8 @@ input PortfolioPrizeInput {
 type PortfolioProject {
   id: Int
   order: Int
+  portfolio_id: Int
   project: Project
-  project_id: Int
-  protfolio_id: Int
 }
 
 input PortfolioProjectInput {
@@ -109,7 +105,7 @@ input PortfolioUpdateInput {
   email: String
   prizes: [PortfolioPrizeInput]
   projects: [PortfolioProjectInput]
-  skils: [PortfolioSkillInput]
+  skills: [PortfolioSkillInput]
 }
 
 type Project {

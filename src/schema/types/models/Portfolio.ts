@@ -1,7 +1,7 @@
 import { objectType } from "nexus";
 
 import { PortfolioService, ProjectService, UserService } from "service";
-import { Project } from "./Project";
+
 export const Portfolio = objectType({
   name: "Portfolio",
   definition(t) {
@@ -29,7 +29,7 @@ export const Portfolio = objectType({
       },
     });
     t.list.field("projects", {
-      type: Project,
+      type: PortfolioProject,
       resolve: async (root, _, __) => {
         console.log;
         return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
@@ -75,14 +75,13 @@ export const PortfolioProject = objectType({
   name: "PortfolioProject",
   definition(t) {
     t.field("project", {
-      type: Project,
-      resolve: async (root, _, __) => {
+      type: "Project",
+      resolve: async (root: any, _, __) => {
         return await ProjectService.getProject(root.project_id);
       },
     });
     t.int("id");
-    t.int("protfolio_id");
-    t.int("project_id");
+    t.int("portfolio_id");
     t.int("order");
   },
 });
@@ -109,26 +108,12 @@ export const PortfolioLike = objectType({
   name: "PortfolioLike",
   definition(t) {
     t.int("id");
+    t.field("user", {
+      type: "User",
+      resolve: async (root, _, __) => {
+        return await UserService.getUser(root.user_id);
+      },
+    });
     t.int("user_id");
-    t.string("name", {
-      resolve: async (root, _, __) => {
-        return (await UserService.getUser(root.user_id)).name;
-      },
-    });
-    t.string("email", {
-      resolve: async (root, _, __) => {
-        return (await UserService.getUser(root.user_id)).email;
-      },
-    });
-    t.string("profile_image", {
-      resolve: async (root, _, __) => {
-        return (await UserService.getUser(root.user_id)).profile_image;
-      },
-    });
-    t.string("entrance_year", {
-      resolve: async (root, _, __) => {
-        return (await UserService.getUser(root.user_id)).entrance_year;
-      },
-    });
   },
 });
