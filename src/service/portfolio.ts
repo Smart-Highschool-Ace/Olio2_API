@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { PortfolioUpdateArgs } from "interface/Portfolio";
-
+import { parse_yyyy_mm_dd } from "util/date";
 const prisma = new PrismaClient();
 
 export const createPortfolio = async (user_id: number) => {
@@ -45,19 +45,11 @@ export const getLikesAboutPortfolioByPortfolio = async (id: number) => {
   return like;
 };
 
-const parse_yyyy_mm_dd = (dateString: any) => {
-  const y = Number(dateString.substring(0, 4));
-  const m = Number(dateString.substring(5, 7));
-  const d = Number(dateString.substring(8, 10));
-
-  return new Date(y, m - 1, d);
-};
-
 export const modifyPortfolio = async (
   id: number,
   updateArgs: PortfolioUpdateArgs
 ) => {
-  updateArgs.skils = updateArgs.skils || [];
+  updateArgs.skills = updateArgs.skills || [];
   updateArgs.certificates = updateArgs.certificates || [];
   updateArgs.prizes = updateArgs.prizes || [];
   updateArgs.projects = updateArgs.projects || [];
@@ -80,7 +72,7 @@ export const modifyPortfolio = async (
       },
       PortfolioSkill: {
         deleteMany: {},
-        create: updateArgs.skils.map((skill) => {
+        create: updateArgs.skills.map((skill) => {
           return {
             name: skill.name,
             level: skill.level,
