@@ -1,9 +1,5 @@
 import { arg, nonNull, intArg } from "nexus";
 
-import { context } from "context";
-import { PortfolioService } from "service";
-import { PortfolioUpdateArgs } from "interface/Portfolio";
-
 export const updatePortfolio = {
   args: {
     id: nonNull(intArg()),
