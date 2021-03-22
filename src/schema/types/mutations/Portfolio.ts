@@ -2,6 +2,7 @@ import { arg, nonNull, intArg } from "nexus";
 
 import { Context } from "interface";
 import { PortfolioService } from "service";
+
 export const updatePortfolio = {
   args: {
     portfolio: arg({ type: "PortfolioUpdateInput" }),

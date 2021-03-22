@@ -25,6 +25,13 @@ type Mutation {
   updateUser(user: UserUpdateInput!): User
 }
 
+type MyProjectsQueryType {
+  order: Int
+  projects: Project
+}
+
+union NameSearchResult = Portfolio | User
+
 type Portfolio {
   certificates: [PortfolioCertificate]
   email: String
@@ -168,6 +175,12 @@ input ProjectUpdateInput {
 
 type Query {
   allUser: [User]
+  emailSearch(email: String!): User
+  explore: ExploreResult
+  nameSearch(search_word: String!): NameSearchResult
+  portfolyaio(id: Int): Portfolio
+  project(id: Int): Project
+  skillSearch(search_word: String!): Skill
   user(id: Int): User
 }
 
