@@ -33,8 +33,6 @@ enum School {
     Busan
 }
 
-}
-
 model Portfolio {
     owner                User                   @relation(fields: [id], references: [id])
     id                   Int                    @id
@@ -66,8 +64,9 @@ model PortfolioView {
 model PortfolioSkill {
     id           Int       @id @default(autoincrement())
     portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
-    portfolio_id Int
-    name         String
+    portfolio_id Int       
+    skill        Skill     @relation(fields: [skill_id], references: [id])
+    skill_id     Int
     level        Int
 }
 
@@ -138,8 +137,9 @@ model ProjectView {
 model ProjectSkill {
     id         Int     @id @default(autoincrement())
     project    Project @relation(fields: [project_id], references: [id])
-    project_id Int
-    name       String
+    project_id Int     
+    skill      Skill   @relation(fields: [skill_id], references: [id])
+    skill_id   Int
 }
 
 model ProjectMember {
@@ -179,4 +179,9 @@ model EmailAuth {
     id        Int    @id @default(autoincrement())
     email     String
     auth_code String
+}
+
+model Skill {
+    id Int  @id @default(autoincrement())
+    name String 
 }
