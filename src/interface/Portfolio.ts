@@ -10,5 +10,5 @@ export interface PortfolioUpdateArgs {
   certificates?: PortfolioCertificate[];
   prizes?: PortfolioPrize[];
   projects?: PortfolioProject[];
-  skils?: PortfolioSkill[];
+  skills?: PortfolioSkill[];
 }
