@@ -9,7 +9,7 @@ export const ProjectCreateInput = inputObjectType({
     t.string("link");
     t.string("start_at");
     t.string("end_at");
-    t.list.field("skils", {
+    t.list.field("skills", {
       type: "SkillInput",
     });
     t.list.field("members", {
@@ -33,7 +33,7 @@ export const ProjectUpdateInput = inputObjectType({
     t.string("link");
     t.string("start_at");
     t.string("end_at");
-    t.list.field("skils", {
+    t.list.field("skills", {
       type: "SkillInput",
     });
     t.list.field("members", {
@@ -51,7 +51,7 @@ export const ProjectUpdateInput = inputObjectType({
 export const ProjectMemberInput = inputObjectType({
   name: "ProjectMemberInput",
   definition(t) {
-    t.nonNull.int("id");
+    t.nonNull.int("member_id");
     t.string("role");
   },
 });
@@ -66,7 +66,7 @@ export const ProjectFieldInput = inputObjectType({
 export const ProjectImageInput = inputObjectType({
   name: "ProjectImageInput",
   definition(t) {
-    t.nonNull.string("image");
+    t.nonNull.string("link");
     t.int("order");
   },
 });

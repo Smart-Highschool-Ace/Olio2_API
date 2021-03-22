@@ -1,7 +1,7 @@
 import { objectType } from "nexus";
 
 import { PortfolioService, ProjectService, UserService } from "service";
-
+import { Project } from "./Project";
 export const Portfolio = objectType({
   name: "Portfolio",
   definition(t) {
@@ -29,19 +29,20 @@ export const Portfolio = objectType({
       },
     });
     t.list.field("projects", {
-      type: PortfolioProject,
+      type: Project,
       resolve: async (root, _, __) => {
+        console.log;
         return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
       },
     });
     t.list.field("prizes", {
-      type: PortfolioPrize,
+      type: "PortfolioPrize",
       resolve: async (root, _, __) => {
         return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
       },
     });
     t.list.field("certificates", {
-      type: PortfolioCertificate,
+      type: "PortfolioCertificate",
       resolve: async (root, _, __) => {
         return (await PortfolioService.getPortfolio(root.id))
           .PortfolioCertificate;
@@ -63,6 +64,8 @@ export const Portfolio = objectType({
 export const PortfolioSkill = objectType({
   name: "PortfolioSkill",
   definition(t) {
+    t.int("id");
+    t.int("portfolio_id");
     t.string("name");
     t.int("level");
   },
@@ -71,7 +74,15 @@ export const PortfolioSkill = objectType({
 export const PortfolioProject = objectType({
   name: "PortfolioProject",
   definition(t) {
+    t.field("project", {
+      type: Project,
+      resolve: async (root, _, __) => {
+        return await ProjectService.getProject(root.project_id);
+      },
+    });
     t.int("id");
+    t.int("protfolio_id");
+    t.int("project_id");
     t.int("order");
   },
 });
@@ -104,8 +115,20 @@ export const PortfolioLike = objectType({
         return (await UserService.getUser(root.user_id)).name;
       },
     });
-    t.string("email");
-    t.string("profile_image");
-    t.string("entrance_year");
+    t.string("email", {
+      resolve: async (root, _, __) => {
+        return (await UserService.getUser(root.user_id)).email;
+      },
+    });
+    t.string("profile_image", {
+      resolve: async (root, _, __) => {
+        return (await UserService.getUser(root.user_id)).profile_image;
+      },
+    });
+    t.string("entrance_year", {
+      resolve: async (root, _, __) => {
+        return (await UserService.getUser(root.user_id)).entrance_year;
+      },
+    });
   },
 });

@@ -1,7 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 
 import { PortfolioUpdateArgs } from "interface/Portfolio";
+<<<<<<< HEAD
 import { parse_yyyy_mm_dd } from "util/date";
+=======
+
+>>>>>>> 16af3815f68da9f7dfc344724cadb48f260bc1a6
 const prisma = new PrismaClient();
 
 export const createPortfolio = async (user_id: number) => {
@@ -144,6 +148,7 @@ export const getPortfolio = async (id: number) => {
     where: {
       id: id,
     },
+<<<<<<< HEAD
     include: {
       owner: true,
       PortfolioView: true,
@@ -162,6 +167,8 @@ export const getPortfolioByUser = async (user_id: number) => {
         id: user_id,
       },
     },
+=======
+>>>>>>> 16af3815f68da9f7dfc344724cadb48f260bc1a6
   });
 };
 
