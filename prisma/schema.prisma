@@ -75,6 +75,7 @@ model PortfolioProject {
     id           Int       @id @default(autoincrement())
     portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
     portfolio_id Int
+    project      Project   @relation(fields: [project_id], references: [id])
     project_id   Int
     order        Int
 }

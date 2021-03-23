@@ -13,8 +13,14 @@ export interface ProjectCreateArgs {
   logo?: string;
   start_at?: Date;
   end_at?: Date;
-  skills?: ProjectSkill[];
+  skills?: ProjectInputSkill[];
   members?: ProjectMember[];
   fields?: ProjectField[];
   images?: ProjectImage[];
 }
+
+type ProjectInputSkill = {
+  id: number;
+  name: string;
+  project_id: number;
+};

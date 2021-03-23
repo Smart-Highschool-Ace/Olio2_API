@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { PortfolioUpdateArgs } from "interface/Portfolio";
 import { parse_yyyy_mm_dd } from "util/date";
+import { SkillService } from "service";
 const prisma = new PrismaClient();
 
 export const createPortfolio = async (user_id: number) => {
@@ -72,12 +73,22 @@ export const modifyPortfolio = async (
       },
       PortfolioSkill: {
         deleteMany: {},
-        create: updateArgs.skills.map((skill) => {
-          return {
-            name: skill.name,
-            level: skill.level,
-          };
-        }),
+        create: await Promise.all(
+          updateArgs.skills.map(async (skill) => {
+            const localSkill = await SkillService.getSkillByName(skill.name);
+            if (localSkill == null) {
+              const skill_id = (await SkillService.AddSkill(skill.name)).id;
+              return {
+                skill_id: skill_id,
+                level: skill.level,
+              };
+            }
+            return {
+              skill_id: localSkill.id,
+              level: skill.level,
+            };
+          })
+        ),
       },
       PortfolioProject: {
         deleteMany: {},
