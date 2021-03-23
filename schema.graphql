@@ -197,7 +197,7 @@ type Query {
   nameSearch(search_word: String!): NameSearchResult
   portfolio(id: Int): Portfolio
   project(id: Int): Project
-  skillSearch(search_word: String!): Skill
+  skillSearch(search_word: String!): [Skill]
   user(id: Int): User
 }
 
