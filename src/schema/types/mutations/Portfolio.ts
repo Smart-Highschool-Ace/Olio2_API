@@ -1,36 +1,32 @@
 import { arg, nonNull, intArg } from "nexus";
 
-import { context } from "context";
+import { Context } from "interface";
 import { PortfolioService } from "service";
-import { PortfolioUpdateArgs } from "interface/Portfolio";
+
 export const updatePortfolio = {
   args: {
-    id: nonNull(intArg()),
     portfolio: arg({ type: "PortfolioUpdateInput" }),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
-    const portfolio_id = (await PortfolioService.getPortfolioByUser(ctx.userId))
-      .id;
-    const updateArgs: PortfolioUpdateArgs = args.portfolio;
-    await PortfolioService.modifyPortfolio(portfolio_id, updateArgs);
-    return String(portfolio_id);
+  resolve: async (_: any, args: any, ctx: Context) => {
+    await PortfolioService.modifyPortfolio(ctx.userId, args.portfolio);
+    return { status: true };
   },
-  type: "String",
+  type: "statusResult",
 };
 
 export const likePortfolio = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, ctx: Context) => {
     const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
     if (result) {
       await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
-      return false;
+      return { status: false };
     } else {
       await PortfolioService.createLikePortfolio(ctx.userId, args.id);
-      return true;
+      return { status: true };
     }
   },
-  type: "Boolean",
+  type: "statusResult",
 };

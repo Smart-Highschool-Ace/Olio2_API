@@ -126,3 +126,13 @@ export const deleteUser: Function = async (user_id: number) => {
     },
   });
 };
+
+export const getUser: Function = async (user_id: number) => {
+  const prisma = new PrismaClient();
+
+  return await prisma.user.findFirst({
+    where: {
+      id: user_id,
+    },
+  });
+};
