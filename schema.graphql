@@ -81,6 +81,7 @@ type PortfolioProject {
   order: Int
   portfolio_id: Int
   project: Project
+  project_id: Int
 }
 
 input PortfolioProjectInput {
@@ -89,10 +90,10 @@ input PortfolioProjectInput {
 }
 
 type PortfolioSkill {
-  id: Int
   level: Int
-  name: String
   portfolio_id: Int
+  skill: Skill
+  skill_id: Int
 }
 
 input PortfolioSkillInput {
@@ -123,7 +124,7 @@ type Project {
   members: [ProjectMember]
   name: String
   owner: User
-  skills: [Skill]
+  skills: [ProjectSkill]
   start_at: String
   updated_at: String
   view: Int
@@ -170,6 +171,12 @@ input ProjectMemberInput {
   role: String
 }
 
+type ProjectSkill {
+  project_id: Int
+  skill: Skill
+  skill_id: Int!
+}
+
 input ProjectUpdateInput {
   description: String
   end_at: String
@@ -190,11 +197,12 @@ type Query {
   nameSearch(search_word: String!): NameSearchResult
   portfolio(id: Int): Portfolio
   project(id: Int): Project
-  skillSearch(search_word: String!): Skill
+  skillSearch(search_word: String!): [Skill]
   user(id: Int): User
 }
 
 type Skill {
+  id: ID
   name: String
 }
 

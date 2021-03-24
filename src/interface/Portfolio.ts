@@ -10,5 +10,12 @@ export interface PortfolioUpdateArgs {
   certificates?: PortfolioCertificate[];
   prizes?: PortfolioPrize[];
   projects?: PortfolioProject[];
-  skills?: PortfolioSkill[];
+  skills?: portfolioInputSkill[];
 }
+
+type portfolioInputSkill = {
+  id: number;
+  portfolio_id: number;
+  name: string;
+  level: number;
+};

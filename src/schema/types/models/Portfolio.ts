@@ -1,6 +1,11 @@
 import { objectType } from "nexus";
 
-import { PortfolioService, ProjectService, UserService } from "service";
+import {
+  PortfolioService,
+  ProjectService,
+  SkillService,
+  UserService,
+} from "service";
 
 export const Portfolio = objectType({
   name: "Portfolio",
@@ -64,9 +69,14 @@ export const Portfolio = objectType({
 export const PortfolioSkill = objectType({
   name: "PortfolioSkill",
   definition(t) {
-    t.int("id");
     t.int("portfolio_id");
-    t.string("name");
+    t.int("skill_id");
+    t.field("skill", {
+      type: "Skill",
+      resolve: async (root, _, __) => {
+        return await SkillService.getSkillByID(root.skill_id);
+      },
+    });
     t.int("level");
   },
 });
@@ -76,10 +86,11 @@ export const PortfolioProject = objectType({
   definition(t) {
     t.field("project", {
       type: "Project",
-      resolve: async (root: any, _, __) => {
+      resolve: async (root, _, __) => {
         return await ProjectService.getProject(root.project_id);
       },
     });
+    t.int("project_id");
     t.int("id");
     t.int("portfolio_id");
     t.int("order");

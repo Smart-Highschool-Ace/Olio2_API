@@ -1,6 +1,5 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-
-import { Project } from "schema/types";
+import { PrismaClient } from "@prisma/client";
+import { SkillService } from "service";
 import { ProjectCreateArgs } from "../interface/project";
 
 const prisma = new PrismaClient();
@@ -111,9 +110,20 @@ export const createProject = async (
       start_at: createArgs.start_at,
       end_at: createArgs.end_at,
       ProjectSkill: {
-        create: createArgs.skills.map((skill) => {
-          return { name: skill.name };
-        }),
+        create: await Promise.all(
+          createArgs.skills.map(async (skill) => {
+            const localSkill = await SkillService.getSkillByName(skill.name);
+            if (localSkill == null) {
+              const skill_id = (await SkillService.AddSkill(skill.name)).id;
+              return {
+                skill_id: skill_id,
+              };
+            }
+            return {
+              skill_id: localSkill.id,
+            };
+          })
+        ),
       },
       ProjectMember: {
         create: createArgs.members.map((m) => {
@@ -157,9 +167,20 @@ export const updateProject = async (
       end_at: updateArgs.end_at,
       ProjectSkill: {
         deleteMany: {},
-        create: updateArgs.skills.map((skill) => {
-          return { name: skill.name };
-        }),
+        create: await Promise.all(
+          updateArgs.skills.map(async (skill) => {
+            const localSkill = await SkillService.getSkillByName(skill.name);
+            if (localSkill == null) {
+              const skill_id = (await SkillService.AddSkill(skill.name)).id;
+              return {
+                skill_id: skill_id,
+              };
+            }
+            return {
+              skill_id: localSkill.id,
+            };
+          })
+        ),
       },
       ProjectMember: {
         deleteMany: {},
