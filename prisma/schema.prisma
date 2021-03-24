@@ -33,11 +33,10 @@ enum School {
     Busan
 }
 
-}
-
 model Portfolio {
     owner                User                   @relation(fields: [id], references: [id])
     id                   Int                    @id
+    email                String?
     PortfolioLike        PortfolioLike[]
     PortfolioSkill       PortfolioSkill[]
     PortfolioProject     PortfolioProject[]

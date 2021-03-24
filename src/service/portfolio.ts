@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { PortfolioUpdateArgs } from "interface/Portfolio";
-
+import { parse_yyyy_mm_dd } from "util/date";
 const prisma = new PrismaClient();
 
 export const createPortfolio = async (user_id: number) => {
@@ -37,40 +37,66 @@ export const getViewAboutPortfolio = async (id: number): Promise<number> => {
   });
 };
 export const getLikesAboutPortfolioByPortfolio = async (id: number) => {
-  return await prisma.portfolioLike.findMany({
+  const like = await prisma.portfolioLike.findMany({
     where: {
       portfolio_id: id,
     },
-    select: {
-      user: true,
-    },
   });
+  return like;
 };
+
 export const modifyPortfolio = async (
   id: number,
   updateArgs: PortfolioUpdateArgs
 ) => {
+  updateArgs.skills = updateArgs.skills || [];
+  updateArgs.certificates = updateArgs.certificates || [];
+  updateArgs.prizes = updateArgs.prizes || [];
+  updateArgs.projects = updateArgs.projects || [];
+
   await prisma.portfolio.update({
     where: {
       id: id,
     },
     data: {
-      owner: {
-        update: {
-          email: updateArgs.email,
-        },
+      email: updateArgs.email,
+      PortfolioCertificate: {
+        deleteMany: {},
+        create: updateArgs.certificates.map((certificateArgs) => {
+          return {
+            name: certificateArgs.name,
+            institution: certificateArgs.institution,
+            certified_at: parse_yyyy_mm_dd(certificateArgs.certified_at),
+          };
+        }),
       },
       PortfolioSkill: {
-        set: updateArgs.skils,
+        deleteMany: {},
+        create: updateArgs.skills.map((skill) => {
+          return {
+            name: skill.name,
+            level: skill.level,
+          };
+        }),
       },
       PortfolioProject: {
-        set: updateArgs.projects,
+        deleteMany: {},
+        create: updateArgs.projects.map((project) => {
+          return {
+            project_id: project.project_id,
+            order: project.order,
+          };
+        }),
       },
       PortfolioPrize: {
-        set: updateArgs.prizes,
-      },
-      PortfolioCertificate: {
-        set: updateArgs.certificates,
+        deleteMany: {},
+        create: updateArgs.prizes.map((prize) => {
+          return {
+            name: prize.name,
+            institution: prize.institution,
+            prized_at: parse_yyyy_mm_dd(prize.prized_at),
+          };
+        }),
       },
     },
   });
@@ -117,6 +143,24 @@ export const getPortfolio = async (id: number) => {
   return await prisma.portfolio.findFirst({
     where: {
       id: id,
+    },
+    include: {
+      owner: true,
+      PortfolioView: true,
+      PortfolioSkill: true,
+      PortfolioProject: true,
+      PortfolioPrize: true,
+      PortfolioCertificate: true,
+    },
+  });
+};
+
+export const getPortfolioByUser = async (user_id: number) => {
+  return await prisma.portfolio.findFirst({
+    where: {
+      owner: {
+        id: user_id,
+      },
     },
   });
 };
