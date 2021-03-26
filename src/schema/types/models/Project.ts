@@ -1,5 +1,5 @@
 import { objectType } from "nexus";
-import { ProjectService } from "service";
+import { ProjectService, SkillService } from "service";
 
 export const Project = objectType({
   name: "Project",
@@ -26,25 +26,25 @@ export const Project = objectType({
       },
     });
     t.list.field("skills", {
-      type: "Skill",
+      type: ProjectSkill,
       resolve: async (root, _, __) => {
         return (await ProjectService.getProject(root.id)).ProjectSkill;
       },
     });
     t.list.field("members", {
-      type: "ProjectMember",
+      type: ProjectMember,
       resolve: async (root, _, __) => {
         return (await ProjectService.getProject(root.id)).ProjectMember;
       },
     });
     t.list.field("fields", {
-      type: "ProjectField",
+      type: ProjectField,
       resolve: async (root, _, __) => {
         return (await ProjectService.getProject(root.id)).ProjectField;
       },
     });
     t.list.field("images", {
-      type: "ProjectImage",
+      type: ProjectImage,
       resolve: async (root, _, __) => {
         return (await ProjectService.getProject(root.id)).ProjectImage;
       },
@@ -66,6 +66,19 @@ export const Project = objectType({
   },
 });
 
+export const ProjectSkill = objectType({
+  name: "ProjectSkill",
+  definition(t) {
+    t.nonNull.int("skill_id");
+    t.field("skill", {
+      type: "Skill",
+      resolve: async (root, _, __) => {
+        return await SkillService.getSkillByID(root.skill_id);
+      },
+    });
+    t.int("project_id");
+  },
+});
 export const ProjectMember = objectType({
   name: "ProjectMember",
   definition(t) {

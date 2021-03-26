@@ -41,6 +41,7 @@ model Portfolio {
     updated_at           DateTime               @default(now())
     view_count           Int                    @default(0)
     like_count           Int                    @default(0)
+    email                String?
     PortfolioLike        PortfolioLike[]
     PortfolioSkill       PortfolioSkill[]
     PortfolioProject     PortfolioProject[]
@@ -71,8 +72,9 @@ model PortfolioView {
 model PortfolioSkill {
     id           Int       @id @default(autoincrement())
     portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
-    portfolio_id Int
-    name         String
+    portfolio_id Int       
+    skill        Skill     @relation(fields: [skill_id], references: [id])
+    skill_id     Int
     level        Int
     created_at   DateTime  @default(now())
 }
@@ -81,6 +83,7 @@ model PortfolioProject {
     id           Int       @id @default(autoincrement())
     portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
     portfolio_id Int
+    project      Project   @relation(fields: [project_id], references: [id])
     project_id   Int
     order        Int
     created_at   DateTime  @default(now())
@@ -152,8 +155,9 @@ model ProjectSkill {
     id         Int      @id @default(autoincrement())
     project    Project  @relation(fields: [project_id], references: [id])
     project_id Int
-    name       String
     created_at DateTime @default(now())
+    skill      Skill   @relation(fields: [skill_id], references: [id])
+    skill_id   Int
 }
 
 model ProjectMember {
@@ -197,4 +201,9 @@ model EmailAuth {
     email      String
     auth_code  String
     created_at DateTime @default(now())
+}
+
+model Skill {
+    id Int  @id @default(autoincrement())
+    name String 
 }

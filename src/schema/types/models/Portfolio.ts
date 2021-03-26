@@ -1,6 +1,11 @@
 import { objectType } from "nexus";
 
-import { PortfolioService } from "service";
+import {
+  PortfolioService,
+  ProjectService,
+  SkillService,
+  UserService,
+} from "service";
 
 export const Portfolio = objectType({
   name: "Portfolio",
@@ -15,7 +20,7 @@ export const Portfolio = objectType({
     t.string("email");
     t.string("link");
     t.list.field("likes", {
-      type: "User",
+      type: PortfolioLike,
       resolve: async (root, _, __) => {
         return await PortfolioService.getLikesAboutPortfolioByPortfolio(
           root.id
@@ -23,25 +28,26 @@ export const Portfolio = objectType({
       },
     });
     t.list.field("skills", {
-      type: "PortfolioSkill",
+      type: PortfolioSkill,
       resolve: async (root, _, __) => {
         return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
       },
     });
     t.list.field("projects", {
-      type: "Project",
+      type: PortfolioProject,
       resolve: async (root, _, __) => {
+        console.log;
         return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
       },
     });
     t.list.field("prizes", {
-      type: PortfolioPrize,
+      type: "PortfolioPrize",
       resolve: async (root, _, __) => {
         return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
       },
     });
     t.list.field("certificates", {
-      type: PortfolioCertificate,
+      type: "PortfolioCertificate",
       resolve: async (root, _, __) => {
         return (await PortfolioService.getPortfolio(root.id))
           .PortfolioCertificate;
@@ -63,10 +69,12 @@ export const Portfolio = objectType({
 export const PortfolioSkill = objectType({
   name: "PortfolioSkill",
   definition(t) {
+    t.int("portfolio_id");
+    t.int("skill_id");
     t.field("skill", {
       type: "Skill",
-      resolve: () => {
-        return "Typescript or something";
+      resolve: async (root, _, __) => {
+        return await SkillService.getSkillByID(root.skill_id);
       },
     });
     t.int("level");
@@ -78,7 +86,13 @@ export const PortfolioProject = objectType({
   definition(t) {
     t.field("project", {
       type: "Project",
+      resolve: async (root, _, __) => {
+        return await ProjectService.getProject(root.project_id);
+      },
     });
+    t.int("project_id");
+    t.int("id");
+    t.int("portfolio_id");
     t.int("order");
   },
 });
@@ -98,5 +112,19 @@ export const PortfolioCertificate = objectType({
     t.string("name");
     t.string("institution");
     t.string("certified_at");
+  },
+});
+
+export const PortfolioLike = objectType({
+  name: "PortfolioLike",
+  definition(t) {
+    t.int("id");
+    t.field("user", {
+      type: "User",
+      resolve: async (root, _, __) => {
+        return await UserService.getUser(root.user_id);
+      },
+    });
+    t.int("user_id");
   },
 });

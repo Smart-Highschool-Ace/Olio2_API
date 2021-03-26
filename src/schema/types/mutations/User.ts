@@ -3,7 +3,7 @@ import { arg, nonNull, stringArg } from "nexus";
 import { PortfolioService, UserService } from "service";
 import { UserCreateArgs, UserUpdateArgs } from "interface/User";
 import { checkAuthCode, sendAuthCode } from "util/emailAuth";
-import { context } from "context";
+import { Context } from "interface";
 
 export const login = {
   args: {
@@ -66,14 +66,14 @@ export const updateUser = {
   args: {
     user: nonNull(arg({ type: "UserUpdateInput" })),
   },
-  resolve: async (_: any, user: UserUpdateArgs, ctx: context) => {
+  resolve: async (_: any, user: UserUpdateArgs, ctx: Context) => {
     const updated_user = await UserService.updateUser(ctx.userId, user);
     return updated_user;
   },
   type: "User",
 };
 export const deleteUser = {
-  resolve: async (_: any, args: any, ctx: context) => {
+  resolve: async (_: any, args: any, ctx: Context) => {
     const deleted_user = await UserService.deleteUser(ctx.userId);
     return deleted_user;
   },

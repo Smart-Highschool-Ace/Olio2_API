@@ -16,11 +16,11 @@ type Mutation {
   createUser(user: UserCreateInput!): User
   deleteProject(id: Int!): String
   deleteUser: User
-  likePortfolio(id: Int!): Boolean
+  likePortfolio(id: Int!): statusResult
   likeProject(id: Int!): Boolean
   login(email: String!, password: String!): loginResult
   sendAuthEmail(email: String!): statusResult
-  updatePortfolio(id: Int!, portfolio: PortfolioUpdateInput): String
+  updatePortfolio(portfolio: PortfolioUpdateInput): statusResult
   updateProject(id: Int!, project: ProjectUpdateInput): String
   updateUser(user: UserUpdateInput!): User
 }
@@ -37,11 +37,11 @@ type Portfolio {
   email: String
   id: Int
   liked: Boolean
-  likes: [User]
+  likes: [PortfolioLike]
   link: String
   owner: User
   prizes: [PortfolioPrize]
-  projects: [Project]
+  projects: [PortfolioProject]
   skills: [PortfolioSkill]
   view: Int
 }
@@ -53,9 +53,15 @@ type PortfolioCertificate {
 }
 
 input PortfolioCertificateInput {
-  certified_at: Int!
+  certified_at: String!
   institution: String!
   name: String!
+}
+
+type PortfolioLike {
+  id: Int
+  user: User
+  user_id: Int
 }
 
 type PortfolioPrize {
@@ -67,27 +73,32 @@ type PortfolioPrize {
 input PortfolioPrizeInput {
   institution: String!
   name: String!
-  prized_at: Int!
+  prized_at: String!
 }
 
 type PortfolioProject {
+  id: Int
   order: Int
+  portfolio_id: Int
   project: Project
+  project_id: Int
 }
 
 input PortfolioProjectInput {
   order: Int!
-  project: Int!
+  project_id: Int!
 }
 
 type PortfolioSkill {
   level: Int
+  portfolio_id: Int
   skill: Skill
+  skill_id: Int
 }
 
 input PortfolioSkillInput {
   level: Int!
-  skill: String!
+  name: String!
 }
 
 input PortfolioUpdateInput {
@@ -95,7 +106,7 @@ input PortfolioUpdateInput {
   email: String
   prizes: [PortfolioPrizeInput]
   projects: [PortfolioProjectInput]
-  skils: [PortfolioSkillInput]
+  skills: [PortfolioSkillInput]
 }
 
 type Project {
@@ -113,7 +124,7 @@ type Project {
   members: [ProjectMember]
   name: String
   owner: User
-  skills: [Skill]
+  skills: [ProjectSkill]
   start_at: String
   updated_at: String
   view: Int
@@ -128,7 +139,7 @@ input ProjectCreateInput {
   link: String
   members: [ProjectMemberInput]
   name: String!
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -146,7 +157,7 @@ type ProjectImage {
 }
 
 input ProjectImageInput {
-  image: String!
+  link: String!
   order: Int
 }
 
@@ -156,8 +167,14 @@ type ProjectMember {
 }
 
 input ProjectMemberInput {
-  id: Int!
+  member_id: Int!
   role: String
+}
+
+type ProjectSkill {
+  project_id: Int
+  skill: Skill
+  skill_id: Int!
 }
 
 input ProjectUpdateInput {
@@ -169,7 +186,7 @@ input ProjectUpdateInput {
   link: String
   members: [ProjectMemberInput]
   name: String
-  skils: [SkillInput]
+  skills: [SkillInput]
   start_at: String
 }
 
@@ -180,11 +197,12 @@ type Query {
   nameSearch(search_word: String!): NameSearchResult
   portfolio(id: Int): Portfolio
   project(id: Int): Project
-  skillSearch(search_word: String!): Skill
+  skillSearch(search_word: String!): [Skill]
   user(id: Int): User
 }
 
 type Skill {
+  id: ID
   name: String
 }
 
