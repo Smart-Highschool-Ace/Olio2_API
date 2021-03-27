@@ -1,5 +1,6 @@
+import { AnyAaaaRecord } from "dns";
 import { stringArg, nonNull } from "nexus";
-import { SkillService } from "service";
+import { SkillService, UserService } from "service";
 
 export const skillSearch = {
   type: "Skill",
@@ -7,7 +8,6 @@ export const skillSearch = {
     search_word: nonNull(stringArg()),
   },
   resolve: async (_: any, args: any, __: any) => {
-    // TODO : Skill Search 구현
     const data = await SkillService.findSkillByName(args.search_word);
     return data;
   },
@@ -29,9 +29,8 @@ export const emailSearch = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async () => {
-    // TODO : Email Search 구현
-    return;
+  resolve: async (_: any, args: any, __: any) => {
+    return await UserService.findUserByEmail(args.email);
   },
 };
 

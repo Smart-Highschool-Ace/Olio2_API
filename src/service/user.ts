@@ -136,3 +136,15 @@ export const getUser: Function = async (user_id: number) => {
     },
   });
 };
+
+export const findUserByEmail: Function = async (email: string) => {
+  const prisma = new PrismaClient();
+
+  return await prisma.user.findMany({
+    where: {
+      email: {
+        contains: email,
+      },
+    },
+  });
+};

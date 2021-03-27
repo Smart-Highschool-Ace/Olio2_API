@@ -192,7 +192,7 @@ input ProjectUpdateInput {
 
 type Query {
   allUser: [User]
-  emailSearch(email: String!): User
+  emailSearch(email: String!): [User]
   explore: ExploreResult
   nameSearch(search_word: String!): NameSearchResult
   portfolio(id: Int): Portfolio
