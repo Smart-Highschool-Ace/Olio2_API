@@ -191,9 +191,12 @@ input ProjectUpdateInput {
 }
 
 type Query {
+  allPortfolio: [Portfolio]
+  allProject(orderBy: String, page: Int): [Project]
   allUser: [User]
   emailSearch(email: String!): [User]
   explore: ExploreResult
+  myProject(id: Int): [PortfolioProject]
   nameSearch(search_word: String!): NameSearchResult
   portfolio(id: Int): Portfolio
   project(id: Int): Project
