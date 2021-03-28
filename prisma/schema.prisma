@@ -17,7 +17,8 @@ model User {
     profile_image  String?         @db.Text
     introduction   String?
     entrance_year  Int
-    createdAt      DateTime        @default(now())
+    created_at     DateTime        @default(now())
+    updated_at     DateTime        @default(now())
     Portfolio      Portfolio?
     Project        Project[]
     LikedPortfolio PortfolioLike[]
@@ -37,6 +38,10 @@ enum School {
 model Portfolio {
     owner                User                   @relation(fields: [id], references: [id])
     id                   Int                    @id
+    created_at           DateTime               @default(now())
+    updated_at           DateTime               @default(now())
+    view_count           Int                    @default(0)
+    like_count           Int                    @default(0)
     email                String?
     PortfolioLike        PortfolioLike[]
     PortfolioSkill       PortfolioSkill[]
@@ -52,6 +57,7 @@ model PortfolioLike {
     user         User      @relation(fields: [user_id], references: [id])
     portfolio_id Int
     user_id      Int
+    created_at   DateTime  @default(now())
 }
 
 model PortfolioView {
@@ -61,6 +67,7 @@ model PortfolioView {
     portfolio_id Int
     user_id      Int
     source_ip    String
+    created_at   DateTime  @default(now())
 }
 
 model PortfolioSkill {
@@ -70,6 +77,7 @@ model PortfolioSkill {
     skill        Skill     @relation(fields: [skill_id], references: [id])
     skill_id     Int
     level        Int
+    created_at   DateTime  @default(now())
 }
 
 model PortfolioProject {
@@ -79,6 +87,7 @@ model PortfolioProject {
     project      Project   @relation(fields: [project_id], references: [id])
     project_id   Int
     order        Int
+    created_at   DateTime  @default(now())
 }
 
 model PortfolioPrize {
@@ -88,6 +97,7 @@ model PortfolioPrize {
     name         String
     institution  String?
     prized_at    DateTime
+    created_at   DateTime  @default(now())
 }
 
 model PortfolioCertificate {
@@ -97,6 +107,7 @@ model PortfolioCertificate {
     name         String
     institution  String?
     certified_at DateTime
+    created_at   DateTime  @default(now())
 }
 
 model Project {
@@ -110,6 +121,8 @@ model Project {
     logo          String?         @db.Text
     start_at      DateTime?
     end_at        DateTime?
+    view_count    Int             @default(0)
+    like_count    Int             @default(0)
     created_at    DateTime        @default(now())
     updated_at    DateTime        @default(now())
     ProjectSkill  ProjectSkill[]
@@ -121,44 +134,49 @@ model Project {
 }
 
 model ProjectLike {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
-    user       User    @relation(fields: [user_id], references: [id])
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
+    user       User     @relation(fields: [user_id], references: [id])
     project_id Int
     user_id    Int
+    created_at DateTime @default(now())
 }
 
 model ProjectView {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
-    user       User    @relation(fields: [user_id], references: [id])
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
+    user       User     @relation(fields: [user_id], references: [id])
     project_id Int
     user_id    Int
     source_ip  String
+    created_at DateTime @default(now())
 }
 
 model ProjectSkill {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
-    project_id Int     
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
+    project_id Int
+    created_at DateTime @default(now())
     skill      Skill   @relation(fields: [skill_id], references: [id])
     skill_id   Int
 }
 
 model ProjectMember {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
-    member     User    @relation(fields: [member_id], references: [id])
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
+    member     User     @relation(fields: [member_id], references: [id])
     project_id Int
     member_id  Int
     role       String
+    created_at DateTime @default(now())
 }
 
 model ProjectField {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
     project_id Int
     name       Field
+    created_at DateTime @default(now())
 }
 
 enum Field {
@@ -171,17 +189,19 @@ enum Field {
 }
 
 model ProjectImage {
-    id         Int     @id @default(autoincrement())
-    project    Project @relation(fields: [project_id], references: [id])
+    id         Int      @id @default(autoincrement())
+    project    Project  @relation(fields: [project_id], references: [id])
     project_id Int
-    link       String  @db.Text
+    link       String   @db.Text
     order      Int
+    created_at DateTime @default(now())
 }
 
 model EmailAuth {
-    id        Int    @id @default(autoincrement())
-    email     String
-    auth_code String
+    id         Int      @id @default(autoincrement())
+    email      String
+    auth_code  String
+    created_at DateTime @default(now())
 }
 
 model Skill {
