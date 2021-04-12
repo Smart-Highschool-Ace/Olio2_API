@@ -1,6 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { String } from "aws-sdk/clients/batch";
-import { integer } from "aws-sdk/clients/cloudfront";
 
 export const getSkillByName = async (name: string) => {
   const prisma = new PrismaClient();
@@ -24,7 +22,7 @@ export const findSkillByName = async (name: string) => {
   });
 };
 
-export const getSkillByID = async (id: integer) => {
+export const getSkillByID = async (id: number) => {
   const prisma = new PrismaClient();
   return await prisma.skill.findFirst({
     where: {
