@@ -15,7 +15,6 @@ model User {
     name           String
     school         School
     profile_image  String?         @db.Text
-    introduction   String?
     entrance_year  Int
     created_at     DateTime        @default(now())
     updated_at     DateTime        @default(now())
@@ -42,6 +41,7 @@ model Portfolio {
     updated_at           DateTime               @default(now())
     view_count           Int                    @default(0)
     like_count           Int                    @default(0)
+    introduction         String?
     email                String?
     PortfolioLike        PortfolioLike[]
     PortfolioSkill       PortfolioSkill[]
