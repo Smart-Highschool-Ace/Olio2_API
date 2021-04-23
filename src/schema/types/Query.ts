@@ -15,6 +15,7 @@ export const Query = queryType({
     t.list.field("skillSearch", q.skillSearch);
     t.field("nameSearch", q.nameSearch);
     t.list.field("emailSearch", q.emailSearch);
+    t.list.field("portfolioSearch", q.portfolioSearch);
     t.field("explore", q.explore);
   },
 });
