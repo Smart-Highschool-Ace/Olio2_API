@@ -93,7 +93,6 @@ export const createUser: Function = async (data: UserCreateArgs) => {
       name: user.name,
       entrance_year: user.entrance_year,
       profile_image: user.profile_image,
-      introduction: user.introduction,
     },
   });
 };
@@ -112,7 +111,6 @@ export const updateUser: Function = async (
       name: user.name,
       school: user.school,
       profile_image: user.profile_image,
-      introduction: user.introduction,
     },
   });
 };
@@ -144,6 +142,18 @@ export const findUserByEmail: Function = async (email: string) => {
     where: {
       email: {
         contains: email,
+      },
+    },
+  });
+};
+
+export const findUserByName: Function = async (name: string) => {
+  const prisma = new PrismaClient();
+
+  return await prisma.user.findMany({
+    where: {
+      name: {
+        contains: name,
       },
     },
   });
