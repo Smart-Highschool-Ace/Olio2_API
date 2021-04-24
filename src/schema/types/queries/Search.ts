@@ -1,5 +1,5 @@
 import { stringArg, nonNull } from "nexus";
-import { SkillService, UserService } from "service";
+import { ProjectService, SkillService, UserService } from "service";
 
 export const skillSearch = {
   type: "Skill",
@@ -43,6 +43,15 @@ export const portfolioSearch = {
   },
 };
 
+export const projectSearch = {
+  type: "ProjectSearchResult",
+  args: {
+    name: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    return await ProjectService.findProjectByName(args.name);
+  },
+};
 export const explore = {
   type: "ExploreResult",
   resolve: async () => {
