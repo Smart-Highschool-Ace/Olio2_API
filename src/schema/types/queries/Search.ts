@@ -1,4 +1,3 @@
-import { AnyAaaaRecord } from "dns";
 import { stringArg, nonNull } from "nexus";
 import { SkillService, UserService } from "service";
 
@@ -31,6 +30,16 @@ export const emailSearch = {
   },
   resolve: async (_: any, args: any, __: any) => {
     return await UserService.findUserByEmail(args.email);
+  },
+};
+
+export const portfolioSearch = {
+  type: "PortfolioSearchResult",
+  args: {
+    name: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    return await UserService.findUserByName(args.name);
   },
 };
 
