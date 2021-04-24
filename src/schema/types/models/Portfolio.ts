@@ -129,27 +129,3 @@ export const PortfolioLike = objectType({
     t.int("user_id");
   },
 });
-
-export const PortfolioSearchResult = objectType({
-  name: "PortfolioSearchResult",
-  definition(t) {
-    t.int("id");
-    t.string("name");
-    t.string("profile_image");
-    t.string("introduction");
-    t.int("portfolio_view", {
-      resolve: async (root, _, __) => {
-        const portfolio_id = (
-          await PortfolioService.getPortfolioByUser(root.id)
-        ).id;
-        return await PortfolioService.getViewAboutPortfolio(portfolio_id);
-      },
-    });
-    t.int("portfolio_like", {
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getLikedPortfoliosOfUser(root.id))
-          .length;
-      },
-    });
-  },
-});
