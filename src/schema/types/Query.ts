@@ -13,7 +13,7 @@ export const Query = queryType({
     t.list.field("allPortfolio", q.allPortfolio);
 
     t.list.field("skillSearch", q.skillSearch);
-    t.field("nameSearch", q.nameSearch);
+    t.list.field("nameSearch", q.nameSearch);
     t.list.field("emailSearch", q.emailSearch);
     t.field("explore", q.explore);
   },

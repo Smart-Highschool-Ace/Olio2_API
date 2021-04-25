@@ -14,13 +14,12 @@ export const skillSearch = {
 };
 
 export const nameSearch = {
-  type: "NameSearchResult",
+  type: "User",
   args: {
-    search_word: nonNull(stringArg()),
+    name: nonNull(stringArg()),
   },
-  resolve: async () => {
-    // TODO : Name Search 구현
-    return;
+  resolve: async (_: any, args: any, __: any) => {
+    return await UserService.findUserByName(args.name);
   },
 };
 
