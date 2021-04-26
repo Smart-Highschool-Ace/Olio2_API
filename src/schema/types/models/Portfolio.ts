@@ -59,6 +59,13 @@ export const Portfolio = objectType({
         return await PortfolioService.getViewAboutPortfolio(root.id);
       },
     });
+    t.int("like", {
+      resolve: async (root, _, __) => {
+        return (
+          await PortfolioService.getLikesAboutPortfolioByPortfolio(root.id)
+        ).length;
+      },
+    });
     t.boolean("liked", {
       resolve: async (root, __, ctx) => {
         return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
