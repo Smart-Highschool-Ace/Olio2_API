@@ -163,6 +163,7 @@ export const getPortfolio = async (id: number) => {
       PortfolioProject: true,
       PortfolioPrize: true,
       PortfolioCertificate: true,
+      PortfolioLike: true,
     },
   });
 };
