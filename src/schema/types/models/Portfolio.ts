@@ -13,44 +13,24 @@ export const Portfolio = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      // resolve: async (root, _, __) => {
-      //   return (await PortfolioService.getPortfolio(root.id)).owner;
-      // },
     });
     t.string("introduction");
     t.string("email");
     t.string("link");
     t.list.field("PortfolioLike", {
       type: "PortfolioLike",
-      // resolve: async (root, _, __) => {
-      //   return await PortfolioService.getLikesAboutPortfolioByPortfolio(
-      //     root.id
-      //   );
     });
     t.list.field("PortfolioSkill", {
       type: "PortfolioSkill",
-      // resolve: async (root, _, __) => {
-      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
-      // },
     });
     t.list.field("PortfolioProject", {
       type: "PortfolioProject",
-      // resolve: async (root, _, __) => {
-      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
-      // },
     });
     t.list.field("PortfolioPrize", {
       type: "PortfolioPrize",
-      // resolve: async (root, _, __) => {
-      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
-      // },
     });
     t.list.field("PortfolioCertificate", {
       type: "PortfolioCertificate",
-      // resolve: async (root, _, __) => {
-      //   return (await PortfolioService.getPortfolio(root.id))
-      //     .PortfolioCertificate;
-      // },
     });
     t.list.field("PortfolioView", {
       type: "PortfolioView",
