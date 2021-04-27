@@ -13,46 +13,44 @@ export const Portfolio = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).owner;
-      },
+      // resolve: async (root, _, __) => {
+      //   return (await PortfolioService.getPortfolio(root.id)).owner;
+      // },
     });
     t.string("introduction");
     t.string("email");
     t.string("link");
-    t.list.field("likes", {
-      type: PortfolioLike,
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getLikesAboutPortfolioByPortfolio(
-          root.id
-        );
-      },
+    t.list.field("PortfolioLike", {
+      type: "PortfolioLike",
+      // resolve: async (root, _, __) => {
+      //   return await PortfolioService.getLikesAboutPortfolioByPortfolio(
+      //     root.id
+      //   );
     });
-    t.list.field("skills", {
-      type: PortfolioSkill,
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
-      },
+    t.list.field("PortfolioSkill", {
+      type: "PortfolioSkill",
+      // resolve: async (root, _, __) => {
+      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
+      // },
     });
-    t.list.field("projects", {
-      type: PortfolioProject,
-      resolve: async (root, _, __) => {
-        console.log;
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
-      },
+    t.list.field("PortfolioProject", {
+      type: "PortfolioProject",
+      // resolve: async (root, _, __) => {
+      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
+      // },
     });
-    t.list.field("prizes", {
+    t.list.field("PortfolioPrize", {
       type: "PortfolioPrize",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
-      },
+      // resolve: async (root, _, __) => {
+      //   return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
+      // },
     });
-    t.list.field("certificates", {
+    t.list.field("PortfolioCertificate", {
       type: "PortfolioCertificate",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id))
-          .PortfolioCertificate;
-      },
+      // resolve: async (root, _, __) => {
+      //   return (await PortfolioService.getPortfolio(root.id))
+      //     .PortfolioCertificate;
+      // },
     });
     t.int("view", {
       resolve: async (root, _, __) => {
