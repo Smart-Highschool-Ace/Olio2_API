@@ -52,16 +52,17 @@ export const Portfolio = objectType({
       //     .PortfolioCertificate;
       // },
     });
+    t.list.field("PortfolioView", {
+      type: "PortfolioView",
+    });
     t.int("view", {
       resolve: async (root, _, __) => {
-        return await PortfolioService.getViewAboutPortfolio(root.id);
+        return root.PortfolioView.length;
       },
     });
     t.int("like", {
       resolve: async (root, _, __) => {
-        return (
-          await PortfolioService.getLikesAboutPortfolioByPortfolio(root.id)
-        ).length;
+        return root.PortfolioLike.length;
       },
     });
     t.boolean("liked", {
@@ -69,6 +70,16 @@ export const Portfolio = objectType({
         return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
       },
     });
+  },
+});
+
+export const PortfolioView = objectType({
+  name: "PortfolioView",
+  definition(t) {
+    t.int("id");
+    t.int("portfolio_id");
+    t.int("user_id");
+    t.string("source_ip");
   },
 });
 

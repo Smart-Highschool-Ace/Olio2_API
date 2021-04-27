@@ -33,17 +33,19 @@ type MyProjectsQueryType {
 union NameSearchResult = Portfolio | User
 
 type Portfolio {
-  certificates: [PortfolioCertificate]
   email: String
   id: Int
   introduction: String
+  like: Int
   liked: Boolean
-  likes: [PortfolioLike]
   link: String
   owner: User
-  prizes: [PortfolioPrize]
-  projects: [PortfolioProject]
-  skills: [PortfolioSkill]
+  PortfolioCertificate: [PortfolioCertificate]
+  PortfolioLike: [PortfolioLike]
+  PortfolioPrize: [PortfolioPrize]
+  PortfolioProject: [PortfolioProject]
+  PortfolioSkill: [PortfolioSkill]
+  PortfolioView: [PortfolioView]
   view: Int
 }
 
@@ -90,15 +92,6 @@ input PortfolioProjectInput {
   project_id: Int!
 }
 
-type PortfolioSearchResult {
-  id: Int
-  introduction: String
-  like_portfolio: Int
-  name: String
-  profile_image: String
-  view_portfolio: Int
-}
-
 type PortfolioSkill {
   level: Int
   portfolio_id: Int
@@ -120,6 +113,13 @@ input PortfolioUpdateInput {
   skills: [PortfolioSkillInput]
 }
 
+type PortfolioView {
+  id: Int
+  portfolio_id: Int
+  source_ip: String
+  user_id: Int
+}
+
 type Project {
   created_at: String
   description: String
@@ -128,6 +128,7 @@ type Project {
   id: Int
   images: [ProjectImage]
   introduction: String
+  like: Int
   liked: Boolean
   likes: [User]
   link: String
@@ -182,15 +183,6 @@ input ProjectMemberInput {
   role: String
 }
 
-type ProjectSearchResult {
-  id: Int
-  introduction: String
-  like_project: Int
-  logo: String
-  name: String
-  view_project: Int
-}
-
 type ProjectSkill {
   project_id: Int
   skill: Skill
@@ -218,9 +210,9 @@ type Query {
   myProject(id: Int): [PortfolioProject]
   nameSearch(name: String!): [User]
   portfolio(id: Int): Portfolio
-  portfolioSearch(name: String!): [PortfolioSearchResult]
+  portfolioSearch(name: String!): [Portfolio]
   project(id: Int): Project
-  projectSearch(name: String!): [ProjectSearchResult]
+  projectSearch(name: String!): [Project]
   skillSearch(search_word: String!): [Skill]
   user(id: Int): User
 }
