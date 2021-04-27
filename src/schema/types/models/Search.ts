@@ -1,5 +1,5 @@
-import { unionType } from "nexus";
-
+import { unionType, objectType } from "nexus";
+import { PortfolioService, ProjectService } from "service";
 export const NameSearchResult = unionType({
   name: "NameSearchResult",
   resolveType(data) {

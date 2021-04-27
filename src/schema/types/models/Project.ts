@@ -49,6 +49,11 @@ export const Project = objectType({
         return (await ProjectService.getProject(root.id)).ProjectImage;
       },
     });
+    t.int("like", {
+      resolve: async (root, _, __) => {
+        return (await ProjectService.getOwnLikeOfProjects(root.id)).length;
+      },
+    });
     t.list.field("likes", {
       type: "User",
       resolve: async (root, _, __) => {

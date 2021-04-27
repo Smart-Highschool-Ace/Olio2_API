@@ -2,11 +2,11 @@ import {
   PortfolioCertificate,
   PortfolioPrize,
   PortfolioProject,
-  PortfolioSkill,
 } from "@prisma/client";
 
 export interface PortfolioUpdateArgs {
   email?: string;
+  introduction?: string;
   certificates?: PortfolioCertificate[];
   prizes?: PortfolioPrize[];
   projects?: PortfolioProject[];

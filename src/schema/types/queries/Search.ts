@@ -1,6 +1,11 @@
-import { AnyAaaaRecord } from "dns";
 import { stringArg, nonNull } from "nexus";
-import { SkillService, UserService } from "service";
+import {
+  PortfolioService,
+  ProjectService,
+  SkillService,
+  UserService,
+} from "service";
+import { Portfolio, Project } from "../models";
 
 export const skillSearch = {
   type: "Skill",
@@ -33,6 +38,25 @@ export const emailSearch = {
   },
 };
 
+export const portfolioSearch = {
+  type: Portfolio,
+  args: {
+    name: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    return await PortfolioService.findPortfolioByName(args.name);
+  },
+};
+
+export const projectSearch = {
+  type: Project,
+  args: {
+    name: nonNull(stringArg()),
+  },
+  resolve: async (_: any, args: any, __: any) => {
+    return await ProjectService.findProjectByName(args.name);
+  },
+};
 export const explore = {
   type: "ExploreResult",
   resolve: async () => {

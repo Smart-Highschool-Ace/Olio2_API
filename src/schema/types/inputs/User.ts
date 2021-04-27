@@ -9,7 +9,6 @@ export const UserCreateInput = inputObjectType({
     t.nonNull.string("name");
     t.nonNull.int("entrance_year");
     t.string("profile_image");
-    t.string("introduction");
   },
 });
 
@@ -20,6 +19,5 @@ export const UserUpdateInput = inputObjectType({
     t.string("name");
     t.int("entrance_year");
     t.string("profile_image");
-    t.string("introduction");
   },
 });

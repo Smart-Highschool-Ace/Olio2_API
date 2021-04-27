@@ -17,6 +17,7 @@ export const Portfolio = objectType({
         return (await PortfolioService.getPortfolio(root.id)).owner;
       },
     });
+    t.string("introduction");
     t.string("email");
     t.string("link");
     t.list.field("likes", {
@@ -56,6 +57,13 @@ export const Portfolio = objectType({
     t.int("view", {
       resolve: async (root, _, __) => {
         return await PortfolioService.getViewAboutPortfolio(root.id);
+      },
+    });
+    t.int("like", {
+      resolve: async (root, _, __) => {
+        return (
+          await PortfolioService.getLikesAboutPortfolioByPortfolio(root.id)
+        ).length;
       },
     });
     t.boolean("liked", {

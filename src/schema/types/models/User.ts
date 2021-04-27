@@ -10,7 +10,6 @@ export const User = objectType({
     t.string("email");
     t.string("school");
     t.string("profile_image");
-    t.string("introduction");
     t.int("entrance_year");
     t.int("grade", {
       resolve: (root, _, __) => {
@@ -65,3 +64,4 @@ export const statusResult = objectType({
     t.string("error");
   },
 });
+

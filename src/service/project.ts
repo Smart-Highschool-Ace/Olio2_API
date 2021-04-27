@@ -274,3 +274,29 @@ export const deleteLikeProject = async (
     },
   });
 };
+
+export const findProjectByName = async (name: string) => {
+  return await prisma.project.findMany({
+    where: {
+      name: {
+        contains: name,
+      },
+    },
+  });
+};
+
+export const getViewAboutProject = async (id: number) => {
+  return await prisma.projectView.count({
+    where: {
+      project_id: id,
+    },
+  });
+};
+
+export const getOwnLikeOfProjects = async (id: number) => {
+  return await prisma.projectLike.findMany({
+    where: {
+      project_id: id,
+    },
+  });
+};

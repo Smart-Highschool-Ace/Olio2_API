@@ -36,6 +36,7 @@ type Portfolio {
   certificates: [PortfolioCertificate]
   email: String
   id: Int
+  introduction: String
   liked: Boolean
   likes: [PortfolioLike]
   link: String
@@ -89,6 +90,15 @@ input PortfolioProjectInput {
   project_id: Int!
 }
 
+type PortfolioSearchResult {
+  id: Int
+  introduction: String
+  like_portfolio: Int
+  name: String
+  profile_image: String
+  view_portfolio: Int
+}
+
 type PortfolioSkill {
   level: Int
   portfolio_id: Int
@@ -104,6 +114,7 @@ input PortfolioSkillInput {
 input PortfolioUpdateInput {
   certificates: [PortfolioCertificateInput]
   email: String
+  introduction: String
   prizes: [PortfolioPrizeInput]
   projects: [PortfolioProjectInput]
   skills: [PortfolioSkillInput]
@@ -171,6 +182,15 @@ input ProjectMemberInput {
   role: String
 }
 
+type ProjectSearchResult {
+  id: Int
+  introduction: String
+  like_project: Int
+  logo: String
+  name: String
+  view_project: Int
+}
+
 type ProjectSkill {
   project_id: Int
   skill: Skill
@@ -198,7 +218,9 @@ type Query {
   myProject(id: Int): [PortfolioProject]
   nameSearch(name: String!): [User]
   portfolio(id: Int): Portfolio
+  portfolioSearch(name: String!): [PortfolioSearchResult]
   project(id: Int): Project
+  projectSearch(name: String!): [ProjectSearchResult]
   skillSearch(search_word: String!): [Skill]
   user(id: Int): User
 }
@@ -222,7 +244,6 @@ type User {
   entrance_year: Int
   grade: Int
   id: Int
-  introduction: String
   liked_portfolios: [Portfolio]
   liked_projects: [Project]
   name: String
@@ -236,7 +257,6 @@ type User {
 input UserCreateInput {
   email: String!
   entrance_year: Int!
-  introduction: String
   name: String!
   password: String!
   profile_image: String
@@ -245,7 +265,6 @@ input UserCreateInput {
 
 input UserUpdateInput {
   entrance_year: Int
-  introduction: String
   name: String
   profile_image: String
   school: String

@@ -61,6 +61,7 @@ export const modifyPortfolio = async (
     },
     data: {
       email: updateArgs.email,
+      introduction: updateArgs.introduction,
       PortfolioCertificate: {
         deleteMany: {},
         create: updateArgs.certificates.map((certificateArgs) => {
@@ -192,4 +193,21 @@ export const getLikedPortfoliosOfUser = async (userId: number) => {
 
 export const getPortfolios = async () => {
   return await prisma.portfolio.findMany({});
+};
+
+export const findPortfolioByName = async (name: string) => {
+  return (
+    await prisma.user.findMany({
+      where: {
+        name: {
+          contains: name,
+        },
+      },
+      select: {
+        Portfolio: true,
+      },
+    })
+  ).map((portfolio) => {
+    return portfolio.Portfolio;
+  });
 };

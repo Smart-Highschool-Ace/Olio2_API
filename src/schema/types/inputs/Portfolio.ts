@@ -4,6 +4,7 @@ export const PortfolioUpdateInput = inputObjectType({
   name: "PortfolioUpdateInput",
   definition(t) {
     t.string("email");
+    t.string("introduction");
     t.list.field("skills", {
       type: "PortfolioSkillInput",
     });

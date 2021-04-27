@@ -93,7 +93,6 @@ export const createUser: Function = async (data: UserCreateArgs) => {
       name: user.name,
       entrance_year: user.entrance_year,
       profile_image: user.profile_image,
-      introduction: user.introduction,
     },
   });
 };
@@ -112,7 +111,6 @@ export const updateUser: Function = async (
       name: user.name,
       school: user.school,
       profile_image: user.profile_image,
-      introduction: user.introduction,
     },
   });
 };
