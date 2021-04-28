@@ -63,9 +63,9 @@ model PortfolioLike {
 model PortfolioView {
     id           Int       @id @default(autoincrement())
     portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
-    user         User      @relation(fields: [user_id], references: [id])
+    user         User?      @relation(fields: [user_id], references: [id])
     portfolio_id Int
-    user_id      Int
+    user_id      Int?
     source_ip    String?
     created_at   DateTime  @default(now())
 }
@@ -145,9 +145,9 @@ model ProjectLike {
 model ProjectView {
     id         Int      @id @default(autoincrement())
     project    Project  @relation(fields: [project_id], references: [id])
-    user       User     @relation(fields: [user_id], references: [id])
+    user       User?     @relation(fields: [user_id], references: [id])
     project_id Int
-    user_id    Int
+    user_id    Int?
     source_ip  String?
     created_at DateTime @default(now())
 }
