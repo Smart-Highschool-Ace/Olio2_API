@@ -212,3 +212,12 @@ export const findPortfolioByName = async (name: string) => {
     return portfolio.Portfolio;
   });
 };
+
+export const createPortfolioView = async (
+  user_id: number,
+  portfolio_id: number
+) => {
+  await prisma.portfolioView.create({
+    data: { user_id: user_id, portfolio_id: portfolio_id },
+  });
+};
