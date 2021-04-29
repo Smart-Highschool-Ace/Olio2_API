@@ -325,3 +325,12 @@ export const getOwnLikeOfProjects: Function = async (
     },
   });
 };
+
+export const createProjectView = async (userId: number, projectId: number) => {
+  await prisma.projectView.create({
+    data: {
+      user_id: userId,
+      project_id: projectId,
+    },
+  });
+};
