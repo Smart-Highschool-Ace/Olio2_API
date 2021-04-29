@@ -1,20 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 import * as Joi from "joi";
 
 import { generateToken } from "../util/token";
 import { hashSha512 } from "../util/hash";
-import { UserCreateArgs, UserUpdateArgs } from "interface/User";
-
-interface loginResult {
-  token?: string;
-  error?: string;
-}
+import { UserCreateArgs, UserUpdateArgs, Result } from "interface";
 
 export const login: Function = async (
   email: string,
   password: string
-): Promise<loginResult> => {
+): Promise<Result> => {
   const bodyForm = Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
@@ -46,7 +41,7 @@ export const login: Function = async (
   }
 };
 
-export const checkEmail: Function = async (email: string) => {
+export const checkEmail: Function = async (email: string): Promise<Result> => {
   const prisma = new PrismaClient();
   // 1. 중복 이메일일경우
   const isDuplicate = await prisma.user.findFirst({
@@ -81,7 +76,9 @@ export const checkEmail: Function = async (email: string) => {
   return { status: true };
 };
 
-export const createUser: Function = async (data: UserCreateArgs) => {
+export const createUser: Function = async (
+  data: UserCreateArgs
+): Promise<User> => {
   const prisma = new PrismaClient();
   const user = data.user;
   const hashedPassword = hashSha512(user.password);
@@ -100,7 +97,7 @@ export const createUser: Function = async (data: UserCreateArgs) => {
 export const updateUser: Function = async (
   user_id: number,
   data: UserUpdateArgs
-) => {
+): Promise<User> => {
   const prisma = new PrismaClient();
   const user = data.user;
   return await prisma.user.update({
@@ -115,7 +112,7 @@ export const updateUser: Function = async (
   });
 };
 
-export const deleteUser: Function = async (user_id: number) => {
+export const deleteUser: Function = async (user_id: number): Promise<User> => {
   const prisma = new PrismaClient();
 
   return await prisma.user.delete({
@@ -125,7 +122,7 @@ export const deleteUser: Function = async (user_id: number) => {
   });
 };
 
-export const getUser: Function = async (user_id: number) => {
+export const getUser: Function = async (user_id: number): Promise<User> => {
   const prisma = new PrismaClient();
 
   return await prisma.user.findFirst({
@@ -135,7 +132,9 @@ export const getUser: Function = async (user_id: number) => {
   });
 };
 
-export const findUserByEmail: Function = async (email: string) => {
+export const findUserByEmail: Function = async (
+  email: string
+): Promise<User[]> => {
   const prisma = new PrismaClient();
 
   return await prisma.user.findMany({
@@ -147,7 +146,9 @@ export const findUserByEmail: Function = async (email: string) => {
   });
 };
 
-export const findUserByName: Function = async (name: string) => {
+export const findUserByName: Function = async (
+  name: string
+): Promise<User[]> => {
   const prisma = new PrismaClient();
 
   return await prisma.user.findMany({
