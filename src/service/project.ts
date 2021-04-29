@@ -1,16 +1,16 @@
 import { PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { PortfolioService, SkillService } from "service";
-import { ProjectCreateArgs } from "../interface/project";
+import { ProjectCreateArgs, ProjectOrder } from "interface";
 
 const prisma = new PrismaClient();
 
-export const getProjects = async (): Promise<Project[]> => {
+export const getProjects: Function = async (): Promise<Project[]> => {
   return await prisma.project.findMany();
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
-export const getAllProjectsOfUser = async (
+export const getAllProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
@@ -31,21 +31,16 @@ export const getAllProjectsOfUser = async (
   });
 };
 
-export const getMyProjects = async (
+export const getMyProjects: Function = async (
   userId: number
-): Promise<
-  {
-    project: Project;
-    order: number;
-  }[]
-> => {
+): Promise<ProjectOrder[]> => {
   // 포트폴리오에 등록된 프로젝트, 등록되지 않은 프로젝트 모두 불러오기
   const portfolioProjects = (await PortfolioService.getPortfolio(userId))
     .PortfolioProject;
-  const ownProjects = await getOwnProjectsOfUser(userId);
+  const ownProjects: Project[] = await getOwnProjectsOfUser(userId);
 
   // 포트폴리오에 등록된 프로젝트는 순서와 함께 반환, 등록 안된 프로젝트는 순서 9999 반환
-  const myProjects = ownProjects.map((project) => {
+  const myProjects: ProjectOrder[] = ownProjects.map((project) => {
     const portProject = portfolioProjects.map((portProject) => {
       if (portProject.project_id == project.id) {
         return portProject;
@@ -72,7 +67,7 @@ export const getMyProjects = async (
   return myProjects;
 };
 
-export const getOwnProjectsOfUser = async (
+export const getOwnProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
@@ -82,7 +77,7 @@ export const getOwnProjectsOfUser = async (
   });
 };
 
-export const getParticipatedProjectsOfUser = async (
+export const getParticipatedProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
@@ -96,7 +91,7 @@ export const getParticipatedProjectsOfUser = async (
   });
 };
 
-export const getLikedProjectsOfUser = async (
+export const getLikedProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {
   const result = await prisma.projectLike.findMany({
@@ -113,7 +108,7 @@ export const getLikedProjectsOfUser = async (
   });
 };
 
-export const getProject = async (projectId: number) => {
+export const getProject: Function = async (projectId: number) => {
   return await prisma.project.findFirst({
     where: {
       id: projectId,
@@ -134,7 +129,7 @@ export const getProject = async (projectId: number) => {
   });
 };
 
-export const isLikedByUser = async (
+export const isLikedByUser: Function = async (
   projectId: number,
   userId: number
 ): Promise<boolean> => {
@@ -147,7 +142,7 @@ export const isLikedByUser = async (
   return Boolean(result);
 };
 
-export const createProject = async (
+export const createProject: Function = async (
   user_id: number,
   createArgs: ProjectCreateArgs
 ): Promise<Project> => {
@@ -201,7 +196,7 @@ export const createProject = async (
   });
 };
 
-export const updateProject = async (
+export const updateProject: Function = async (
   id: number,
   updateArgs: ProjectCreateArgs
 ): Promise<Project> => {
@@ -261,7 +256,7 @@ export const updateProject = async (
   });
 };
 
-export const deleteProject = async (id: number): Promise<Project> => {
+export const deleteProject: Function = async (id: number): Promise<Project> => {
   return await prisma.project.delete({
     where: {
       id: id,
@@ -269,7 +264,7 @@ export const deleteProject = async (id: number): Promise<Project> => {
   });
 };
 
-export const createLikeProject = async (
+export const createLikeProject: Function = async (
   user_id: number,
   project_id: number
 ): Promise<void> => {
@@ -281,7 +276,7 @@ export const createLikeProject = async (
   });
 };
 
-export const deleteLikeProject = async (
+export const deleteLikeProject: Function = async (
   user_id: number,
   project_id: number
 ): Promise<void> => {
@@ -293,7 +288,9 @@ export const deleteLikeProject = async (
   });
 };
 
-export const findProjectByName = async (name: string): Promise<Project[]> => {
+export const findProjectByName: Function = async (
+  name: string
+): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       name: {
@@ -303,7 +300,9 @@ export const findProjectByName = async (name: string): Promise<Project[]> => {
   });
 };
 
-export const getViewAboutProject = async (id: number): Promise<number> => {
+export const getViewAboutProject: Function = async (
+  id: number
+): Promise<number> => {
   return await prisma.projectView.count({
     where: {
       project_id: id,
@@ -311,7 +310,7 @@ export const getViewAboutProject = async (id: number): Promise<number> => {
   });
 };
 
-export const getOwnLikeOfProjects = async (
+export const getOwnLikeOfProjects: Function = async (
   id: number
 ): Promise<ProjectLike[]> => {
   return await prisma.projectLike.findMany({
