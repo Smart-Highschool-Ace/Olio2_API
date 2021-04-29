@@ -1,16 +1,18 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { PortfolioService, SkillService } from "service";
 import { ProjectCreateArgs } from "../interface/project";
 
 const prisma = new PrismaClient();
 
-export const getProjects = async (args: any) => {
+export const getProjects = async (): Promise<Project[]> => {
   return await prisma.project.findMany();
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
-export const getAllProjectsOfUser = async (userId: number) => {
+export const getAllProjectsOfUser = async (
+  userId: number
+): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       OR: [
@@ -29,7 +31,14 @@ export const getAllProjectsOfUser = async (userId: number) => {
   });
 };
 
-export const getMyProjects = async (userId: number) => {
+export const getMyProjects = async (
+  userId: number
+): Promise<
+  {
+    project: Project;
+    order: number;
+  }[]
+> => {
   // 포트폴리오에 등록된 프로젝트, 등록되지 않은 프로젝트 모두 불러오기
   const portfolioProjects = (await PortfolioService.getPortfolio(userId))
     .PortfolioProject;
@@ -63,7 +72,9 @@ export const getMyProjects = async (userId: number) => {
   return myProjects;
 };
 
-export const getOwnProjectsOfUser = async (userId: number) => {
+export const getOwnProjectsOfUser = async (
+  userId: number
+): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       owner_id: userId,
@@ -71,7 +82,9 @@ export const getOwnProjectsOfUser = async (userId: number) => {
   });
 };
 
-export const getParticipatedProjectsOfUser = async (userId: number) => {
+export const getParticipatedProjectsOfUser = async (
+  userId: number
+): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       ProjectMember: {
@@ -83,7 +96,9 @@ export const getParticipatedProjectsOfUser = async (userId: number) => {
   });
 };
 
-export const getLikedProjectsOfUser = async (userId: number) => {
+export const getLikedProjectsOfUser = async (
+  userId: number
+): Promise<Project[]> => {
   const result = await prisma.projectLike.findMany({
     where: {
       user_id: userId,
@@ -119,7 +134,10 @@ export const getProject = async (projectId: number) => {
   });
 };
 
-export const isLikedByUser = async (projectId: number, userId: number) => {
+export const isLikedByUser = async (
+  projectId: number,
+  userId: number
+): Promise<boolean> => {
   const result = await prisma.projectLike.findFirst({
     where: {
       project_id: projectId,
@@ -132,7 +150,7 @@ export const isLikedByUser = async (projectId: number, userId: number) => {
 export const createProject = async (
   user_id: number,
   createArgs: ProjectCreateArgs
-) => {
+): Promise<Project> => {
   createArgs.skills = createArgs.skills || [];
   createArgs.members = createArgs.members || [];
   createArgs.fields = createArgs.fields || [];
@@ -186,7 +204,7 @@ export const createProject = async (
 export const updateProject = async (
   id: number,
   updateArgs: ProjectCreateArgs
-) => {
+): Promise<Project> => {
   updateArgs.skills = updateArgs.skills || [];
   updateArgs.members = updateArgs.members || [];
   updateArgs.fields = updateArgs.fields || [];
@@ -243,7 +261,7 @@ export const updateProject = async (
   });
 };
 
-export const deleteProject = async (id: number) => {
+export const deleteProject = async (id: number): Promise<Project> => {
   return await prisma.project.delete({
     where: {
       id: id,
@@ -254,7 +272,7 @@ export const deleteProject = async (id: number) => {
 export const createLikeProject = async (
   user_id: number,
   project_id: number
-) => {
+): Promise<void> => {
   await prisma.projectLike.create({
     data: {
       user_id: user_id,
@@ -266,7 +284,7 @@ export const createLikeProject = async (
 export const deleteLikeProject = async (
   user_id: number,
   project_id: number
-) => {
+): Promise<void> => {
   await prisma.projectLike.deleteMany({
     where: {
       user_id: user_id,
@@ -275,7 +293,7 @@ export const deleteLikeProject = async (
   });
 };
 
-export const findProjectByName = async (name: string) => {
+export const findProjectByName = async (name: string): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       name: {
@@ -285,7 +303,7 @@ export const findProjectByName = async (name: string) => {
   });
 };
 
-export const getViewAboutProject = async (id: number) => {
+export const getViewAboutProject = async (id: number): Promise<number> => {
   return await prisma.projectView.count({
     where: {
       project_id: id,
@@ -293,7 +311,9 @@ export const getViewAboutProject = async (id: number) => {
   });
 };
 
-export const getOwnLikeOfProjects = async (id: number) => {
+export const getOwnLikeOfProjects = async (
+  id: number
+): Promise<ProjectLike[]> => {
   return await prisma.projectLike.findMany({
     where: {
       project_id: id,
