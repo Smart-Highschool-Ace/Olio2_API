@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { verifyToken } from "util/token";
 
-export const createContext = async ({
+export const createContext: Function = async ({
   ctx,
 }: Context): Promise<{
   userId: number;
