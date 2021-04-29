@@ -1,11 +1,11 @@
 
-export type loginResult {
+export type LoginResult {
   token?: string;
   error?: string;
 }
-export type statusResult {
+export type StatusResult {
   status: boolean;
   error?: string;
 }
 
-export type result = loginResult | statusResult;
+export type Result = LoginResult | StatusResult;
