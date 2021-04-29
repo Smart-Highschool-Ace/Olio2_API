@@ -10,13 +10,14 @@ import {
   User,
 } from "@prisma/client";
 
-import { PortfolioUpdateArgs } from "interface/Portfolio";
+import { PortfolioUpdateArgs } from "interface";
 import { parse_yyyy_mm_dd } from "util/date";
 import { SkillService } from "service";
-import { bool } from "aws-sdk/clients/signer";
 const prisma = new PrismaClient();
 
-export const createPortfolio = async (user_id: number): Promise<Portfolio> => {
+export const createPortfolio: Function = async (
+  user_id: number
+): Promise<Portfolio> => {
   return await prisma.portfolio.create({
     data: {
       owner: {
@@ -26,10 +27,10 @@ export const createPortfolio = async (user_id: number): Promise<Portfolio> => {
   });
 };
 
-export const portfolioHaveLike = async (
+export const portfolioHaveLike: Function = async (
   portfolio_id: number,
   user_id: number
-): Promise<bool> => {
+): Promise<boolean> => {
   const liked = await prisma.portfolioLike.findFirst({
     where: {
       portfolio_id: portfolio_id,
@@ -41,14 +42,16 @@ export const portfolioHaveLike = async (
   }
   return false;
 };
-export const getViewAboutPortfolio = async (id: number): Promise<number> => {
+export const getViewAboutPortfolio: Function = async (
+  id: number
+): Promise<number> => {
   return await prisma.portfolioView.count({
     where: {
       portfolio_id: id,
     },
   });
 };
-export const getLikesAboutPortfolioByPortfolio = async (
+export const getLikesAboutPortfolioByPortfolio: Function = async (
   id: number
 ): Promise<PortfolioLike[]> => {
   const like = await prisma.portfolioLike.findMany({
@@ -59,7 +62,7 @@ export const getLikesAboutPortfolioByPortfolio = async (
   return like;
 };
 
-export const modifyPortfolio = async (
+export const modifyPortfolio: Function = async (
   id: number,
   updateArgs: PortfolioUpdateArgs
 ): Promise<void> => {
@@ -127,7 +130,7 @@ export const modifyPortfolio = async (
   });
 };
 
-export const getLikePortfolio = async (
+export const getLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number
 ): Promise<PortfolioLike> => {
@@ -140,7 +143,7 @@ export const getLikePortfolio = async (
   return liked;
 };
 
-export const createLikePortfolio = async (
+export const createLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number
 ): Promise<void> => {
@@ -152,7 +155,7 @@ export const createLikePortfolio = async (
   });
 };
 
-export const deleteLikePortfolio = async (
+export const deleteLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number
 ): Promise<void> => {
@@ -164,7 +167,7 @@ export const deleteLikePortfolio = async (
   });
 };
 
-export const getPortfolio = async (
+export const getPortfolio: Function = async (
   id: number
 ): Promise<
   Portfolio & {
@@ -191,7 +194,7 @@ export const getPortfolio = async (
   });
 };
 
-export const getPortfolioByUser = async (
+export const getPortfolioByUser: Function = async (
   user_id: number
 ): Promise<Portfolio> => {
   return await prisma.portfolio.findFirst({
@@ -203,7 +206,7 @@ export const getPortfolioByUser = async (
   });
 };
 
-export const getLikedPortfoliosOfUser = async (
+export const getLikedPortfoliosOfUser: Function = async (
   userId: number
 ): Promise<Portfolio[]> => {
   const result = await prisma.portfolioLike.findMany({
@@ -219,11 +222,11 @@ export const getLikedPortfoliosOfUser = async (
   });
 };
 
-export const getPortfolios = async (): Promise<Portfolio[]> => {
+export const getPortfolios: Function = async (): Promise<Portfolio[]> => {
   return await prisma.portfolio.findMany({});
 };
 
-export const findPortfolioByName = async (
+export const findPortfolioByName: Function = async (
   name: string
 ): Promise<Portfolio[]> => {
   return (

@@ -1,4 +1,9 @@
-import { PrismaClient, Project, ProjectLike } from "@prisma/client";
+import {
+  PortfolioProject,
+  PrismaClient,
+  Project,
+  ProjectLike,
+} from "@prisma/client";
 
 import { PortfolioService, SkillService } from "service";
 import { ProjectCreateArgs, ProjectOrder } from "interface";
@@ -35,8 +40,9 @@ export const getMyProjects: Function = async (
   userId: number
 ): Promise<ProjectOrder[]> => {
   // 포트폴리오에 등록된 프로젝트, 등록되지 않은 프로젝트 모두 불러오기
-  const portfolioProjects = (await PortfolioService.getPortfolio(userId))
-    .PortfolioProject;
+  const portfolioProjects: PortfolioProject[] = (
+    await PortfolioService.getPortfolio(userId)
+  ).PortfolioProject;
   const ownProjects: Project[] = await getOwnProjectsOfUser(userId);
 
   // 포트폴리오에 등록된 프로젝트는 순서와 함께 반환, 등록 안된 프로젝트는 순서 9999 반환
