@@ -1,8 +1,8 @@
 import {
-  ProjectSkill,
   ProjectMember,
   ProjectImage,
   ProjectField,
+  Project,
 } from "@prisma/client";
 
 export interface ProjectCreateArgs {
@@ -23,4 +23,9 @@ type ProjectInputSkill = {
   id: number;
   name: string;
   project_id: number;
+};
+
+export type ProjectOrder = {
+  project: Project;
+  order: number;
 };

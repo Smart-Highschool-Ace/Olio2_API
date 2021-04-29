@@ -3,16 +3,15 @@ import { arg, nonNull, stringArg } from "nexus";
 import { PortfolioService, UserService } from "service";
 import { UserCreateArgs, UserUpdateArgs } from "interface/User";
 import { checkAuthCode, sendAuthCode } from "util/emailAuth";
-import { Context } from "interface";
+import { Context, Result } from "interface";
 
 export const login = {
   args: {
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const result = await UserService.login(args.email, args.password);
-    return result;
+  resolve: async (_: any, args: any, __: any): Promise<Result> => {
+    return await UserService.login(args.email, args.password);
   },
   type: "loginResult",
 };
@@ -21,9 +20,8 @@ export const checkEmail = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const result = await UserService.checkEmail(args.email);
-    return result;
+  resolve: async (_: any, args: any, __: any): Promise<Result> => {
+    return await UserService.checkEmail(args.email);
   },
   type: "statusResult",
 };

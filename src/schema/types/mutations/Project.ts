@@ -1,3 +1,4 @@
+import { Context } from "interface";
 import { arg, intArg, nonNull } from "nexus";
 import { ProjectService } from "service";
 import { ProjectCreateArgs } from "../../../interface/project";
@@ -6,13 +7,10 @@ export const createProject = {
   args: {
     project: arg({ type: "ProjectCreateInput" }),
   },
-  resolve: async (_: any, args: any, ctx: any) => {
-    const user_id = ctx.userId;
-    const createArgs: ProjectCreateArgs = args.project;
-    const new_project = await ProjectService.createProject(user_id, createArgs);
-    return String(new_project.id);
+  resolve: async (_: any, args: any, ctx: Context) => {
+    return await ProjectService.createProject(ctx.userId, args.project);
   },
-  type: "String",
+  type: "Project",
 };
 
 export const updateProject = {
@@ -21,41 +19,32 @@ export const updateProject = {
     project: arg({ type: "ProjectUpdateInput" }),
   },
   resolve: async (_: any, args: any, __: any) => {
-    const updateArgs: ProjectCreateArgs = args.project;
-    const updated_project = await ProjectService.updateProject(
-      args.id,
-      updateArgs
-    );
-    return String(updated_project.id);
+    return await ProjectService.updateProject(args.id, args.project);
   },
-  type: "String",
+  type: "Project",
 };
 
 export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const deleted_project = await ProjectService.deleteProject(args.id);
-    return String(deleted_project.id);
+  resolve: async (_: any, args: any, __: any): Promise<string> => {
+    return await ProjectService.deleteProject(args.id);
   },
-  type: "String",
+  type: "Project",
 };
 
 export const likeProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, ctx: any) => {
-    const is_followed = await ProjectService.isLikedByUser(
-      args.id,
-      ctx.user_id
-    );
+  resolve: async (_: any, args: any, ctx: Context): Promise<boolean> => {
+    const is_followed = await ProjectService.isLikedByUser(args.id, ctx.userId);
     if (is_followed) {
-      await ProjectService.deleteLikeProject(ctx.user_id, args.id);
+      await ProjectService.deleteLikeProject(ctx.userId, args.id);
       return false;
     } else {
-      await ProjectService.createLikeProject(ctx.user_id, args.id);
+      await ProjectService.createLikeProject(ctx.userId, args.id);
       return true;
     }
   },

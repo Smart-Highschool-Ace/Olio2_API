@@ -1,3 +1,4 @@
+import { Portfolio } from "@prisma/client";
 import { intArg } from "nexus";
 import { PortfolioService } from "service";
 import { Context } from "interface/Context";
@@ -12,7 +13,7 @@ export const portfolio = {
 
 export const allPortfolio = {
   type: "Portfolio",
-  resolve: async (_: any, __: any, ___: any) => {
+  resolve: async (_: any, __: any, ___: any): Promise<Portfolio[]> => {
     return await PortfolioService.getPortfolios();
   },
 };

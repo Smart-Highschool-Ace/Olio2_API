@@ -1,3 +1,4 @@
+import { Skill, User, Portfolio, Project } from "@prisma/client";
 import { stringArg, nonNull } from "nexus";
 import {
   PortfolioService,
@@ -5,16 +6,14 @@ import {
   SkillService,
   UserService,
 } from "service";
-import { Portfolio, Project } from "../models";
 
 export const skillSearch = {
   type: "Skill",
   args: {
     search_word: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const data = await SkillService.findSkillByName(args.search_word);
-    return data;
+  resolve: async (_: any, args: any, __: any): Promise<Skill[]> => {
+    return await SkillService.findSkillByName(args.search_word);
   },
 };
 
@@ -23,7 +22,7 @@ export const nameSearch = {
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
+  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
     return await UserService.findUserByName(args.name);
   },
 };
@@ -33,27 +32,27 @@ export const emailSearch = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
+  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
     return await UserService.findUserByEmail(args.email);
   },
 };
 
 export const portfolioSearch = {
-  type: Portfolio,
+  type: "Portfolio",
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
+  resolve: async (_: any, args: any, __: any): Promise<Portfolio[]> => {
     return await PortfolioService.findPortfolioByName(args.name);
   },
 };
 
 export const projectSearch = {
-  type: Project,
+  type: "Project",
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
+  resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
     return await ProjectService.findProjectByName(args.name);
   },
 };
