@@ -13,57 +13,36 @@ export const Portfolio = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).owner;
-      },
     });
     t.string("introduction");
     t.string("email");
     t.string("link");
-    t.list.field("likes", {
-      type: PortfolioLike,
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getLikesAboutPortfolioByPortfolio(
-          root.id
-        );
-      },
+    t.list.field("PortfolioLike", {
+      type: "PortfolioLike",
     });
-    t.list.field("skills", {
-      type: PortfolioSkill,
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioSkill;
-      },
+    t.list.field("PortfolioSkill", {
+      type: "PortfolioSkill",
     });
-    t.list.field("projects", {
-      type: PortfolioProject,
-      resolve: async (root, _, __) => {
-        console.log;
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioProject;
-      },
+    t.list.field("PortfolioProject", {
+      type: "PortfolioProject",
     });
-    t.list.field("prizes", {
+    t.list.field("PortfolioPrize", {
       type: "PortfolioPrize",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id)).PortfolioPrize;
-      },
     });
-    t.list.field("certificates", {
+    t.list.field("PortfolioCertificate", {
       type: "PortfolioCertificate",
-      resolve: async (root, _, __) => {
-        return (await PortfolioService.getPortfolio(root.id))
-          .PortfolioCertificate;
-      },
+    });
+    t.list.field("PortfolioView", {
+      type: "PortfolioView",
     });
     t.int("view", {
       resolve: async (root, _, __) => {
-        return await PortfolioService.getViewAboutPortfolio(root.id);
+        return root.PortfolioView.length;
       },
     });
     t.int("like", {
       resolve: async (root, _, __) => {
-        return (
-          await PortfolioService.getLikesAboutPortfolioByPortfolio(root.id)
-        ).length;
+        return root.PortfolioLike.length;
       },
     });
     t.boolean("liked", {
@@ -71,6 +50,16 @@ export const Portfolio = objectType({
         return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
       },
     });
+  },
+});
+
+export const PortfolioView = objectType({
+  name: "PortfolioView",
+  definition(t) {
+    t.int("id");
+    t.int("portfolio_id");
+    t.int("user_id");
+    t.string("source_ip");
   },
 });
 

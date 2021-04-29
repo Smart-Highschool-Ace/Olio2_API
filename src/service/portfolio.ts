@@ -163,6 +163,7 @@ export const getPortfolio = async (id: number) => {
       PortfolioProject: true,
       PortfolioPrize: true,
       PortfolioCertificate: true,
+      PortfolioLike: true,
     },
   });
 };
@@ -209,5 +210,14 @@ export const findPortfolioByName = async (name: string) => {
     })
   ).map((portfolio) => {
     return portfolio.Portfolio;
+  });
+};
+
+export const createPortfolioView = async (
+  user_id: number,
+  portfolio_id: number
+) => {
+  await prisma.portfolioView.create({
+    data: { user_id: user_id, portfolio_id: portfolio_id },
   });
 };
