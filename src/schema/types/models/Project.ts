@@ -1,5 +1,5 @@
 import { objectType } from "nexus";
-import { ProjectService, SkillService } from "service";
+import { ProjectService, SkillService, UserService } from "service";
 
 export const Project = objectType({
   name: "Project",
@@ -7,9 +7,6 @@ export const Project = objectType({
     t.int("id");
     t.field("owner", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).owner;
-      },
     });
     t.string("name");
     t.string("introduction");
@@ -20,44 +17,32 @@ export const Project = objectType({
     t.string("end_at");
     t.string("created_at");
     t.string("updated_at");
+    t.list.field("ProjectView", {
+      type: "ProjectView",
+    });
     t.int("view", {
       resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectView.length;
+        return root.ProjectView.length;
       },
     });
-    t.list.field("skills", {
-      type: ProjectSkill,
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectSkill;
-      },
+    t.list.field("ProjectSkill", {
+      type: "ProjectSkill",
     });
-    t.list.field("members", {
-      type: ProjectMember,
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectMember;
-      },
+    t.list.field("ProjectMember", {
+      type: "ProjectMember",
     });
-    t.list.field("fields", {
-      type: ProjectField,
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectField;
-      },
+    t.list.field("ProjectField", {
+      type: "ProjectField",
     });
-    t.list.field("images", {
-      type: ProjectImage,
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectImage;
-      },
+    t.list.field("ProjectImage", {
+      type: "ProjectImage",
+    });
+    t.list.field("ProjectLike", {
+      type: "ProjectLike",
     });
     t.int("like", {
       resolve: async (root, _, __) => {
-        return (await ProjectService.getOwnLikeOfProjects(root.id)).length;
-      },
-    });
-    t.list.field("likes", {
-      type: "User",
-      resolve: async (root, _, __) => {
-        return (await ProjectService.getProject(root.id)).ProjectLike;
+        return root.ProjectLike.length;
       },
     });
     t.boolean("liked", {
@@ -71,6 +56,20 @@ export const Project = objectType({
   },
 });
 
+export const ProjectLike = objectType({
+  name: "ProjectLike",
+  definition(t) {
+    t.int("id");
+    t.int("user_id");
+    t.int("project_id");
+    t.field("user", {
+      type: "User",
+      resolve: async (root, _, __) => {
+        return await UserService.getUser(root.user_id);
+      },
+    });
+  },
+});
 export const ProjectSkill = objectType({
   name: "ProjectSkill",
   definition(t) {
@@ -116,5 +115,15 @@ export const MyProjectsQueryType = objectType({
       type: "Project",
     });
     t.int("order");
+  },
+});
+
+export const ProjectView = objectType({
+  name: "ProjectView",
+  definition(t) {
+    t.int("id");
+    t.int("portfolio_id");
+    t.int("user_id");
+    t.string("source_ip");
   },
 });
