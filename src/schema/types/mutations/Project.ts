@@ -1,7 +1,6 @@
 import { Context } from "interface";
 import { arg, intArg, nonNull } from "nexus";
 import { ProjectService } from "service";
-import { ProjectCreateArgs } from "../../../interface/project";
 
 export const createProject = {
   args: {
