@@ -14,7 +14,7 @@ export const project = {
 };
 
 export const myProject = {
-  type: "PortfolioProject",
+  type: "Project",
   args: { id: intArg() },
   resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
     return await ProjectService.getAllProjectsOfUser(args.id);
