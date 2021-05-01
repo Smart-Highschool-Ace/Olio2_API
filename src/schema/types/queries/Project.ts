@@ -11,10 +11,10 @@ export const project = {
 };
 
 export const myProject = {
-  type: "PortfolioProject",
+  type: "Project",
   args: { id: intArg() },
   resolve: async (_: any, args: any, __: any) => {
-    return await ProjectService.getMyProjects(args.id);
+    return await ProjectService.getAllProjectsOfUser(args.id);
   },
 };
 
