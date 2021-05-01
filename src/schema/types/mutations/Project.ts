@@ -1,3 +1,4 @@
+import { Project } from "@prisma/client";
 import { Context } from "interface";
 import { arg, intArg, nonNull } from "nexus";
 import { ProjectService } from "service";
@@ -27,7 +28,7 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<string> => {
+  resolve: async (_: any, args: any, __: any): Promise<Project> => {
     return await ProjectService.deleteProject(args.id);
   },
   type: "Project",
