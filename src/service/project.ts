@@ -36,7 +36,29 @@ export const getAllProjectsOfUser: Function = async (
   });
 };
 
-export const getMyProjects: Function = async (
+export const sortProjectsCreatedAt: Function = (
+  projects: ProjectOrder[]
+): ProjectOrder[] => {
+  return projects.sort((a, b) => {
+    // 최신순 정렬
+    return Number(b.project.created_at) - Number(a.project.created_at);
+  });
+};
+
+export const sortProjectsAtOrder: Function = (
+  projects: ProjectOrder[]
+): ProjectOrder[] => {
+  return projects.sort((a, b) => {
+    // 순서가 같으면 최신순 정렬
+    if (a.order == b.order) {
+      return Number(b.project.created_at) - Number(a.project.created_at);
+    }
+    // 순서 정렬
+    return a.order - b.order;
+  });
+};
+
+export const getMyProjectsWithOrder: Function = async (
   userId: number
 ): Promise<ProjectOrder[]> => {
   // 포트폴리오에 등록된 프로젝트, 등록되지 않은 프로젝트 모두 불러오기
@@ -58,16 +80,6 @@ export const getMyProjects: Function = async (
     }
 
     return { project: project, order: 9999 }; // 순서가 없을 때 반환
-  });
-
-  // 결과 정렬
-  myProjects.sort((a, b) => {
-    // 순서가 같으면 최신순 정렬
-    if (a.order == b.order) {
-      return Number(b.project.created_at) - Number(a.project.created_at);
-    }
-    // 순서 정렬
-    return a.order - b.order;
   });
 
   return myProjects;
