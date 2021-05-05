@@ -31,7 +31,7 @@ export const getAllProjectsOfUser: Function = async (
   });
 };
 
-export const getSortedProjectsAtCreated: Function = async (
+export const getSortedProjectsAtRecent: Function = async (
   orderBy: Prisma.SortOrder
 ): Promise<Project[]> => {
   return prisma.project.findMany({
@@ -41,7 +41,7 @@ export const getSortedProjectsAtCreated: Function = async (
   });
 };
 
-export const getSortedProjectsAtLike: Function = async (
+export const getSortedProjectsAtPopular: Function = async (
   orderBy: Prisma.SortOrder
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
@@ -53,7 +53,7 @@ export const getSortedProjectsAtLike: Function = async (
   });
 };
 
-export const getSortedProjectsAtView: Function = async (
+export const getSortedProjectsAtViews: Function = async (
   orderBy: Prisma.SortOrder
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
