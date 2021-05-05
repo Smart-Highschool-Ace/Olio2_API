@@ -1,17 +1,12 @@
-import {
-  PortfolioProject,
-  PrismaClient,
-  Project,
-  ProjectLike,
-} from "@prisma/client";
+import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
-import { PortfolioService, SkillService } from "service";
-import { ProjectCreateArgs, ProjectOrder } from "interface";
+import { SkillService } from "service";
+import { ProjectCreateArgs } from "interface";
 
 const prisma = new PrismaClient();
 
 export const getProjects: Function = async (): Promise<Project[]> => {
-  return await prisma.project.findMany();
+  return await prisma.project.findMany({});
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
@@ -36,25 +31,37 @@ export const getAllProjectsOfUser: Function = async (
   });
 };
 
-export const sortProjectsCreatedAt: Function = (
-  projects: ProjectOrder[]
-): ProjectOrder[] => {
-  return projects.sort((a, b) => {
-    // 최신순 정렬
-    return Number(b.project.created_at) - Number(a.project.created_at);
+export const getSortedProjectsAtCreated: Function = async (
+  orderBy: Prisma.SortOrder
+): Promise<Project[]> => {
+  return prisma.project.findMany({
+    orderBy: {
+      created_at: orderBy,
+    },
   });
 };
 
-export const sortProjectsAtOrder: Function = (
-  projects: ProjectOrder[]
-): ProjectOrder[] => {
-  return projects.sort((a, b) => {
-    // 순서가 같으면 최신순 정렬
-    if (a.order == b.order) {
-      return Number(b.project.created_at) - Number(a.project.created_at);
-    }
-    // 순서 정렬
-    return a.order - b.order;
+export const getSortedProjectsAtLike: Function = async (
+  orderBy: Prisma.SortOrder
+): Promise<Project[]> => {
+  return await prisma.project.findMany({
+    orderBy: {
+      ProjectLike: {
+        count: orderBy,
+      },
+    },
+  });
+};
+
+export const getSortedProjectsAtView: Function = async (
+  orderBy: Prisma.SortOrder
+): Promise<Project[]> => {
+  return await prisma.project.findMany({
+    orderBy: {
+      ProjectView: {
+        count: orderBy,
+      },
+    },
   });
 };
 
