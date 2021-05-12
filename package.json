@@ -11,8 +11,8 @@
     "dev": "cross-env NODE_PATH=src nodemon --exec ts-node src/server.ts",
     "migrate:dev": "prisma migrate dev --preview-feature && prisma generate",
     "migrate:reset": "prisma migrate reset --preview-feature",
-    "migrate:deploy": "prisma migrate deploy --preview-feature && prisma generate"
-    "heroku-postbuild" : "yarn && yarn migrate:dev && yarn dev"
+    "migrate:deploy": "prisma migrate deploy --preview-feature && prisma generate",
+    "heroku-postbuild": "yarn && yarn migrate:dev && yarn dev"
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
