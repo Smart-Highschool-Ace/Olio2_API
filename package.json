@@ -15,6 +15,7 @@
     "heroku-postbuild": "yarn && yarn migrate:dev && yarn dev"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "@prisma/client": "^2.21.2",
     "@types/nodemailer": "^6.4.0",
     "apollo-server-koa": "^2.19.2",
