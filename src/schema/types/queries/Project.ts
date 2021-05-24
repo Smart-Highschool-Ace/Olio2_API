@@ -27,12 +27,13 @@ export const allProject = {
   resolve: async (_: any, args: any, ___: any): Promise<Project[]> => {
     //1page에 15개씩
     const sortFlag: Prisma.SortOrder = "asc";
+    const page: number = (args.page - 1) * 15;
     if (args.orderBy == "popular") {
-      return await ProjectService.getSortedProjectsAtPopular(sortFlag);
+      return await ProjectService.getSortedProjectsAtPopular(sortFlag, page);
     } else if (args.orderBy == "views") {
-      return await ProjectService.getSortedProjectsAtViews(sortFlag);
+      return await ProjectService.getSortedProjectsAtViews(sortFlag, page);
     } else if (args.orderBy == "recent") {
-      return await ProjectService.getSortedProjectsAtRecent(sortFlag);
+      return await ProjectService.getSortedProjectsAtRecent(sortFlag, page);
     }
     //popular 인기순
     //views 조회수순

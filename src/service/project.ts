@@ -32,17 +32,21 @@ export const getAllProjectsOfUser: Function = async (
 };
 
 export const getSortedProjectsAtRecent: Function = async (
-  orderBy: Prisma.SortOrder
+  orderBy: Prisma.SortOrder,
+  page: number = 0
 ): Promise<Project[]> => {
   return prisma.project.findMany({
     orderBy: {
       created_at: orderBy,
     },
+    skip: page,
+    take: 15,
   });
 };
 
 export const getSortedProjectsAtPopular: Function = async (
-  orderBy: Prisma.SortOrder
+  orderBy: Prisma.SortOrder,
+  page: number = 0
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
     orderBy: {
@@ -50,11 +54,14 @@ export const getSortedProjectsAtPopular: Function = async (
         count: orderBy,
       },
     },
+    skip: page,
+    take: 15,
   });
 };
 
 export const getSortedProjectsAtViews: Function = async (
-  orderBy: Prisma.SortOrder
+  orderBy: Prisma.SortOrder,
+  page: number = 0
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
     orderBy: {
@@ -62,6 +69,8 @@ export const getSortedProjectsAtViews: Function = async (
         count: orderBy,
       },
     },
+    skip: page,
+    take: 15,
   });
 };
 
