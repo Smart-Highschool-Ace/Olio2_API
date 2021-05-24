@@ -247,10 +247,10 @@ export const findPortfolioByName: Function = async (
 };
 
 export const createPortfolioView = async (
-  user_id: number,
-  portfolio_id: number
+  portfolioId: number,
+  userId?: number
 ) => {
   await prisma.portfolioView.create({
-    data: { user_id: user_id, portfolio_id: portfolio_id },
+    data: { user_id: userId, portfolio_id: portfolioId },
   });
 };
