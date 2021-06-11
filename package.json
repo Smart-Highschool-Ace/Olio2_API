@@ -15,6 +15,7 @@
     "heroku-postbuild": "yarn && yarn migrate:dev && yarn dev"
   },
   "dependencies": {
+    "@2fd/graphdoc": "^2.4.0",
     "@koa/cors": "^3.1.0",
     "@prisma/client": "^2.21.2",
     "@types/nodemailer": "^6.4.0",
