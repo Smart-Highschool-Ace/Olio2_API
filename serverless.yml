@@ -2,7 +2,7 @@ service: olio-graphql-lambda
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ap-northease-2
+  region: ap-northeast-2
 functions:
   graphql:
     handler: app.graphqlHandler
