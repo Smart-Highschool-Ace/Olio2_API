@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-lambda";
-import { schema } from "./schema";
-import { createContext } from "./context";
+import { schema } from "./src/schema";
+import { createContext } from "./src/context";
 
 const apollo = new ApolloServer({ schema, context: createContext });
 

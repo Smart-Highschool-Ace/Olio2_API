@@ -1,0 +1,25 @@
+service: olio-graphql-lambda
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northease-2
+functions:
+  graphql:
+    handler: app.graphqlHandler
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true
+      - http:
+          path: graphql
+          method: get
+          cors: true
+useDotenv: true
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+package:
+  patterns:
+    - "!node_modules/.prisma/client/query-engine-*"
+    - "node_modules/.prisma/client/query-engine-rhel-*"
