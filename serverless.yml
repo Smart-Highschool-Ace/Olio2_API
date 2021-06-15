@@ -16,10 +16,10 @@ functions:
           method: get
           cors: true
 useDotenv: true
-plugins:
-  - serverless-plugin-typescript
-  - serverless-offline
 package:
   patterns:
     - "!node_modules/.prisma/client/query-engine-*"
     - "node_modules/.prisma/client/query-engine-rhel-*"
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline

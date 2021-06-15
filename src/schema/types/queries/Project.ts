@@ -1,8 +1,8 @@
 import { Project } from "@prisma/client";
 import { intArg, stringArg } from "nexus";
 
-import { ProjectService } from "service";
-import { Context } from "interface";
+import { ProjectService } from "../../../service";
+import { Context } from "../../../interface";
 
 export const project = {
   type: "Project",

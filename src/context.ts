@@ -2,7 +2,7 @@ import { Context } from "koa";
 
 import { PrismaClient } from "@prisma/client";
 
-import { verifyToken } from "util/token";
+import { verifyToken } from "./util/token";
 
 export const createContext: Function = async ({
   ctx,
