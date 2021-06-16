@@ -15,11 +15,24 @@ functions:
           path: graphql
           method: get
           cors: true
-useDotenv: true
+
 package:
   patterns:
     - "!node_modules/.prisma/client/query-engine-*"
+    - "!node_modules/@prisma/engine/*"
     - "node_modules/.prisma/client/query-engine-rhel-*"
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  dotenv:
+    required:
+      env:
+        - JWT_SECRET_KEY
+        - SALT
+        - NODEMAILER_USER
+        - NODEMAILER_PASS
+        - AWS_BUCKET_NAME
+        - DATABASE_URL
