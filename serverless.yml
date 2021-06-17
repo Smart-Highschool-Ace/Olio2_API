@@ -12,7 +12,7 @@ functions:
           method: post
           cors: true
       - http:
-          path: graphㅓql
+          path: graphiql
           method: get
           cors: true
 
