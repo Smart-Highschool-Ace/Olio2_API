@@ -1,17 +1,12 @@
-import {
-  PortfolioProject,
-  PrismaClient,
-  Project,
-  ProjectLike,
-} from "@prisma/client";
+import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { PortfolioService, SkillService } from "../service";
-import { ProjectCreateArgs, ProjectOrder } from "../interface";
+import { ProjectCreateArgs, ProjectOrder } from "../interface"
 
 const prisma = new PrismaClient();
 
 export const getProjects: Function = async (): Promise<Project[]> => {
-  return await prisma.project.findMany();
+  return await prisma.project.findMany({});
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
@@ -36,41 +31,47 @@ export const getAllProjectsOfUser: Function = async (
   });
 };
 
-export const getMyProjects: Function = async (
-  userId: number
-): Promise<ProjectOrder[]> => {
-  // 포트폴리오에 등록된 프로젝트, 등록되지 않은 프로젝트 모두 불러오기
-  const portfolioProjects: PortfolioProject[] = (
-    await PortfolioService.getPortfolio(userId)
-  ).PortfolioProject;
-  const ownProjects: Project[] = await getOwnProjectsOfUser(userId);
-
-  // 포트폴리오에 등록된 프로젝트는 순서와 함께 반환, 등록 안된 프로젝트는 순서 9999 반환
-  const myProjects: ProjectOrder[] = ownProjects.map((project) => {
-    const portProject = portfolioProjects.map((portProject) => {
-      if (portProject.project_id == project.id) {
-        return portProject;
-      }
-    });
-
-    if (portProject[0]) {
-      return { project: project, order: portProject[0].order }; // 순서가 있을 때 반환
-    }
-
-    return { project: project, order: 9999 }; // 순서가 없을 때 반환
+export const getSortedProjectsAtRecent: Function = async (
+  orderBy: Prisma.SortOrder,
+  page: number = 0
+): Promise<Project[]> => {
+  return prisma.project.findMany({
+    orderBy: {
+      created_at: orderBy,
+    },
+    skip: page,
+    take: 15,
   });
+};
 
-  // 결과 정렬
-  myProjects.sort((a, b) => {
-    // 순서가 같으면 최신순 정렬
-    if (a.order == b.order) {
-      return Number(b.project.created_at) - Number(a.project.created_at);
-    }
-    // 순서 정렬
-    return a.order - b.order;
+export const getSortedProjectsAtPopular: Function = async (
+  orderBy: Prisma.SortOrder,
+  page: number = 0
+): Promise<Project[]> => {
+  return await prisma.project.findMany({
+    orderBy: {
+      ProjectLike: {
+        count: orderBy,
+      },
+    },
+    skip: page,
+    take: 15,
   });
+};
 
-  return myProjects;
+export const getSortedProjectsAtViews: Function = async (
+  orderBy: Prisma.SortOrder,
+  page: number = 0
+): Promise<Project[]> => {
+  return await prisma.project.findMany({
+    orderBy: {
+      ProjectView: {
+        count: orderBy,
+      },
+    },
+    skip: page,
+    take: 15,
+  });
 };
 
 export const getOwnProjectsOfUser: Function = async (
