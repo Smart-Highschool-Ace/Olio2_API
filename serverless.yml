@@ -12,15 +12,15 @@ functions:
           method: post
           cors: true
       - http:
-          path: graphql
+          path: graphㅓql
           method: get
           cors: true
 
 package:
   patterns:
-    - "!node_modules/.prisma/client/query-engine-*"
-    - "!node_modules/@prisma/engine/*"
-    - "node_modules/.prisma/client/query-engine-rhel-*"
+    - "!node_modules/**/query-engine-**"
+    - "!node_modules/@prisma/engines/**"
+    - node_modules/.prisma/client/query-engine-rhel-*
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
