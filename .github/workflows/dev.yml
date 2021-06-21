@@ -25,7 +25,7 @@ jobs:
       - name: Install yarn packages
         uses: borales/actions-yarn@v2.0.0
         with:
-          cmd: install
+          cmd: install --ignore-engines
 
       - name: Setup Prisma
         uses: borales/actions-yarn@v2.0.0
