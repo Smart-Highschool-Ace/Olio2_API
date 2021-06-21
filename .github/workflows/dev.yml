@@ -4,8 +4,6 @@ name: Deploy To Lambda for dev
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
   workflow_dispatch:
 
