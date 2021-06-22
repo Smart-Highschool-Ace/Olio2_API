@@ -6,13 +6,15 @@ provider:
 functions:
   graphql:
     handler: app.graphqlHandler
+    environment:
+      STAGE: ${sls:stage}
     events:
       - http:
           path: graphql
           method: post
           cors: true
       - http:
-          path: graphiql
+          path: graphql
           method: get
           cors: true
 
