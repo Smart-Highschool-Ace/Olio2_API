@@ -1,6 +1,6 @@
 import { objectType } from "nexus";
 
-import { PortfolioService, ProjectService } from "service";
+import { PortfolioService, ProjectService } from "../../../service";
 
 export const User = objectType({
   name: "User",
@@ -64,4 +64,3 @@ export const statusResult = objectType({
     t.string("error");
   },
 });
-

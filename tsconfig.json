@@ -3,8 +3,7 @@
       "module": "commonjs",
       "target": "es2020",
       "lib": ["ES6"],
-      "outDir": "dist",
-      
+      "outDir": "dist", // It doesn't work for serverless
       "noImplicitAny": true,
       "strictPropertyInitialization": false,
       "moduleResolution": "Node",

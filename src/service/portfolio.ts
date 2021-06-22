@@ -10,9 +10,9 @@ import {
   User,
 } from "@prisma/client";
 
-import { PortfolioUpdateArgs } from "interface";
-import { parse_yyyy_mm_dd } from "util/date";
-import { SkillService } from "service";
+import { PortfolioUpdateArgs } from "../interface";
+import { parse_yyyy_mm_dd } from "../util/date";
+import { SkillService } from "../service";
 const prisma = new PrismaClient();
 
 export const createPortfolio: Function = async (

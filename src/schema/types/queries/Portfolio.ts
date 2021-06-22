@@ -1,7 +1,7 @@
 import { Portfolio } from "@prisma/client";
 import { intArg } from "nexus";
-import { PortfolioService } from "service";
-import { Context } from "interface/Context";
+import { PortfolioService } from "../../../service";
+import { Context } from "../../../interface/Context";
 export const portfolio = {
   type: "Portfolio",
   args: { id: intArg() },

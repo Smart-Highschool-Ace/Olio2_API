@@ -1,17 +1,16 @@
-import { Context } from "koa";
-
 import { PrismaClient } from "@prisma/client";
 
-import { verifyToken } from "util/token";
+import { verifyToken } from "./util/token";
 
 export const createContext: Function = async ({
-  ctx,
-}: Context): Promise<{
+  event,
+  context,
+}: any): Promise<{
   userId: number;
 }> => {
   const prisma = new PrismaClient();
-  if (ctx.request.header.authorization) {
-    const { userId } = verifyToken(ctx.request.header.authorization);
+  if (event.headers.authorization) {
+    const { userId } = verifyToken(event.headers.authorization);
 
     const user = await prisma.user.findFirst({
       where: {

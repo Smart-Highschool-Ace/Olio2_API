@@ -5,7 +5,7 @@ import {
   ProjectService,
   SkillService,
   UserService,
-} from "service";
+} from "../../../service";
 
 export const Portfolio = objectType({
   name: "Portfolio",
