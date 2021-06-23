@@ -9,8 +9,10 @@ export const createContext: Function = async ({
   userId: number;
 }> => {
   const prisma = new PrismaClient();
-  if (event.headers.authorization) {
-    const { userId } = verifyToken(event.headers.authorization);
+  const token =
+    event.headers.authorization || event.headers.Authorization || null;
+  if (token) {
+    const { userId } = verifyToken(token);
 
     const user = await prisma.user.findFirst({
       where: {
