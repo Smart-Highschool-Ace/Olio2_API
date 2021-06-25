@@ -6,7 +6,7 @@ import {
   ProjectService,
   SkillService,
   UserService,
-} from "service";
+} from "../../../service";
 
 export const skillSearch = {
   type: "Skill",

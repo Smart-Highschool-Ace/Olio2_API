@@ -1,6 +1,6 @@
 import * as nodemailer from "nodemailer";
 import { PrismaClient } from "@prisma/client";
-import { Result } from "interface";
+import { Result } from "../interface";
 
 // .env파일에서 정보 가져오기
 type TransporterType = {

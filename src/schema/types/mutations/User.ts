@@ -1,9 +1,9 @@
 import { arg, nonNull, stringArg } from "nexus";
 
-import { PortfolioService, UserService } from "service";
-import { UserCreateArgs, UserUpdateArgs } from "interface/User";
-import { checkAuthCode, sendAuthCode } from "util/emailAuth";
-import { Context, Result } from "interface";
+import { PortfolioService, UserService } from "../../../service";
+import { UserCreateArgs, UserUpdateArgs } from "../../../interface/User";
+import { checkAuthCode, sendAuthCode } from "../../../util/emailAuth";
+import { Context, Result } from "../../../interface";
 
 export const login = {
   args: {

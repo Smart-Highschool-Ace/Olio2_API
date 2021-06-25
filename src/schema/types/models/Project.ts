@@ -1,5 +1,5 @@
 import { objectType } from "nexus";
-import { ProjectService, SkillService, UserService } from "service";
+import { ProjectService, SkillService, UserService } from "../../../service";
 
 export const Project = objectType({
   name: "Project",

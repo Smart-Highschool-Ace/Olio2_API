@@ -4,7 +4,7 @@ import * as Joi from "joi";
 
 import { generateToken } from "../util/token";
 import { hashSha512 } from "../util/hash";
-import { UserCreateArgs, UserUpdateArgs, Result } from "interface";
+import { UserCreateArgs, UserUpdateArgs, Result } from "../interface";
 
 export const login: Function = async (
   email: string,
