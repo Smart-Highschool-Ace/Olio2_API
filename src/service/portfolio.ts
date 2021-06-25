@@ -10,7 +10,7 @@ import {
   User,
 } from "@prisma/client";
 
-import { PortfolioUpdateArgs } from "interface";
+import { PortfolioUpdateArgs, SearchArgument } from "interface";
 import { parse_yyyy_mm_dd } from "util/date";
 import { SkillService } from "service";
 const prisma = new PrismaClient();
@@ -228,21 +228,24 @@ export const getPortfolios: Function = async (): Promise<Portfolio[]> => {
 };
 
 export const findPortfolioByName: Function = async (
-  name: string
+  args: SearchArgument
 ): Promise<Portfolio[]> => {
   return (
     await prisma.user.findMany({
       where: {
         name: {
-          contains: name,
+          contains: args.name,
         },
       },
       select: {
         Portfolio: true,
       },
+      orderBy: args.orderBy,
+      skip: (args.page - 1) * 15,
+      take: 15,
     })
-  ).map((portfolio) => {
-    return portfolio.Portfolio;
+  ).map((user) => {
+    return user.Portfolio;
   });
 };
 

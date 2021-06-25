@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { SkillService } from "service";
-import { ProjectCreateArgs } from "interface";
+import { ProjectCreateArgs, SearchArgument } from "interface";
 
 const prisma = new PrismaClient();
 
@@ -296,14 +296,17 @@ export const deleteLikeProject: Function = async (
 };
 
 export const findProjectByName: Function = async (
-  name: string
+  args: SearchArgument
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       name: {
-        contains: name,
+        contains: args.name,
       },
     },
+    orderBy: args.orderBy,
+    skip: (args.page - 1) * 15,
+    take: 15,
   });
 };
 
