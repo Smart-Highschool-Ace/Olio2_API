@@ -54,21 +54,21 @@ export const portfolioSearch = {
   },
 };
 
-// export const projectSearch = {
-//   type: "Project",
-//   args: {
-//     name: nonNull(stringArg()),
-//     orderBy: stringArg(),
-//     page: intArg(),
-//   },
-//   resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
-//     return await ProjectService.findProjectByName({
-//       name: args.name,
-//       orderBy: orderAboutPortfolioList[args.orderBy]("asc"),
-//       page: args.page,
-//     });
-//   },
-// };
+export const projectSearch = {
+  type: "Project",
+  args: {
+    name: nonNull(stringArg()),
+    orderBy: stringArg(),
+    page: intArg(),
+  },
+  resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
+    return await ProjectService.findProjectByName({
+      name: args.name,
+      orderBy: orderAboutPortfolioList[args.orderBy]("asc"),
+      page: args.page,
+    });
+  },
+};
 export const explore = {
   type: "ExploreResult",
   resolve: async () => {

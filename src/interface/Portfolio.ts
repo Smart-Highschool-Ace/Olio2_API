@@ -38,7 +38,7 @@ const getViewFirst: Function = (orderAscDesc: string): Object => {
 };
 const getRecentFirst: Function = (orderAscDesc: string): Object => {
   return {
-    createdAt: orderAscDesc,
+    created_at: orderAscDesc,
   };
 };
 export const orderAboutPortfolioList: orderAboutPortfolioListType = {
