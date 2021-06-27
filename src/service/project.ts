@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { SkillService } from "../service";
-import { ProjectCreateArgs, SearchArgument } from "../interface"
+import { ProjectCreateArgs, SearchArgument } from "../interface";
 
 const prisma = new PrismaClient();
 
@@ -30,50 +30,6 @@ export const getAllProjectsOfUser: Function = async (
     },
   });
 };
-
-export const getSortedProjectsAtRecent: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return prisma.project.findMany({
-    orderBy: {
-      created_at: orderBy,
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
-export const getSortedProjectsAtPopular: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return await prisma.project.findMany({
-    orderBy: {
-      ProjectLike: {
-        count: orderBy,
-      },
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
-export const getSortedProjectsAtViews: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return await prisma.project.findMany({
-    orderBy: {
-      ProjectView: {
-        count: orderBy,
-      },
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
 export const getOwnProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {

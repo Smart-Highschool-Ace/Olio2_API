@@ -1,5 +1,8 @@
 import { Skill, User, Portfolio, Project } from "@prisma/client";
-import { orderAboutPortfolioList } from "../../../interface";
+import {
+  orderAboutPortfolioList,
+  orderAboutProjectList,
+} from "../../../interface";
 import { stringArg, nonNull, intArg } from "nexus";
 import {
   PortfolioService,
@@ -64,7 +67,7 @@ export const projectSearch = {
   resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
     return await ProjectService.findProjectByName({
       name: args.name,
-      orderBy: orderAboutPortfolioList[args.orderBy]("asc"),
+      orderBy: orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,
     });
   },
