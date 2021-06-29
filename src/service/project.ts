@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { PortfolioService, SkillService } from "../service";
-import { ProjectCreateArgs, ProjectOrder } from "../interface"
+import { ProjectCreateArgs, ProjectOrder } from "../interface";
 
 const prisma = new PrismaClient();
 
