@@ -1,7 +1,11 @@
 import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
-import { PortfolioService, SkillService } from "../service";
-import { ProjectCreateArgs, ProjectOrder } from "../interface"
+import { SkillService } from "../service";
+import {
+  orderAboutProjectListType,
+  ProjectCreateArgs,
+  SearchArgument,
+} from "../interface";
 
 const prisma = new PrismaClient();
 
@@ -30,50 +34,6 @@ export const getAllProjectsOfUser: Function = async (
     },
   });
 };
-
-export const getSortedProjectsAtRecent: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return prisma.project.findMany({
-    orderBy: {
-      created_at: orderBy,
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
-export const getSortedProjectsAtPopular: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return await prisma.project.findMany({
-    orderBy: {
-      ProjectLike: {
-        count: orderBy,
-      },
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
-export const getSortedProjectsAtViews: Function = async (
-  orderBy: Prisma.SortOrder,
-  page: number = 0
-): Promise<Project[]> => {
-  return await prisma.project.findMany({
-    orderBy: {
-      ProjectView: {
-        count: orderBy,
-      },
-    },
-    skip: page,
-    take: 15,
-  });
-};
-
 export const getOwnProjectsOfUser: Function = async (
   userId: number
 ): Promise<Project[]> => {
@@ -296,14 +256,17 @@ export const deleteLikeProject: Function = async (
 };
 
 export const findProjectByName: Function = async (
-  name: string
+  args: SearchArgument
 ): Promise<Project[]> => {
   return await prisma.project.findMany({
     where: {
       name: {
-        contains: name,
+        contains: args.name,
       },
     },
+    orderBy: args.orderBy,
+    skip: (args.page - 1) * 15,
+    take: 15,
   });
 };
 
@@ -334,4 +297,29 @@ export const createProjectView = async (projectId: number, userId?: number) => {
       project_id: projectId,
     },
   });
+};
+
+const getLikeFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    ProjectLike: {
+      count: orderAscDesc,
+    },
+  };
+};
+const getViewFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    ProjectView: {
+      count: orderAscDesc,
+    },
+  };
+};
+const getRecentFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    created_at: orderAscDesc,
+  };
+};
+export const orderAboutProjectList: orderAboutProjectListType = {
+  popular: getLikeFirst,
+  views: getViewFirst,
+  recent: getRecentFirst,
 };
