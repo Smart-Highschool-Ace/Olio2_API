@@ -29,3 +29,10 @@ export type ProjectOrder = {
   project: Project;
   order: number;
 };
+
+export type orderAboutProjectListType = {
+  [key: string]: Function;
+  popular: Function;
+  recent: Function;
+  views: Function;
+};

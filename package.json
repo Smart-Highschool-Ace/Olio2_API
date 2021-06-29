@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
+    "@types/nodemailer": "^6.4.0",
     "apollo-server-lambda": "^2.25.1",
     "async-busboy": "^1.0.1",
     "aws-sdk": "^2.846.0",

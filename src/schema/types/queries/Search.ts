@@ -1,5 +1,9 @@
 import { Skill, User, Portfolio, Project } from "@prisma/client";
-import { stringArg, nonNull } from "nexus";
+import {
+  orderAboutPortfolioList,
+  orderAboutProjectList,
+} from "../../../interface";
+import { stringArg, nonNull, intArg } from "nexus";
 import {
   PortfolioService,
   ProjectService,
@@ -41,9 +45,15 @@ export const portfolioSearch = {
   type: "Portfolio",
   args: {
     name: nonNull(stringArg()),
+    orderBy: stringArg(),
+    page: intArg(),
   },
   resolve: async (_: any, args: any, __: any): Promise<Portfolio[]> => {
-    return await PortfolioService.findPortfolioByName(args.name);
+    return await PortfolioService.findPortfolioByName({
+      name: args.name,
+      orderBy: PortfolioService.orderAboutPortfolioList[args.orderBy]("asc"),
+      page: args.page,
+    });
   },
 };
 
@@ -51,9 +61,15 @@ export const projectSearch = {
   type: "Project",
   args: {
     name: nonNull(stringArg()),
+    orderBy: stringArg(),
+    page: intArg(),
   },
   resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
-    return await ProjectService.findProjectByName(args.name);
+    return await ProjectService.findProjectByName({
+      name: args.name,
+      orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
+      page: args.page,
+    });
   },
 };
 export const explore = {
