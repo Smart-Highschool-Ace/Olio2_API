@@ -20,34 +20,8 @@ type portfolioInputSkill = {
   name: string;
   level: number;
 };
-const getLikeFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    Portfolio: {
-      PortfolioLike: {
-        count: orderAscDesc,
-      },
-    },
-  };
-};
-const getViewFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    PortfolioView: {
-      count: orderAscDesc,
-    },
-  };
-};
-const getRecentFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    created_at: orderAscDesc,
-  };
-};
-export const orderAboutPortfolioList: orderAboutPortfolioListType = {
-  popular: getLikeFirst,
-  views: getViewFirst,
-  recent: getRecentFirst,
-};
 
-type orderAboutPortfolioListType = {
+export type orderAboutPortfolioListType = {
   [key: string]: Function;
   popular: Function;
   recent: Function;

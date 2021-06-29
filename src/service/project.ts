@@ -1,7 +1,11 @@
 import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { SkillService } from "../service";
-import { ProjectCreateArgs, SearchArgument } from "../interface";
+import {
+  orderAboutProjectListType,
+  ProjectCreateArgs,
+  SearchArgument,
+} from "../interface";
 
 const prisma = new PrismaClient();
 
@@ -293,4 +297,29 @@ export const createProjectView = async (projectId: number, userId?: number) => {
       project_id: projectId,
     },
   });
+};
+
+const getLikeFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    ProjectLike: {
+      count: orderAscDesc,
+    },
+  };
+};
+const getViewFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    ProjectView: {
+      count: orderAscDesc,
+    },
+  };
+};
+const getRecentFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    created_at: orderAscDesc,
+  };
+};
+export const orderAboutProjectList: orderAboutProjectListType = {
+  popular: getLikeFirst,
+  views: getViewFirst,
+  recent: getRecentFirst,
 };

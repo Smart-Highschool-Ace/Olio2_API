@@ -30,32 +30,7 @@ export type ProjectOrder = {
   order: number;
 };
 
-const getLikeFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    ProjectLike: {
-      count: orderAscDesc,
-    },
-  };
-};
-const getViewFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    ProjectView: {
-      count: orderAscDesc,
-    },
-  };
-};
-const getRecentFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    created_at: orderAscDesc,
-  };
-};
-export const orderAboutProjectList: orderAboutProjectListType = {
-  popular: getLikeFirst,
-  views: getViewFirst,
-  recent: getRecentFirst,
-};
-
-type orderAboutProjectListType = {
+export type orderAboutProjectListType = {
   [key: string]: Function;
   popular: Function;
   recent: Function;

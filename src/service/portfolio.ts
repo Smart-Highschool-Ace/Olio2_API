@@ -10,7 +10,7 @@ import {
   User,
 } from "@prisma/client";
 
-import { PortfolioUpdateArgs, SearchArgument } from "../interface";
+import { orderAboutPortfolioListType, PortfolioUpdateArgs, SearchArgument } from "../interface";
 import { parse_yyyy_mm_dd } from "../util/date";
 import { SkillService } from "../service";
 const prisma = new PrismaClient();
@@ -256,4 +256,31 @@ export const createPortfolioView = async (
   await prisma.portfolioView.create({
     data: { user_id: userId, portfolio_id: portfolioId },
   });
+};
+
+const getLikeFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    Portfolio: {
+      PortfolioLike: {
+        count: orderAscDesc,
+      },
+    },
+  };
+};
+const getViewFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    PortfolioView: {
+      count: orderAscDesc,
+    },
+  };
+};
+const getRecentFirst: Function = (orderAscDesc: string): Object => {
+  return {
+    created_at: orderAscDesc,
+  };
+};
+export const orderAboutPortfolioList: orderAboutPortfolioListType = {
+  popular: getLikeFirst,
+  views: getViewFirst,
+  recent: getRecentFirst,
 };
