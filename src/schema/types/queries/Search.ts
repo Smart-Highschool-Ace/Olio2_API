@@ -51,7 +51,7 @@ export const portfolioSearch = {
   resolve: async (_: any, args: any, __: any): Promise<Portfolio[]> => {
     return await PortfolioService.findPortfolioByName({
       name: args.name,
-      orderBy: orderAboutPortfolioList[args.orderBy]("asc"),
+      orderBy: PortfolioService.orderAboutPortfolioList[args.orderBy]("asc"),
       page: args.page,
     });
   },
@@ -67,7 +67,7 @@ export const projectSearch = {
   resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
     return await ProjectService.findProjectByName({
       name: args.name,
-      orderBy: orderAboutProjectList[args.orderBy]("asc"),
+      orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,
     });
   },
