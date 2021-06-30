@@ -9,8 +9,15 @@ import {
 
 const prisma = new PrismaClient();
 
-export const getProjects: Function = async (): Promise<Project[]> => {
-  return await prisma.project.findMany({});
+export const getProjects: Function = async (args: {
+  page: number;
+  orderBy: Object;
+}): Promise<Project[]> => {
+  return await prisma.project.findMany({
+    orderBy: args.orderBy,
+    skip: (args.page - 1) * 15,
+    take: 15,
+  });
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
