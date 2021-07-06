@@ -4,13 +4,6 @@ import { UserService } from "service";
 
 import { Context } from "../../../interface";
 
-export const allUser = {
-  type: "User",
-  resolve: async (_: any, __: any, ctx: Context): Promise<User[]> => {
-    return await ctx.prisma.user.findMany();
-  },
-};
-
 export const user = {
   type: "User",
   args: { id: intArg() },
