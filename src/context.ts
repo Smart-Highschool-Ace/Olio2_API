@@ -1,8 +1,8 @@
 import { Context } from "./interface/Context";
-import { getUser } from "service/user";
+import { getUser } from "./service/user";
 import { verifyToken } from "./util/token";
 import prisma from "./prisma";
-import { JsonWebTokenError } from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
 export const createContext: Function = async ({
   event,
@@ -10,7 +10,6 @@ export const createContext: Function = async ({
 }: any): Promise<Context> => {
   const token =
     event.headers.authorization || event.headers.Authorization || null;
-
   if (!token) {
     return { prisma: prisma };
   }
@@ -18,17 +17,16 @@ export const createContext: Function = async ({
   let user;
   try {
     const { userId } = verifyToken(token);
-    user = await getUser(userId);
+    user = await getUser(prisma, userId);
   } catch (e) {
-    switch (e) {
-      case JsonWebTokenError:
-        return { prisma: prisma };
-
-      default:
-        throw e;
+    if (e instanceof TokenExpiredError) {
+      return { prisma: prisma };
+    } else if (e instanceof JsonWebTokenError) {
+      return { prisma: prisma };
+    } else {
+      throw e;
     }
   }
-
   if (!user) {
     return { prisma: prisma };
   }
