@@ -1,8 +1,5 @@
 import { Skill, User, Portfolio, Project } from "@prisma/client";
-import {
-  orderAboutPortfolioList,
-  orderAboutProjectList,
-} from "../../../interface";
+import { Context } from "../../../interface";
 import { stringArg, nonNull, intArg } from "nexus";
 import {
   PortfolioService,
@@ -16,8 +13,8 @@ export const skillSearch = {
   args: {
     search_word: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Skill[]> => {
-    return await SkillService.findSkillByName(args.search_word);
+  resolve: async (_: any, args: any, ctx: Context): Promise<Skill[]> => {
+    return await SkillService.findSkillByName(ctx.prisma, args.search_word);
   },
 };
 
@@ -26,8 +23,8 @@ export const nameSearch = {
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
-    return await UserService.findUserByName(args.name);
+  resolve: async (_: any, args: any, ctx: Context): Promise<User[]> => {
+    return await UserService.findUserByName(ctx.prisma, args.name);
   },
 };
 
@@ -36,8 +33,8 @@ export const emailSearch = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
-    return await UserService.findUserByEmail(args.email);
+  resolve: async (_: any, args: any, ctx: Context): Promise<User[]> => {
+    return await UserService.findUserByEmail(ctx.prisma, args.email);
   },
 };
 
@@ -48,8 +45,8 @@ export const portfolioSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Portfolio[]> => {
-    return await PortfolioService.findPortfolioByName({
+  resolve: async (_: any, args: any, ctx: Context): Promise<Portfolio[]> => {
+    return await PortfolioService.findPortfolioByName(ctx.prisma, {
       name: args.name,
       orderBy: PortfolioService.orderAboutPortfolioList[args.orderBy]("asc"),
       page: args.page,
@@ -64,8 +61,8 @@ export const projectSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
-    return await ProjectService.findProjectByName({
+  resolve: async (_: any, args: any, ctx: Context): Promise<Project[]> => {
+    return await ProjectService.findProjectByName(ctx.prisma, {
       name: args.name,
       orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,

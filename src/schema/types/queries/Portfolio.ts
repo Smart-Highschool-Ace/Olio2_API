@@ -7,13 +7,13 @@ export const portfolio = {
   args: { id: intArg() },
   resolve: async (_: any, args: any, ctx: Context) => {
     // PortfolioService.createPortfolioView(ctx.userId, args.id);
-    return await PortfolioService.getPortfolio(args.id);
+    return await PortfolioService.getPortfolio(ctx.prisma, args.id);
   },
 };
 
 export const allPortfolio = {
   type: "Portfolio",
-  resolve: async (_: any, __: any, ___: any): Promise<Portfolio[]> => {
-    return await PortfolioService.getPortfolios();
+  resolve: async (_: any, __: any, ctx: Context): Promise<Portfolio[]> => {
+    return await PortfolioService.getPortfolios(ctx.prisma);
   },
 };

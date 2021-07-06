@@ -7,6 +7,7 @@ import { hashSha512 } from "../util/hash";
 import { UserCreateArgs, UserUpdateArgs, Result } from "../interface";
 
 export const login: Function = async (
+  prisma: PrismaClient,
   email: string,
   password: string
 ): Promise<Result> => {
@@ -20,8 +21,6 @@ export const login: Function = async (
       error: "에러, 잘못된 요청 또는 잘못된 값입니다.",
     };
   }
-
-  const prisma = new PrismaClient();
 
   const hashedPassword = hashSha512(password);
   const user = await prisma.user.findFirst({
@@ -41,8 +40,10 @@ export const login: Function = async (
   }
 };
 
-export const checkEmail: Function = async (email: string): Promise<Result> => {
-  const prisma = new PrismaClient();
+export const checkEmail: Function = async (
+  prisma: PrismaClient,
+  email: string
+): Promise<Result> => {
   // 1. 중복 이메일일경우
   const isDuplicate = await prisma.user.findFirst({
     where: {
@@ -56,7 +57,8 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
     };
   }
   // 이메일 형식이 아닐 경우
-  var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  var re =
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   if (!re.test(email)) {
     // 이메일 형식 확인 정규표현식
     return {
@@ -77,9 +79,9 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
 };
 
 export const createUser: Function = async (
+  prisma: PrismaClient,
   data: UserCreateArgs
 ): Promise<User> => {
-  const prisma = new PrismaClient();
   const user = data.user;
   const hashedPassword = hashSha512(user.password);
   return await prisma.user.create({
@@ -95,10 +97,10 @@ export const createUser: Function = async (
 };
 
 export const updateUser: Function = async (
+  prisma: PrismaClient,
   user_id: number,
   data: UserUpdateArgs
 ): Promise<User> => {
-  const prisma = new PrismaClient();
   const user = data.user;
   return await prisma.user.update({
     where: {
@@ -112,9 +114,10 @@ export const updateUser: Function = async (
   });
 };
 
-export const deleteUser: Function = async (user_id: number): Promise<User> => {
-  const prisma = new PrismaClient();
-
+export const deleteUser: Function = async (
+  prisma: PrismaClient,
+  user_id: number
+): Promise<User> => {
   return await prisma.user.delete({
     where: {
       id: user_id,
@@ -122,9 +125,10 @@ export const deleteUser: Function = async (user_id: number): Promise<User> => {
   });
 };
 
-export const getUser: Function = async (user_id: number): Promise<User> => {
-  const prisma = new PrismaClient();
-
+export const getUser: Function = async (
+  prisma: PrismaClient,
+  user_id: number
+): Promise<User> => {
   return await prisma.user.findFirst({
     where: {
       id: user_id,
@@ -133,10 +137,9 @@ export const getUser: Function = async (user_id: number): Promise<User> => {
 };
 
 export const findUserByEmail: Function = async (
+  prisma: PrismaClient,
   email: string
 ): Promise<User[]> => {
-  const prisma = new PrismaClient();
-
   return await prisma.user.findMany({
     where: {
       email: {
@@ -147,10 +150,9 @@ export const findUserByEmail: Function = async (
 };
 
 export const findUserByName: Function = async (
+  prisma: PrismaClient,
   name: string
 ): Promise<User[]> => {
-  const prisma = new PrismaClient();
-
   return await prisma.user.findMany({
     where: {
       name: {

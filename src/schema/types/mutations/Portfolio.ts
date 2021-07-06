@@ -19,12 +19,24 @@ export const likePortfolio = {
     id: nonNull(intArg()),
   },
   resolve: async (_: any, args: any, ctx: Context) => {
-    const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
+    const result = await PortfolioService.getLikePortfolio(
+      ctx.prisma,
+      ctx.userId,
+      args.id
+    );
     if (result) {
-      await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
+      await PortfolioService.deleteLikePortfolio(
+        ctx.prisma,
+        ctx.userId,
+        args.id
+      );
       return { status: false };
     } else {
-      await PortfolioService.createLikePortfolio(ctx.userId, args.id);
+      await PortfolioService.createLikePortfolio(
+        ctx.prisma,
+        ctx.userId,
+        args.id
+      );
       return { status: true };
     }
   },

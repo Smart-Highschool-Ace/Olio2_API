@@ -9,7 +9,11 @@ export const createProject = {
     project: arg({ type: "ProjectCreateInput" }),
   },
   resolve: async (_: any, args: any, ctx: Context) => {
-    return await ProjectService.createProject(ctx.userId, args.project);
+    return await ProjectService.createProject(
+      ctx.prisma,
+      ctx.userId,
+      args.project
+    );
   },
   type: "Project",
 };
@@ -19,8 +23,12 @@ export const updateProject = {
     id: nonNull(intArg()),
     project: arg({ type: "ProjectUpdateInput" }),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    return await ProjectService.updateProject(args.id, args.project);
+  resolve: async (_: any, args: any, ctx: Context) => {
+    return await ProjectService.updateProject(
+      ctx.prisma,
+      args.id,
+      args.project
+    );
   },
   type: "Project",
 };
@@ -29,8 +37,8 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Project> => {
-    return await ProjectService.deleteProject(args.id);
+  resolve: async (_: any, args: any, ctx: Context): Promise<Project> => {
+    return await ProjectService.deleteProject(ctx.prisma, args.id);
   },
   type: "Project",
 };
@@ -40,12 +48,16 @@ export const likeProject = {
     id: nonNull(intArg()),
   },
   resolve: async (_: any, args: any, ctx: Context): Promise<boolean> => {
-    const is_followed = await ProjectService.isLikedByUser(args.id, ctx.userId);
+    const is_followed = await ProjectService.isLikedByUser(
+      ctx.prisma,
+      args.id,
+      ctx.userId
+    );
     if (is_followed) {
-      await ProjectService.deleteLikeProject(ctx.userId, args.id);
+      await ProjectService.deleteLikeProject(ctx.prisma, ctx.userId, args.id);
       return false;
     } else {
-      await ProjectService.createLikeProject(ctx.userId, args.id);
+      await ProjectService.createLikeProject(ctx.prisma, ctx.userId, args.id);
       return true;
     }
   },

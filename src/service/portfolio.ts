@@ -10,12 +10,16 @@ import {
   User,
 } from "@prisma/client";
 
-import { orderAboutPortfolioListType, PortfolioUpdateArgs, SearchArgument } from "../interface";
+import {
+  orderAboutPortfolioListType,
+  PortfolioUpdateArgs,
+  SearchArgument,
+} from "../interface";
 import { parse_yyyy_mm_dd } from "../util/date";
 import { SkillService } from "../service";
-const prisma = new PrismaClient();
 
 export const createPortfolio: Function = async (
+  prisma: PrismaClient,
   user_id: number
 ): Promise<Portfolio> => {
   return await prisma.portfolio.create({
@@ -28,6 +32,7 @@ export const createPortfolio: Function = async (
 };
 
 export const portfolioHaveLike: Function = async (
+  prisma: PrismaClient,
   portfolio_id: number,
   user_id: number
 ): Promise<boolean> => {
@@ -42,7 +47,9 @@ export const portfolioHaveLike: Function = async (
   }
   return false;
 };
+
 export const getViewAboutPortfolio: Function = async (
+  prisma: PrismaClient,
   id: number
 ): Promise<number> => {
   return await prisma.portfolioView.count({
@@ -52,6 +59,7 @@ export const getViewAboutPortfolio: Function = async (
   });
 };
 export const getLikesAboutPortfolioByPortfolio: Function = async (
+  prisma: PrismaClient,
   id: number
 ): Promise<PortfolioLike[]> => {
   const like = await prisma.portfolioLike.findMany({
@@ -63,6 +71,7 @@ export const getLikesAboutPortfolioByPortfolio: Function = async (
 };
 
 export const modifyPortfolio: Function = async (
+  prisma: PrismaClient,
   id: number,
   updateArgs: PortfolioUpdateArgs
 ): Promise<void> => {
@@ -131,6 +140,7 @@ export const modifyPortfolio: Function = async (
 };
 
 export const getLikePortfolio: Function = async (
+  prisma: PrismaClient,
   user_id: number,
   portfolio_id: number
 ): Promise<PortfolioLike> => {
@@ -144,6 +154,7 @@ export const getLikePortfolio: Function = async (
 };
 
 export const createLikePortfolio: Function = async (
+  prisma: PrismaClient,
   user_id: number,
   portfolio_id: number
 ): Promise<void> => {
@@ -156,6 +167,7 @@ export const createLikePortfolio: Function = async (
 };
 
 export const deleteLikePortfolio: Function = async (
+  prisma: PrismaClient,
   user_id: number,
   portfolio_id: number
 ): Promise<void> => {
@@ -168,6 +180,7 @@ export const deleteLikePortfolio: Function = async (
 };
 
 export const getPortfolio: Function = async (
+  prisma: PrismaClient,
   id: number
 ): Promise<
   Portfolio & {
@@ -196,6 +209,7 @@ export const getPortfolio: Function = async (
 };
 
 export const getPortfolioByUser: Function = async (
+  prisma: PrismaClient,
   user_id: number
 ): Promise<Portfolio> => {
   return await prisma.portfolio.findFirst({
@@ -208,6 +222,7 @@ export const getPortfolioByUser: Function = async (
 };
 
 export const getLikedPortfoliosOfUser: Function = async (
+  prisma: PrismaClient,
   userId: number
 ): Promise<Portfolio[]> => {
   const result = await prisma.portfolioLike.findMany({
@@ -223,11 +238,14 @@ export const getLikedPortfoliosOfUser: Function = async (
   });
 };
 
-export const getPortfolios: Function = async (): Promise<Portfolio[]> => {
+export const getPortfolios: Function = async (
+  prisma: PrismaClient
+): Promise<Portfolio[]> => {
   return await prisma.portfolio.findMany({});
 };
 
 export const findPortfolioByName: Function = async (
+  prisma: PrismaClient,
   args: SearchArgument
 ): Promise<Portfolio[]> => {
   return (
@@ -250,6 +268,7 @@ export const findPortfolioByName: Function = async (
 };
 
 export const createPortfolioView = async (
+  prisma: PrismaClient,
   portfolioId: number,
   userId?: number
 ) => {
@@ -267,6 +286,7 @@ const getLikeFirst: Function = (orderAscDesc: string): Object => {
     },
   };
 };
+
 const getViewFirst: Function = (orderAscDesc: string): Object => {
   return {
     PortfolioView: {
@@ -274,11 +294,13 @@ const getViewFirst: Function = (orderAscDesc: string): Object => {
     },
   };
 };
+
 const getRecentFirst: Function = (orderAscDesc: string): Object => {
   return {
     created_at: orderAscDesc,
   };
 };
+
 export const orderAboutPortfolioList: orderAboutPortfolioListType = {
   popular: getLikeFirst,
   views: getViewFirst,
