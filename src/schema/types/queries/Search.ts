@@ -1,8 +1,4 @@
 import { Skill, User, Portfolio, Project } from "@prisma/client";
-import {
-  orderAboutPortfolioList,
-  orderAboutProjectList,
-} from "../../../interface";
 import { stringArg, nonNull, intArg } from "nexus";
 import {
   PortfolioService,
