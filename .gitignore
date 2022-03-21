@@ -150,3 +150,6 @@ schema.graphql
 
 #serverless
 .build/
+
+# yarn
+yarn.lock
