@@ -7,26 +7,26 @@ import { Context } from "../../../interface";
 export const project = {
   type: "Project",
   args: { id: intArg() },
-  resolve: async (_: any, args: any, ctx: Context) => {
+  resolve: (_: any, args: any, ctx: Context) => {
     ProjectService.createProjectView(ctx.userId, args.id);
-    return await ProjectService.getProject(args.id);
+    return ProjectService.getProject(args.id);
   },
 };
 
 export const myProject = {
   type: "Project",
   args: { id: intArg() },
-  resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
-    return await ProjectService.getAllProjectsOfUser(args.id);
+  resolve: (_: any, args: any, __: any): Promise<Project[]> => {
+    return ProjectService.getAllProjectsOfUser(args.id);
   },
 };
 
 export const allProject = {
   type: "Project",
   args: { orderBy: stringArg(), page: intArg() },
-  resolve: async (_: any, args: any, ___: any): Promise<Project[]> => {
+  resolve: (_: any, args: any, ___: any): Promise<Project[]> => {
     //1page에 15개씩
-    return await ProjectService.getProjects({
+    return ProjectService.getProjects({
       orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,
     });

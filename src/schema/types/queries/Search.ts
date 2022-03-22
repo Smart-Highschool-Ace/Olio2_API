@@ -12,8 +12,8 @@ export const skillSearch = {
   args: {
     search_word: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Skill[]> => {
-    return await SkillService.findSkillByName(args.search_word);
+  resolve: (_: any, args: any, __: any): Promise<Skill[]> => {
+    return SkillService.findSkillByName(args.search_word);
   },
 };
 
@@ -22,8 +22,8 @@ export const nameSearch = {
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
-    return await UserService.findUserByName(args.name);
+  resolve: (_: any, args: any, __: any): Promise<User[]> => {
+    return UserService.findUserByName(args.name);
   },
 };
 
@@ -32,8 +32,8 @@ export const emailSearch = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<User[]> => {
-    return await UserService.findUserByEmail(args.email);
+  resolve: (_: any, args: any, __: any): Promise<User[]> => {
+    return UserService.findUserByEmail(args.email);
   },
 };
 
@@ -44,8 +44,8 @@ export const portfolioSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Portfolio[]> => {
-    return await PortfolioService.findPortfolioByName({
+  resolve: (_: any, args: any, __: any): Promise<Portfolio[]> => {
+    return PortfolioService.findPortfolioByName({
       name: args.name,
       orderBy: PortfolioService.orderAboutPortfolioList[args.orderBy]("asc"),
       page: args.page,
@@ -60,8 +60,8 @@ export const projectSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Project[]> => {
-    return await ProjectService.findProjectByName({
+  resolve: (_: any, args: any, __: any): Promise<Project[]> => {
+    return ProjectService.findProjectByName({
       name: args.name,
       orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,
@@ -70,7 +70,7 @@ export const projectSearch = {
 };
 export const explore = {
   type: "ExploreResult",
-  resolve: async () => {
+  resolve: () => {
     // TODO : explore(메인화면에 표시될 객체들) 구현
     return;
   },

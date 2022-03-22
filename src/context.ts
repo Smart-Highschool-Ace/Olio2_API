@@ -4,7 +4,7 @@ import { verifyToken } from "./util/token";
 
 export const createContext: Function = async ({
   event,
-  context,
+  _,
 }: any): Promise<{
   userId: number;
 }> => {

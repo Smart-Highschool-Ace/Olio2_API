@@ -21,7 +21,7 @@ const transporter: nodemailer.Transporter = nodemailer.createTransport({
 });
 
 export const sendAuthCode: Function = async (
-  receiver: string
+  receiver: string,
 ): Promise<Result> => {
   //사용자의 이메일주소
   // 6자리 인증 번호 생성
@@ -53,7 +53,7 @@ export const sendAuthCode: Function = async (
 // 인증정보 DB에 추가
 const addAuthInfo: Function = async (
   user: string,
-  auth_code: string
+  auth_code: string,
 ): Promise<void> => {
   const prisma = new PrismaClient();
   await prisma.emailAuth.create({
@@ -67,7 +67,7 @@ const addAuthInfo: Function = async (
 //인증 코드 확인
 export const checkAuthCode: Function = async (
   user: string,
-  auth_code: string
+  auth_code: string,
 ): Promise<Result> => {
   const prisma = new PrismaClient();
   const auth_info = await prisma.emailAuth.findFirst({
@@ -77,12 +77,14 @@ export const checkAuthCode: Function = async (
       auth_code: auth_code,
     },
   });
-  if (auth_info) {
-    //인증 확인되면 삭제
-    deleteAuthCode(auth_info.id);
-    return { status: true };
+
+  if (!auth_info) {
+    return { status: false, error: "맞지 않은 인증정보입니다." };
   }
-  return { status: false, error: "맞지 않은 인증정보입니다." };
+
+  //인증 확인되면 삭제
+  deleteAuthCode(auth_info.id);
+  return { status: true };
 };
 
 //인증코드 정보 삭제

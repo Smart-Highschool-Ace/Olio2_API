@@ -8,7 +8,7 @@ import { UserCreateArgs, UserUpdateArgs, Result } from "../interface";
 
 export const login: Function = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<Result> => {
   const bodyForm = Joi.object().keys({
     email: Joi.string().email().required(),
@@ -30,6 +30,7 @@ export const login: Function = async (
       password: hashedPassword,
     },
   });
+
   if (user) {
     const payload = { userId: user.id };
     const token = { token: generateToken(payload) };
@@ -49,6 +50,7 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
       email: email,
     },
   });
+
   if (isDuplicate) {
     return {
       status: false,
@@ -56,7 +58,8 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
     };
   }
   // 이메일 형식이 아닐 경우
-  var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  var re =
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   if (!re.test(email)) {
     // 이메일 형식 확인 정규표현식
     return {
@@ -76,13 +79,11 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
   return { status: true };
 };
 
-export const createUser: Function = async (
-  data: UserCreateArgs
-): Promise<User> => {
+export const createUser: Function = (data: UserCreateArgs): Promise<User> => {
   const prisma = new PrismaClient();
   const user = data.user;
   const hashedPassword = hashSha512(user.password);
-  return await prisma.user.create({
+  return prisma.user.create({
     data: {
       email: user.email,
       password: hashedPassword,
@@ -94,13 +95,13 @@ export const createUser: Function = async (
   });
 };
 
-export const updateUser: Function = async (
+export const updateUser: Function = (
   user_id: number,
-  data: UserUpdateArgs
+  data: UserUpdateArgs,
 ): Promise<User> => {
   const prisma = new PrismaClient();
   const user = data.user;
-  return await prisma.user.update({
+  return prisma.user.update({
     where: {
       id: user_id,
     },
@@ -112,32 +113,30 @@ export const updateUser: Function = async (
   });
 };
 
-export const deleteUser: Function = async (user_id: number): Promise<User> => {
+export const deleteUser: Function = (user_id: number): Promise<User> => {
   const prisma = new PrismaClient();
 
-  return await prisma.user.delete({
+  return prisma.user.delete({
     where: {
       id: user_id,
     },
   });
 };
 
-export const getUser: Function = async (user_id: number): Promise<User> => {
+export const getUser: Function = (user_id: number): Promise<User> => {
   const prisma = new PrismaClient();
 
-  return await prisma.user.findFirst({
+  return prisma.user.findFirst({
     where: {
       id: user_id,
     },
   });
 };
 
-export const findUserByEmail: Function = async (
-  email: string
-): Promise<User[]> => {
+export const findUserByEmail: Function = (email: string): Promise<User[]> => {
   const prisma = new PrismaClient();
 
-  return await prisma.user.findMany({
+  return prisma.user.findMany({
     where: {
       email: {
         contains: email,
@@ -146,12 +145,10 @@ export const findUserByEmail: Function = async (
   });
 };
 
-export const findUserByName: Function = async (
-  name: string
-): Promise<User[]> => {
+export const findUserByName: Function = (name: string): Promise<User[]> => {
   const prisma = new PrismaClient();
 
-  return await prisma.user.findMany({
+  return prisma.user.findMany({
     where: {
       name: {
         contains: name,

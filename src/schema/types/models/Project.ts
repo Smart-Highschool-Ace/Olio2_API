@@ -21,7 +21,7 @@ export const Project = objectType({
       type: "ProjectView",
     });
     t.int("view", {
-      resolve: async (root, _, __) => {
+      resolve: (root, _, __) => {
         return root.ProjectView.length;
       },
     });
@@ -41,16 +41,16 @@ export const Project = objectType({
       type: "ProjectLike",
     });
     t.int("like", {
-      resolve: async (root, _, __) => {
+      resolve: (root, _, __) => {
         return root.ProjectLike.length;
       },
     });
     t.boolean("liked", {
-      resolve: async (root, _, ctx) => {
+      resolve: (root, _, ctx) => {
         if (ctx.userId) {
-          return await ProjectService.isLikedByUser(root.id, ctx.userId);
+          return ProjectService.isLikedByUser(root.id, ctx.userId);
         }
-        return false;
+        return Promise.resolve(false);
       },
     });
   },
@@ -64,8 +64,8 @@ export const ProjectLike = objectType({
     t.int("project_id");
     t.field("user", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return await UserService.getUser(root.user_id);
+      resolve: (root, _, __) => {
+        return UserService.getUser(root.user_id);
       },
     });
   },
@@ -76,8 +76,8 @@ export const ProjectSkill = objectType({
     t.nonNull.int("skill_id");
     t.field("skill", {
       type: "Skill",
-      resolve: async (root, _, __) => {
-        return await SkillService.getSkillByID(root.skill_id);
+      resolve: (root, _, __) => {
+        return SkillService.getSkillByID(root.skill_id);
       },
     });
     t.int("project_id");
