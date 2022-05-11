@@ -1,23 +1,19 @@
 import { PrismaClient, Skill } from "@prisma/client";
 
-export const getSkillByName: Function = async (
-  name: string
-): Promise<Skill> => {
+export const getSkillByName: Function = (name: string): Promise<Skill> => {
   const prisma = new PrismaClient();
 
-  return await prisma.skill.findFirst({
+  return prisma.skill.findFirst({
     where: {
       name: name,
     },
   });
 };
 
-export const findSkillByName: Function = async (
-  name: string
-): Promise<Skill[]> => {
+export const findSkillByName: Function = (name: string): Promise<Skill[]> => {
   const prisma = new PrismaClient();
 
-  return await prisma.skill.findMany({
+  return prisma.skill.findMany({
     where: {
       name: {
         contains: name,
@@ -26,17 +22,17 @@ export const findSkillByName: Function = async (
   });
 };
 
-export const getSkillByID: Function = async (id: number): Promise<Skill> => {
+export const getSkillByID: Function = (id: number): Promise<Skill> => {
   const prisma = new PrismaClient();
-  return await prisma.skill.findFirst({
+  return prisma.skill.findFirst({
     where: {
       id: id,
     },
   });
 };
-export const AddSkill: Function = async (name: string): Promise<Skill> => {
+export const AddSkill: Function = (name: string): Promise<Skill> => {
   const prisma = new PrismaClient();
-  return await prisma.skill.create({
+  return prisma.skill.create({
     data: {
       name: name,
     },

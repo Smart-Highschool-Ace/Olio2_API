@@ -10,8 +10,8 @@ export const login = {
     email: nonNull(stringArg()),
     password: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Result> => {
-    return await UserService.login(args.email, args.password);
+  resolve: (_: any, args: any, __: any): Promise<Result> => {
+    return UserService.login(args.email, args.password);
   },
   type: "loginResult",
 };
@@ -20,8 +20,8 @@ export const checkEmail = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any): Promise<Result> => {
-    return await UserService.checkEmail(args.email);
+  resolve: (_: any, args: any, __: any): Promise<Result> => {
+    return UserService.checkEmail(args.email);
   },
   type: "statusResult",
 };
@@ -30,9 +30,8 @@ export const sendAuthEmail = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const result = await sendAuthCode(args.email);
-    return result;
+  resolve: (_: any, args: any, __: any) => {
+    return sendAuthCode(args.email);
   },
   type: "statusResult",
 };
@@ -41,9 +40,8 @@ export const authenticateEmail = {
     email: nonNull(stringArg()),
     code: nonNull(stringArg()),
   },
-  resolve: async (_: any, args: any, __: any) => {
-    const result = await checkAuthCode(args.email, args.code);
-    return result;
+  resolve: (_: any, args: any, __: any) => {
+    return checkAuthCode(args.email, args.code);
   },
   type: "statusResult",
 };
@@ -64,16 +62,14 @@ export const updateUser = {
   args: {
     user: nonNull(arg({ type: "UserUpdateInput" })),
   },
-  resolve: async (_: any, user: UserUpdateArgs, ctx: Context) => {
-    const updated_user = await UserService.updateUser(ctx.userId, user);
-    return updated_user;
+  resolve: (_: any, user: UserUpdateArgs, ctx: Context) => {
+    return UserService.updateUser(ctx.userId, user);
   },
   type: "User",
 };
 export const deleteUser = {
-  resolve: async (_: any, args: any, ctx: Context) => {
-    const deleted_user = await UserService.deleteUser(ctx.userId);
-    return deleted_user;
+  resolve: async (_: any, __: any, ctx: Context) => {
+    return UserService.deleteUser(ctx.userId);
   },
   type: "User",
 };

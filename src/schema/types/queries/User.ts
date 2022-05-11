@@ -13,8 +13,8 @@ export const allUser = {
 export const user = {
   type: "User",
   args: { id: intArg() },
-  resolve: async (_: any, args: any, __: any): Promise<User> => {
-    return await prisma.user.findFirst({
+  resolve: (_: any, args: any, __: any): Promise<User> => {
+    return prisma.user.findFirst({
       where: {
         id: args.id,
       },

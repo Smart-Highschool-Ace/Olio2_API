@@ -15,7 +15,7 @@ type ImageUpload = {
   ACL: string;
 };
 export const uploadToS3: Function = async (
-  fileName: string
+  fileName: string,
 ): Promise<string> => {
   const readStream = fs.createReadStream(fileName);
 

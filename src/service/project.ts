@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Project, ProjectLike } from "@prisma/client";
+import { PrismaClient, Project, ProjectLike } from "@prisma/client";
 
 import { SkillService } from "../service";
 import {
@@ -6,14 +6,15 @@ import {
   ProjectCreateArgs,
   SearchArgument,
 } from "../interface";
+import { map, pipe, toArray, toAsync } from "@fxts/core";
 
 const prisma = new PrismaClient();
 
-export const getProjects: Function = async (args: {
+export const getProjects: Function = (args: {
   page: number;
   orderBy: Object;
 }): Promise<Project[]> => {
-  return await prisma.project.findMany({
+  return prisma.project.findMany({
     orderBy: args.orderBy,
     skip: (args.page - 1) * 15,
     take: 15,
@@ -21,10 +22,10 @@ export const getProjects: Function = async (args: {
 };
 
 // 유저가 생성하거나 참여한 프로젝트를 모두 불러옴
-export const getAllProjectsOfUser: Function = async (
-  userId: number
+export const getAllProjectsOfUser: Function = (
+  userId: number,
 ): Promise<Project[]> => {
-  return await prisma.project.findMany({
+  return prisma.project.findMany({
     where: {
       OR: [
         {
@@ -41,20 +42,20 @@ export const getAllProjectsOfUser: Function = async (
     },
   });
 };
-export const getOwnProjectsOfUser: Function = async (
-  userId: number
+export const getOwnProjectsOfUser: Function = (
+  userId: number,
 ): Promise<Project[]> => {
-  return await prisma.project.findMany({
+  return prisma.project.findMany({
     where: {
       owner_id: userId,
     },
   });
 };
 
-export const getParticipatedProjectsOfUser: Function = async (
-  userId: number
+export const getParticipatedProjectsOfUser: Function = (
+  userId: number,
 ): Promise<Project[]> => {
-  return await prisma.project.findMany({
+  return prisma.project.findMany({
     where: {
       ProjectMember: {
         some: {
@@ -66,7 +67,7 @@ export const getParticipatedProjectsOfUser: Function = async (
 };
 
 export const getLikedProjectsOfUser: Function = async (
-  userId: number
+  userId: number,
 ): Promise<Project[]> => {
   const result = await prisma.projectLike.findMany({
     where: {
@@ -76,14 +77,15 @@ export const getLikedProjectsOfUser: Function = async (
       project: true,
     },
   });
-
-  return result.map((item) => {
-    return item.project;
-  });
+  return pipe(
+    result,
+    map((item) => item.project),
+    toArray,
+  );
 };
 
-export const getProject: Function = async (projectId: number) => {
-  return await prisma.project.findFirst({
+export const getProject: Function = (projectId: number) => {
+  return prisma.project.findFirst({
     where: {
       id: projectId,
     },
@@ -105,7 +107,7 @@ export const getProject: Function = async (projectId: number) => {
 
 export const isLikedByUser: Function = async (
   projectId: number,
-  userId: number
+  userId: number,
 ): Promise<boolean> => {
   const result = await prisma.projectLike.findFirst({
     where: {
@@ -113,12 +115,12 @@ export const isLikedByUser: Function = async (
       user_id: userId,
     },
   });
-  return Boolean(result);
+  return !!result;
 };
 
 export const createProject: Function = async (
   user_id: number,
-  createArgs: ProjectCreateArgs
+  createArgs: ProjectCreateArgs,
 ): Promise<Project> => {
   createArgs.skills = createArgs.skills || [];
   createArgs.members = createArgs.members || [];
@@ -136,8 +138,9 @@ export const createProject: Function = async (
       start_at: createArgs.start_at,
       end_at: createArgs.end_at,
       ProjectSkill: {
-        create: await Promise.all(
-          createArgs.skills.map(async (skill) => {
+        create: await pipe(
+          createArgs.skills,
+          map(async (skill) => {
             const localSkill = await SkillService.getSkillByName(skill.name);
             if (localSkill == null) {
               const skill_id = (await SkillService.AddSkill(skill.name)).id;
@@ -148,23 +151,31 @@ export const createProject: Function = async (
             return {
               skill_id: localSkill.id,
             };
-          })
+          }),
+          toAsync,
+          toArray,
         ),
       },
       ProjectMember: {
-        create: createArgs.members.map((m) => {
-          return { member_id: m.member_id, role: m.role };
-        }),
+        create: pipe(
+          createArgs.members,
+          map((m) => ({ member_id: m.member_id, role: m.role })),
+          toArray,
+        ),
       },
       ProjectField: {
-        create: createArgs.fields.map((field) => {
-          return { name: field.name };
-        }),
+        create: pipe(
+          createArgs.fields,
+          map((f) => ({ name: f.name })),
+          toArray,
+        ),
       },
       ProjectImage: {
-        create: createArgs.images.map((image) => {
-          return { link: image.link, order: image.order };
-        }),
+        create: pipe(
+          createArgs.images,
+          map((i) => ({ link: i.link, order: i.order })),
+          toArray,
+        ),
       },
     },
   });
@@ -172,14 +183,14 @@ export const createProject: Function = async (
 
 export const updateProject: Function = async (
   id: number,
-  updateArgs: ProjectCreateArgs
+  updateArgs: ProjectCreateArgs,
 ): Promise<Project> => {
   updateArgs.skills = updateArgs.skills || [];
   updateArgs.members = updateArgs.members || [];
   updateArgs.fields = updateArgs.fields || [];
   updateArgs.images = updateArgs.images || [];
 
-  return await prisma.project.update({
+  return prisma.project.update({
     where: {
       id: id,
     },
@@ -193,8 +204,9 @@ export const updateProject: Function = async (
       end_at: updateArgs.end_at,
       ProjectSkill: {
         deleteMany: {},
-        create: await Promise.all(
-          updateArgs.skills.map(async (skill) => {
+        create: await pipe(
+          updateArgs.skills,
+          map(async (skill) => {
             const localSkill = await SkillService.getSkillByName(skill.name);
             if (localSkill == null) {
               const skill_id = (await SkillService.AddSkill(skill.name)).id;
@@ -205,33 +217,41 @@ export const updateProject: Function = async (
             return {
               skill_id: localSkill.id,
             };
-          })
+          }),
+          toAsync,
+          toArray,
         ),
       },
       ProjectMember: {
         deleteMany: {},
-        create: updateArgs.members.map((member) => {
-          return { member_id: member.member_id, role: member.role };
-        }),
+        create: pipe(
+          updateArgs.members,
+          map((m) => ({ member_id: m.member_id, role: m.role })),
+          toArray,
+        ),
       },
       ProjectField: {
         deleteMany: {},
-        create: updateArgs.fields.map((field) => {
-          return { name: field.name };
-        }),
+        create: pipe(
+          updateArgs.fields,
+          map((f) => ({ name: f.name })),
+          toArray,
+        ),
       },
       ProjectImage: {
         deleteMany: {},
-        create: updateArgs.images.map((image) => {
-          return { link: image.link, order: image.order };
-        }),
+        create: pipe(
+          updateArgs.images,
+          map((i) => ({ link: i.link, order: i.order })),
+          toArray,
+        ),
       },
     },
   });
 };
 
-export const deleteProject: Function = async (id: number): Promise<Project> => {
-  return await prisma.project.delete({
+export const deleteProject: Function = (id: number): Promise<Project> => {
+  return prisma.project.delete({
     where: {
       id: id,
     },
@@ -240,7 +260,7 @@ export const deleteProject: Function = async (id: number): Promise<Project> => {
 
 export const createLikeProject: Function = async (
   user_id: number,
-  project_id: number
+  project_id: number,
 ): Promise<void> => {
   await prisma.projectLike.create({
     data: {
@@ -252,7 +272,7 @@ export const createLikeProject: Function = async (
 
 export const deleteLikeProject: Function = async (
   user_id: number,
-  project_id: number
+  project_id: number,
 ): Promise<void> => {
   await prisma.projectLike.deleteMany({
     where: {
@@ -262,10 +282,10 @@ export const deleteLikeProject: Function = async (
   });
 };
 
-export const findProjectByName: Function = async (
-  args: SearchArgument
+export const findProjectByName: Function = (
+  args: SearchArgument,
 ): Promise<Project[]> => {
-  return await prisma.project.findMany({
+  return prisma.project.findMany({
     where: {
       name: {
         contains: args.name,
@@ -277,20 +297,18 @@ export const findProjectByName: Function = async (
   });
 };
 
-export const getViewAboutProject: Function = async (
-  id: number
-): Promise<number> => {
-  return await prisma.projectView.count({
+export const getViewAboutProject: Function = (id: number): Promise<number> => {
+  return prisma.projectView.count({
     where: {
       project_id: id,
     },
   });
 };
 
-export const getOwnLikeOfProjects: Function = async (
-  id: number
+export const getOwnLikeOfProjects: Function = (
+  id: number,
 ): Promise<ProjectLike[]> => {
-  return await prisma.projectLike.findMany({
+  return prisma.projectLike.findMany({
     where: {
       project_id: id,
     },
@@ -325,6 +343,7 @@ const getRecentFirst: Function = (orderAscDesc: string): Object => {
     created_at: orderAscDesc,
   };
 };
+
 export const orderAboutProjectList: orderAboutProjectListType = {
   popular: getLikeFirst,
   views: getViewFirst,

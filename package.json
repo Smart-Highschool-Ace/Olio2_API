@@ -2,7 +2,6 @@
   "name": "Olio2-API",
   "version": "1.0.0",
   "description": "This is Olio API server repository",
-  "main": "index.js",
   "repository": "https://github.com/Smart-Highschool-Ace/Olio2_API.git",
   "author": "hmoon630 <s19017@gsm.hs.kr>",
   "license": "MIT",
@@ -14,6 +13,7 @@
     "migrate:deploy": "prisma migrate deploy --preview-feature && prisma generate"
   },
   "dependencies": {
+    "@fxts/core": "^0.5.0",
     "@prisma/client": "^2.21.2",
     "@types/nodemailer": "^6.4.0",
     "apollo-server-lambda": "^2.25.1",
