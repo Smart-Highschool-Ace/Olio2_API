@@ -8,8 +8,8 @@ type TransporterType = {
   Pass: string;
 };
 const Transporter: TransporterType = {
-  User: process.env.NODEMAILER_USER,
-  Pass: process.env.NODEMAILER_PASS,
+  User: process.env.NODEMAILER_USER || "gsm",
+  Pass: process.env.NODEMAILER_PASS || "gsm123123",
 };
 const transporter: nodemailer.Transporter = nodemailer.createTransport({
   //이메일 transporter 정보

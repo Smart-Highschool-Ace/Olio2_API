@@ -1,6 +1,8 @@
 import { PrismaClient, Skill } from "@prisma/client";
 
-export const getSkillByName: Function = (name: string): Promise<Skill> => {
+export const getSkillByName: Function = (
+  name: string,
+): Promise<Skill | null> => {
   const prisma = new PrismaClient();
 
   return prisma.skill.findFirst({
@@ -22,7 +24,7 @@ export const findSkillByName: Function = (name: string): Promise<Skill[]> => {
   });
 };
 
-export const getSkillByID: Function = (id: number): Promise<Skill> => {
+export const getSkillByID: Function = (id: number): Promise<Skill | null> => {
   const prisma = new PrismaClient();
   return prisma.skill.findFirst({
     where: {

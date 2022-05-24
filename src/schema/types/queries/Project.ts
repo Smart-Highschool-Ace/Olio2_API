@@ -1,4 +1,4 @@
-import { Prisma, Project } from "@prisma/client";
+import { Project } from "@prisma/client";
 import { intArg, stringArg } from "nexus";
 
 import { ProjectService } from "../../../service";

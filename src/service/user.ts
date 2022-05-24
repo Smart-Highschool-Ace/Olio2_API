@@ -1,7 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
 
-import * as Joi from "joi";
-
 import { generateToken } from "../util/token";
 import { hashSha512 } from "../util/hash";
 import { UserCreateArgs, UserUpdateArgs, Result } from "../interface";
@@ -10,12 +8,10 @@ export const login: Function = async (
   email: string,
   password: string,
 ): Promise<Result> => {
-  const bodyForm = Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }); //받는 값의 형식을 검사하는 구문
-
-  if (bodyForm.validate({ email, password }).error) {
+  if (
+    !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email) ||
+    typeof password !== "string"
+  ) {
     return {
       error: "에러, 잘못된 요청 또는 잘못된 값입니다.",
     };
@@ -123,7 +119,7 @@ export const deleteUser: Function = (user_id: number): Promise<User> => {
   });
 };
 
-export const getUser: Function = (user_id: number): Promise<User> => {
+export const getUser: Function = (user_id: number): Promise<User | null> => {
   const prisma = new PrismaClient();
 
   return prisma.user.findFirst({

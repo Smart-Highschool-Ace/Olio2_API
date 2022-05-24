@@ -89,7 +89,9 @@ export const modifyPortfolio: Function = async (
             return {
               name: certificateArgs.name,
               institution: certificateArgs.institution,
-              certified_at: parse_yyyy_mm_dd(certificateArgs.certified_at),
+              certified_at: parse_yyyy_mm_dd(
+                String(certificateArgs.certified_at),
+              ),
             };
           }),
           toArray,
@@ -138,7 +140,7 @@ export const modifyPortfolio: Function = async (
             return {
               name: prize.name,
               institution: prize.institution,
-              prized_at: parse_yyyy_mm_dd(prize.prized_at),
+              prized_at: parse_yyyy_mm_dd(String(prize.prized_at)),
             };
           }),
           toArray,
@@ -151,7 +153,7 @@ export const modifyPortfolio: Function = async (
 export const getLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number,
-): Promise<PortfolioLike> => {
+): Promise<PortfolioLike | null> => {
   const liked = await prisma.portfolioLike.findFirst({
     where: {
       user_id: user_id,
@@ -188,14 +190,15 @@ export const deleteLikePortfolio: Function = async (
 export const getPortfolio: Function = (
   id: number,
 ): Promise<
-  Portfolio & {
-    owner: User;
-    PortfolioView: PortfolioView[];
-    PortfolioSkill: PortfolioSkill[];
-    PortfolioProject: PortfolioProject[];
-    PortfolioPrize: PortfolioPrize[];
-    PortfolioCertificate: PortfolioCertificate[];
-  }
+  | (Portfolio & {
+      owner: User;
+      PortfolioView: PortfolioView[];
+      PortfolioSkill: PortfolioSkill[];
+      PortfolioProject: PortfolioProject[];
+      PortfolioPrize: PortfolioPrize[];
+      PortfolioCertificate: PortfolioCertificate[];
+    })
+  | null
 > => {
   return prisma.portfolio.findFirst({
     where: {
@@ -215,7 +218,7 @@ export const getPortfolio: Function = (
 
 export const getPortfolioByUser: Function = (
   user_id: number,
-): Promise<Portfolio> => {
+): Promise<Portfolio | null> => {
   return prisma.portfolio.findFirst({
     where: {
       owner: {
@@ -249,7 +252,7 @@ export const getPortfolios: Function = (): Promise<Portfolio[]> => {
 
 export const findPortfolioByName: Function = async (
   args: SearchArgument,
-): Promise<Portfolio[]> => {
+): Promise<(Portfolio | null)[]> => {
   return pipe(
     await prisma.user.findMany({
       where: {

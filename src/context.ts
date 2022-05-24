@@ -6,7 +6,7 @@ export const createContext: Function = async ({
   event,
   _,
 }: any): Promise<{
-  userId: number;
+  userId?: number;
 }> => {
   const prisma = new PrismaClient();
   const token =
@@ -24,4 +24,5 @@ export const createContext: Function = async ({
       return { userId: user.id };
     }
   }
+  return {};
 };

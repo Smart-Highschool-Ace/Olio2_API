@@ -13,7 +13,7 @@ export const allUser = {
 export const user = {
   type: "User",
   args: { id: intArg() },
-  resolve: (_: any, args: any, __: any): Promise<User> => {
+  resolve: (_: any, args: any, __: any): Promise<User | null> => {
     return prisma.user.findFirst({
       where: {
         id: args.id,
