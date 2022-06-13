@@ -10,10 +10,10 @@ export const User = objectType({
     t.string("email");
     t.string("school");
     t.string("profile_image");
-    t.int("entrance_year");
+    t.int("generation");
     t.int("grade", {
       resolve: (root, _, __) => {
-        return new Date().getFullYear() - root.entrance_year;
+        return new Date().getFullYear() - 2015 - root.generation;
       },
     });
     t.field("portfolio", {

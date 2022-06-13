@@ -1,17 +1,16 @@
 import { arg, nonNull, stringArg } from "nexus";
 
-import { PortfolioService, UserService } from "../../../service";
-import { UserCreateArgs, UserUpdateArgs } from "../../../interface/User";
+import { UserService } from "../../../service";
+import { UserUpdateArgs } from "../../../interface/User";
 import { checkAuthCode, sendAuthCode } from "../../../util/emailAuth";
 import { Context, Result } from "../../../interface";
 
 export const login = {
   args: {
-    email: nonNull(stringArg()),
-    password: nonNull(stringArg()),
+    token: nonNull(stringArg()),
   },
-  resolve: (_: any, args: any, __: any): Promise<Result> => {
-    return UserService.login(args.email, args.password);
+  resolve: (_: any, args: { token: string }, __: any): Promise<Result> => {
+    return UserService.login(args.token);
   },
   type: "loginResult",
 };
@@ -44,18 +43,6 @@ export const authenticateEmail = {
     return checkAuthCode(args.email, args.code);
   },
   type: "statusResult",
-};
-
-export const createUser = {
-  args: {
-    user: nonNull(arg({ type: "UserCreateInput" })),
-  },
-  resolve: async (_: any, user: UserCreateArgs, __: any) => {
-    const new_user = await UserService.createUser(user);
-    const new_portfolio = await PortfolioService.createPortfolio(new_user.id);
-    return new_user;
-  },
-  type: "User",
 };
 
 export const updateUser = {
