@@ -8,14 +8,7 @@ import {
 } from "util/verify";
 import { TokenPayload } from "google-auth-library";
 import { generateAccessToken } from "util/token";
-import {
-  deleteUserById,
-  getUserById,
-  getUserFromEmail,
-  getUserFromSub,
-  insertUser,
-  updateUserInformation,
-} from "repository/user.repo";
+import { UserRepository } from "../repository";
 
 export const login: Function = async (token: string): Promise<LoginResult> => {
   const userInformation: TokenPayload = await authGoogleToken(token);
@@ -24,7 +17,7 @@ export const login: Function = async (token: string): Promise<LoginResult> => {
   }
   const { sub, email, name } = userInformation;
 
-  const user = getUserFromSub(sub, {
+  const user = UserRepository.getUserFromSub(sub, {
     select: { name: true, email: true, id: true },
   });
 
@@ -41,7 +34,7 @@ export const login: Function = async (token: string): Promise<LoginResult> => {
   if (!email || !name) {
     return { error: "잘못된 계정입니다." };
   }
-  const signInUser = await insertUser({
+  const signInUser = await UserRepository.insertUser({
     email,
     name,
     google_sub: sub,
@@ -66,7 +59,7 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
     };
   }
 
-  const isDuplicate = getUserFromEmail(email);
+  const isDuplicate = UserRepository.getUserFromEmail(email);
 
   if (isDuplicate) {
     return {
@@ -81,16 +74,16 @@ export const checkEmail: Function = async (email: string): Promise<Result> => {
 export const updateUser: Function = async (
   user_id: number,
   data: UserUpdateArgs,
-): Promise<User> => updateUserInformation(user_id, data);
+): Promise<User> => UserRepository.updateUserInformation(user_id, data);
 
 export const deleteUser: Function = (user_id: number): Promise<User> =>
-  deleteUserById(user_id);
+  UserRepository.deleteUserById(user_id);
 
 export const getUser: Function = (user_id: number): Promise<User | null> =>
-  getUserById(user_id);
+  UserRepository.getUserById(user_id);
 
 export const findUserByEmail: Function = (email: string): Promise<User[]> =>
-  findUserByEmail(email);
+  UserRepository.findUserByEmail(email);
 
 export const findUserByName: Function = (name: string): Promise<User[]> =>
-  findUserByName(name);
+  UserRepository.findUserByName(name);
