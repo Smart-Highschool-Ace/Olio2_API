@@ -1,42 +1,11 @@
-import { PrismaClient, Skill } from "@prisma/client";
+import { Skill } from "@prisma/client";
+import { SkillRepository } from "repository";
 
-export const getSkillByName: Function = (
-  name: string,
-): Promise<Skill | null> => {
-  const prisma = new PrismaClient();
-
-  return prisma.skill.findFirst({
-    where: {
-      name: name,
-    },
-  });
-};
-
-export const findSkillByName: Function = (name: string): Promise<Skill[]> => {
-  const prisma = new PrismaClient();
-
-  return prisma.skill.findMany({
-    where: {
-      name: {
-        contains: name,
-      },
-    },
-  });
-};
-
-export const getSkillByID: Function = (id: number): Promise<Skill | null> => {
-  const prisma = new PrismaClient();
-  return prisma.skill.findFirst({
-    where: {
-      id: id,
-    },
-  });
-};
-export const AddSkill: Function = (name: string): Promise<Skill> => {
-  const prisma = new PrismaClient();
-  return prisma.skill.create({
-    data: {
-      name: name,
-    },
-  });
-};
+export const getSkillByName: Function = (name: string): Promise<Skill | null> =>
+  SkillRepository.getSkillByName(name);
+export const findSkillByName: Function = (name: string): Promise<Skill[]> =>
+  SkillRepository.findSkillByName(name);
+export const getSkillByID: Function = (id: number): Promise<Skill | null> =>
+  SkillRepository.getSkillById(id);
+export const AddSkill: Function = (name: string): Promise<Skill> =>
+  SkillRepository.insertSkill(name);
