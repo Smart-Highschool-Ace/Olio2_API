@@ -18,150 +18,90 @@ import {
 import { parse_yyyy_mm_dd } from "../util/date";
 import { SkillService } from "../service";
 import { map, pipe, toArray, toAsync } from "@fxts/core";
+import { PortfolioRepository } from "repository";
+import { OrderDirectionType } from "constant";
 const prisma = new PrismaClient();
 
 export const createPortfolio: Function = async (
-  user_id: number,
-): Promise<Portfolio> => {
-  return prisma.portfolio.create({
-    data: {
-      owner: {
-        connect: { id: user_id },
-      },
-    },
-  });
-};
+  userId: number,
+): Promise<Portfolio> => PortfolioRepository.create(userId);
 
 export const portfolioHaveLike: Function = async (
-  portfolio_id: number,
-  user_id: number,
-): Promise<boolean> => {
-  const liked = await prisma.portfolioLike.findFirst({
-    where: {
-      portfolio_id: portfolio_id,
-      user_id: user_id,
-    },
-  });
+  portfolioId: number,
+  userId: number,
+): Promise<boolean> =>
+  !!(await PortfolioRepository.getLikeByUserIdPortfolioId(portfolioId, userId));
 
-  return !!liked;
-};
 export const getViewAboutPortfolio: Function = async (
-  portfolio_id: number,
-): Promise<number> => {
-  return prisma.portfolioView.count({
-    where: {
-      portfolio_id,
-    },
-  });
-};
+  portfolioId: number,
+): Promise<number> => PortfolioRepository.getViewAboutPortfolio(portfolioId);
 
 export const getLikesAboutPortfolioByPortfolio: Function = async (
-  portfolio_id: number,
-): Promise<PortfolioLike[]> => {
-  return prisma.portfolioLike.findMany({
-    where: {
-      portfolio_id,
-    },
-  });
-};
+  portfolioId: number,
+): Promise<PortfolioLike[]> =>
+  PortfolioRepository.getLikesAboutPortfolio(portfolioId);
 
 export const modifyPortfolio: Function = async (
   id: number,
-  updateArgs: PortfolioUpdateArgs,
+  {
+    PortfolioCertificate,
+    PortfolioSkill,
+    PortfolioPrize,
+    PortfolioProject,
+    ...args
+  }: PortfolioUpdateArgs,
 ): Promise<void> => {
-  updateArgs.skills = updateArgs.skills || [];
-  updateArgs.certificates = updateArgs.certificates || [];
-  updateArgs.prizes = updateArgs.prizes || [];
-  updateArgs.projects = updateArgs.projects || [];
-
-  await prisma.portfolio.update({
-    where: {
-      id: id,
-    },
-    data: {
-      email: updateArgs.email,
-      introduction: updateArgs.introduction,
-      PortfolioCertificate: {
-        deleteMany: {},
-        create: pipe(
-          updateArgs.certificates,
-          map((certificateArgs) => {
-            return {
-              name: certificateArgs.name,
-              institution: certificateArgs.institution,
-              certified_at: parse_yyyy_mm_dd(
-                String(certificateArgs.certified_at),
-              ),
-            };
-          }),
-          toArray,
-        ),
-      },
-      PortfolioSkill: {
-        deleteMany: {},
-        create: await pipe(
-          updateArgs.skills,
-          map(async (skill) => {
-            const localSkill = await SkillService.getSkillByName(skill.name);
-            if (localSkill == null) {
-              const skill_id = (await SkillService.AddSkill(skill.name)).id;
+  const wrapUpdateArgs = (create: any) => ({ deleteMany: {}, create });
+  await PortfolioRepository.update(id, {
+    ...args,
+    PortfolioCertificate: PortfolioCertificate
+      ? wrapUpdateArgs(
+          PortfolioCertificate?.map(
+            ({ certified_at, ...etc }: PortfolioCertificate) => ({
+              certified_at: parse_yyyy_mm_dd(String(certified_at)),
+              ...etc,
+            }),
+          ),
+        )
+      : undefined,
+    PortfolioSkill: PortfolioSkill
+      ? wrapUpdateArgs(
+          await pipe(
+            PortfolioSkill,
+            map(async (skill) => {
+              const localSkill = await SkillService.getSkillByName(skill.name);
+              if (localSkill) {
+                return { skill_id: localSkill.id, level: skill.level };
+              }
               return {
-                skill_id: skill_id,
+                skill_id: (await SkillService.AddSkill(skill.name)).id,
                 level: skill.level,
               };
-            }
-            return {
-              skill_id: localSkill.id,
-              level: skill.level,
-            };
-          }),
-          toAsync,
-          toArray,
-        ),
-      },
-      PortfolioProject: {
-        deleteMany: {},
-        create: pipe(
-          updateArgs.projects,
-          map((project) => {
-            return {
-              project_id: project.project_id,
-              order: project.order,
-            };
-          }),
-          toArray,
-        ),
-      },
-      PortfolioPrize: {
-        deleteMany: {},
-        create: pipe(
-          updateArgs.prizes,
-          map((prize) => {
-            return {
-              name: prize.name,
-              institution: prize.institution,
-              prized_at: parse_yyyy_mm_dd(String(prize.prized_at)),
-            };
-          }),
-          toArray,
-        ),
-      },
-    },
+            }),
+            toAsync,
+            toArray,
+          ),
+        )
+      : undefined,
+    PortfolioProject: PortfolioProject
+      ? wrapUpdateArgs(PortfolioProject)
+      : undefined,
+    PortfolioPrize: PortfolioPrize
+      ? wrapUpdateArgs(
+          PortfolioPrize.map((prized_at, ...etc) => ({
+            prized_at: parse_yyyy_mm_dd(String(prized_at)),
+            ...etc,
+          })),
+        )
+      : undefined,
   });
 };
 
 export const getLikePortfolio: Function = async (
-  user_id: number,
-  portfolio_id: number,
-): Promise<PortfolioLike | null> => {
-  const liked = await prisma.portfolioLike.findFirst({
-    where: {
-      user_id: user_id,
-      portfolio_id: portfolio_id,
-    },
-  });
-  return liked;
-};
+  userId: number,
+  portfolioId: number,
+): Promise<PortfolioLike | null> =>
+  PortfolioRepository.getLike(userId, portfolioId);
 
 export const createLikePortfolio: Function = async (
   user_id: number,
@@ -199,22 +139,7 @@ export const getPortfolio: Function = (
       PortfolioCertificate: PortfolioCertificate[];
     })
   | null
-> => {
-  return prisma.portfolio.findFirst({
-    where: {
-      id: id,
-    },
-    include: {
-      owner: true,
-      PortfolioView: true,
-      PortfolioSkill: true,
-      PortfolioProject: true,
-      PortfolioPrize: true,
-      PortfolioCertificate: true,
-      PortfolioLike: true,
-    },
-  });
-};
+> => PortfolioRepository.getById(id);
 
 export const getPortfolioByUser: Function = (
   user_id: number,
@@ -230,78 +155,41 @@ export const getPortfolioByUser: Function = (
 
 export const getLikedPortfoliosOfUser: Function = async (
   userId: number,
-): Promise<Portfolio[]> => {
-  const result = await prisma.portfolioLike.findMany({
-    where: {
-      user_id: userId,
-    },
-    select: {
-      portfolio: true,
-    },
-  });
-  return pipe(
-    result,
-    map((item) => item.portfolio),
-    toArray,
+): Promise<Portfolio[]> =>
+  (await PortfolioRepository.getLikedByUser(userId)).map(
+    (item: { portfolio: Portfolio }) => item.portfolio,
   );
-};
 
-export const getPortfolios: Function = (): Promise<Portfolio[]> => {
-  return prisma.portfolio.findMany({});
-};
+export const getPortfolios: Function = (): Promise<Portfolio[]> =>
+  PortfolioRepository.getPortfolios({});
 
 export const findPortfolioByName: Function = async (
   args: SearchArgument,
-): Promise<(Portfolio | null)[]> => {
-  return pipe(
-    await prisma.user.findMany({
-      where: {
-        name: {
-          contains: args.name,
-        },
-      },
-      select: {
-        Portfolio: true,
-      },
-      orderBy: args.orderBy,
-      skip: (args.page - 1) * 15,
-      take: 15,
-    }),
-    map((user) => user.Portfolio),
-    toArray,
-  );
-};
+): Promise<(Portfolio | null)[]> =>
+  PortfolioRepository.findPortfolioByName(args);
 
 export const createPortfolioView = async (
   portfolioId: number,
   userId?: number,
-) => {
-  await prisma.portfolioView.create({
-    data: { user_id: userId, portfolio_id: portfolioId },
-  });
-};
+) => PortfolioRepository.insertView(portfolioId, userId);
 
-const getLikeFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    Portfolio: {
-      PortfolioLike: {
-        count: orderAscDesc,
-      },
-    },
-  };
-};
-const getViewFirst: Function = (orderAscDesc: string): Object => {
-  return {
-    PortfolioView: {
+const getLikeFirst: Function = (orderAscDesc: OrderDirectionType) => ({
+  Portfolio: {
+    PortfolioLike: {
       count: orderAscDesc,
     },
-  };
-};
-const getRecentFirst: Function = (orderAscDesc: string): Object => {
-  return {
+  },
+});
+
+const getViewFirst: Function = (orderAscDesc: OrderDirectionType) => ({
+  PortfolioView: {
+    count: orderAscDesc,
+  },
+});
+const getRecentFirst: Function = (orderAscDesc: OrderDirectionType) =>
+  -{
     created_at: orderAscDesc,
   };
-};
 export const orderAboutPortfolioList: orderAboutPortfolioListType = {
   popular: getLikeFirst,
   views: getViewFirst,
