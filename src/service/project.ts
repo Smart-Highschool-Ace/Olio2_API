@@ -1,14 +1,13 @@
 import { PrismaClient, Project, ProjectLike } from "@prisma/client";
 
-import { SkillService } from "../service";
 import {
   orderAboutProjectListType,
-  ProjectCreateArgs,
   ProjectDTO,
   SearchArgument,
 } from "../interface";
 import { map, pipe, toArray, toAsync } from "@fxts/core";
 import { ProjectRepository, SkillRepository } from "repository";
+import { OrderDirectionType } from "constant";
 
 const prisma = new PrismaClient();
 
@@ -149,19 +148,18 @@ export const getOwnLikeOfProjects: Function = (
 export const createProjectView = async (projectId: number, userId?: number) =>
   ProjectRepository.addView(projectId, userId);
 
-type orderDirectionType = "asc" | "desc";
-const getLikeFirst: Function = (orderAscDesc: orderDirectionType) => ({
+const getLikeFirst: Function = (orderAscDesc: OrderDirectionType) => ({
   ProjectLike: {
     count: orderAscDesc,
   },
 });
 
-const getViewFirst: Function = (orderAscDesc: orderDirectionType) => ({
+const getViewFirst: Function = (orderAscDesc: OrderDirectionType) => ({
   ProjectView: {
     count: orderAscDesc,
   },
 });
-const getRecentFirst: Function = (orderAscDesc: orderDirectionType) => ({
+const getRecentFirst: Function = (orderAscDesc: OrderDirectionType) => ({
   created_at: orderAscDesc,
 });
 

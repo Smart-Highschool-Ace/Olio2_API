@@ -1,13 +1,12 @@
 import { PrismaClient, Project } from "@prisma/client";
+import { PROJECT_PAGE_CONTENT_COUNT } from "constant";
 import {
   ProjectCreateArgs,
   ProjectUpdateArgs,
   SearchArgument,
 } from "interface";
-import { idArg } from "nexus";
 
 const prisma = new PrismaClient();
-const PROJECT_PAGE_CONTENT_COUNT = 15;
 
 export const getProjects: Function = async ({
   page,
