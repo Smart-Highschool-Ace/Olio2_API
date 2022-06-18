@@ -6,7 +6,7 @@ export const NameSearchResult = unionType({
     const __typename = "profile_image" in data ? "User" : "Portfolio";
     if (!__typename) {
       throw new Error(
-        `Could not resolve the type of data passed to union type "NameSearchResult"`
+        `Could not resolve the type of data passed to union type "NameSearchResult"`,
       );
     }
     return __typename;
@@ -22,7 +22,7 @@ export const ExploreResult = unionType({
     const __typename = "email" in data ? "Portfolio" : "Project";
     if (!__typename) {
       throw new Error(
-        `Could not resolve the type of data passed to union type "NameSearchResult"`
+        `Could not resolve the type of data passed to union type "NameSearchResult"`,
       );
     }
     return __typename;

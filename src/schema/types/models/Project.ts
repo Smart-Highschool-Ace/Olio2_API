@@ -22,7 +22,7 @@ export const Project = objectType({
     });
     t.int("view", {
       resolve: (root, _, __) => {
-        return root.ProjectView.length;
+        return root.ProjectView?.length || 0;
       },
     });
     t.list.field("ProjectSkill", {
@@ -42,15 +42,12 @@ export const Project = objectType({
     });
     t.int("like", {
       resolve: (root, _, __) => {
-        return root.ProjectLike.length;
+        return root.ProjectLike?.length || 0;
       },
     });
     t.boolean("liked", {
       resolve: (root, _, ctx) => {
-        if (ctx.userId) {
-          return ProjectService.isLikedByUser(root.id, ctx.userId);
-        }
-        return Promise.resolve(false);
+        return ProjectService.isLikedByUser(root.id, ctx.userId);
       },
     });
   },

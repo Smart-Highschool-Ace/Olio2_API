@@ -37,12 +37,12 @@ export const Portfolio = objectType({
     });
     t.int("view", {
       resolve: (root, _, __) => {
-        return root.PortfolioView == undefined ? 0 : root.PortfolioView.length;
+        return root.PortfolioView?.length || 0;
       },
     });
     t.int("like", {
       resolve: (root, _, __) => {
-        return root.PortfolioLike == undefined ? 0 : root.PortfolioLike.length;
+        return root.PortfolioLike?.length || 0;
       },
     });
     t.boolean("liked", {
