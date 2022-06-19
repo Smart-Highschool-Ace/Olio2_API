@@ -8,9 +8,8 @@ export const createProject = {
   args: {
     project: arg({ type: "ProjectCreateInput" }),
   },
-  resolve: (_: any, args: any, ctx: Context) => {
-    return ProjectService.createProject(ctx.userId, args.project);
-  },
+  resolve: (_: any, args: any, ctx: Context) =>
+    ProjectService.createProject(ctx.userId, args.project),
   type: "Project",
 };
 
@@ -19,9 +18,8 @@ export const updateProject = {
     id: nonNull(intArg()),
     project: arg({ type: "ProjectUpdateInput" }),
   },
-  resolve: (_: any, args: any, __: any) => {
-    return ProjectService.updateProject(args.id, args.project);
-  },
+  resolve: (_: any, args: any, __: any) =>
+    ProjectService.updateProject(args.id, args.project),
   type: "Project",
 };
 
@@ -29,9 +27,8 @@ export const deleteProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: (_: any, args: any, __: any): Promise<Project> => {
-    return ProjectService.deleteProject(args.id);
-  },
+  resolve: (_: any, args: any, __: any): Promise<Project> =>
+    ProjectService.deleteProject(args.id),
   type: "Project",
 };
 
@@ -39,12 +36,12 @@ export const likeProject = {
   args: {
     id: nonNull(intArg()),
   },
-  resolve: async (_: any, args: any, ctx: Context): Promise<boolean> => {
+  resolve: async (_: any, args: any, ctx: Context) => {
     const is_followed = await ProjectService.isLikedByUser(args.id, ctx.userId);
     await ProjectService[
       is_followed ? "deleteLikeProject" : "createLikeProject"
     ](ctx.userId, args.id);
-    return !is_followed;
+    return { status: !is_followed };
   },
-  type: "Boolean",
+  type: "statusResult",
 };
