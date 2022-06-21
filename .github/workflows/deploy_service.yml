@@ -18,15 +18,12 @@ jobs:
           ${{ secrets.ENV }}
           EOF
 
+
       - name: Install yarn packages
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install --ignore-engines
+        run: yarn install
 
       - name: Setup Prisma
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: migrate:deploy
+        run: yarn migrate:deploy
 
       - name: Deploy using Serverless
         uses: serverless/github-action@master
