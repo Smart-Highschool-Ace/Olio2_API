@@ -1,10 +1,10 @@
 import { PrismaClient, Project } from "@prisma/client";
-import { PROJECT_PAGE_CONTENT_COUNT } from "constant";
+import { PROJECT_PAGE_CONTENT_COUNT } from "../constant";
 import {
   ProjectCreateArgs,
   ProjectUpdateArgs,
   SearchArgument,
-} from "interface";
+} from "../interface";
 
 const prisma = new PrismaClient();
 

@@ -6,7 +6,6 @@ import {
   PortfolioProject,
   PortfolioSkill,
   PortfolioView,
-  PrismaClient,
   User,
 } from "@prisma/client";
 
@@ -18,9 +17,8 @@ import {
 import { parse_yyyy_mm_dd } from "../util/date";
 import { SkillService } from "../service";
 import { map, pipe, toArray, toAsync } from "@fxts/core";
-import { PortfolioRepository } from "repository";
-import { OrderDirectionType } from "constant";
-const prisma = new PrismaClient();
+import { PortfolioRepository } from "../repository";
+import { OrderDirectionType } from "../constant";
 
 export const createPortfolio: Function = async (
   userId: number,
@@ -106,26 +104,12 @@ export const getLikePortfolio: Function = async (
 export const createLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number,
-): Promise<void> => {
-  await prisma.portfolioLike.create({
-    data: {
-      user_id: user_id,
-      portfolio_id: portfolio_id,
-    },
-  });
-};
+): Promise<void> => PortfolioRepository.insertLike(user_id, portfolio_id);
 
 export const deleteLikePortfolio: Function = async (
   user_id: number,
   portfolio_id: number,
-): Promise<void> => {
-  await prisma.portfolioLike.deleteMany({
-    where: {
-      user_id: user_id,
-      portfolio_id: portfolio_id,
-    },
-  });
-};
+): Promise<void> => PortfolioRepository.deleteLike(user_id, portfolio_id);
 
 export const getPortfolio: Function = (
   id: number,
@@ -143,15 +127,7 @@ export const getPortfolio: Function = (
 
 export const getPortfolioByUser: Function = (
   user_id: number,
-): Promise<Portfolio | null> => {
-  return prisma.portfolio.findFirst({
-    where: {
-      owner: {
-        id: user_id,
-      },
-    },
-  });
-};
+): Promise<Portfolio | null> => PortfolioRepository.getPortfolioByUser(user_id);
 
 export const getLikedPortfoliosOfUser: Function = async (
   userId: number,

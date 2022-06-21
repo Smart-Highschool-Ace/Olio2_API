@@ -5,9 +5,9 @@ import {
   authGoogleToken,
   getGeneration,
   testIsGSMStudentEmail,
-} from "util/verify";
+} from "../util/verify";
 import { TokenPayload } from "google-auth-library";
-import { generateAccessToken } from "util/token";
+import { generateAccessToken } from "../util/token";
 import { UserRepository } from "../repository";
 
 export const login: Function = async (token: string): Promise<LoginResult> => {

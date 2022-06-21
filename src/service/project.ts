@@ -1,4 +1,4 @@
-import { PrismaClient, Project, ProjectLike } from "@prisma/client";
+import { Project, ProjectLike } from "@prisma/client";
 
 import {
   orderAboutProjectListType,
@@ -6,10 +6,8 @@ import {
   SearchArgument,
 } from "../interface";
 import { map, pipe, toArray, toAsync } from "@fxts/core";
-import { ProjectRepository, SkillRepository } from "repository";
-import { OrderDirectionType } from "constant";
-
-const prisma = new PrismaClient();
+import { ProjectRepository, SkillRepository } from "../repository";
+import { OrderDirectionType } from "../constant";
 
 export const getProjects: Function = (args: {
   page: number;

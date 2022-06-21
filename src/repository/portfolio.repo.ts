@@ -1,6 +1,6 @@
 import { Portfolio, PrismaClient } from "@prisma/client";
-import { PROJECT_PAGE_CONTENT_COUNT } from "constant";
-import { PortfolioModifyDTO, SearchArgument } from "interface";
+import { PROJECT_PAGE_CONTENT_COUNT } from "../constant";
+import { PortfolioModifyDTO, SearchArgument } from "../interface";
 
 const prisma = new PrismaClient();
 

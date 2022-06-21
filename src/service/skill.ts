@@ -1,5 +1,5 @@
 import { Skill } from "@prisma/client";
-import { SkillRepository } from "repository";
+import { SkillRepository } from "../repository";
 
 export const getSkillByName: Function = (name: string): Promise<Skill | null> =>
   SkillRepository.getSkillByName(name);
