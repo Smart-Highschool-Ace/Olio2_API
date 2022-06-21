@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-lambda";
 import { schema } from "./src/schema";
-import { createContext } from "./src/context";
+import { createContext } from "./src/middleware/context";
 
 const STAGE = process.env.STAGE || "dev";
 const DEBUG = STAGE == "dev" ? true : false;

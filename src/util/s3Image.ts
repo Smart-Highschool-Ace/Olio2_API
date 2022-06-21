@@ -15,7 +15,7 @@ type ImageUpload = {
   ACL: string;
 };
 export const uploadToS3: Function = async (
-  fileName: string
+  fileName: string,
 ): Promise<string> => {
   const readStream = fs.createReadStream(fileName);
 
@@ -36,7 +36,7 @@ export const uploadToS3: Function = async (
 
   // 올해년도 폴더 안에 key의 이름을 가진 파일로 저장
   const params: ImageUpload = {
-    Bucket: process.env.AWS_BUCKET_NAME,
+    Bucket: process.env.AWS_BUCKET_NAME || "olio-profile-image",
     Key: year + "/" + key,
     Body: readStream,
     ACL: "public-read",
@@ -54,7 +54,7 @@ export const getImage = async (key: string) => {
   try {
     const file = s3bucket
       .getObject({
-        Bucket: process.env.AWS_BUCKET_NAME,
+        Bucket: process.env.AWS_BUCKET_NAME || "olio-profile-image",
         Key: key,
       })
       .promise();

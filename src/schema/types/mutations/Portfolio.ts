@@ -20,13 +20,10 @@ export const likePortfolio = {
   },
   resolve: async (_: any, args: any, ctx: Context) => {
     const result = await PortfolioService.getLikePortfolio(ctx.userId, args.id);
-    if (result) {
-      await PortfolioService.deleteLikePortfolio(ctx.userId, args.id);
-      return { status: false };
-    } else {
-      await PortfolioService.createLikePortfolio(ctx.userId, args.id);
-      return { status: true };
-    }
+    await PortfolioService[
+      result ? "deleteLikePortfolio" : "createLikePortfolio"
+    ](ctx.userId, args.id);
+    return { status: !result };
   },
   type: "statusResult",
 };

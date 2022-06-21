@@ -10,40 +10,40 @@ export const User = objectType({
     t.string("email");
     t.string("school");
     t.string("profile_image");
-    t.int("entrance_year");
+    t.int("generation");
     t.int("grade", {
       resolve: (root, _, __) => {
-        return new Date().getFullYear() - root.entrance_year;
+        return new Date().getFullYear() - 2015 - root.generation;
       },
     });
     t.field("portfolio", {
       type: "Portfolio",
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getPortfolio(root.id);
+      resolve: (root, _, __) => {
+        return PortfolioService.getPortfolio(root.id);
       },
     });
     t.list.field("projects", {
       type: "Project",
-      resolve: async (root, _, __) => {
-        return await ProjectService.getOwnProjectsOfUser(root.id);
+      resolve: (root, _, __) => {
+        return ProjectService.getOwnProjectsOfUser(root.id);
       },
     });
     t.list.field("participated_projects", {
       type: "Project",
-      resolve: async (root, _, __) => {
-        return await ProjectService.getParticipatedProjectsOfUser(root.id);
+      resolve: (root, _, __) => {
+        return ProjectService.getParticipatedProjectsOfUser(root.id);
       },
     });
     t.list.field("liked_projects", {
       type: "Project",
-      resolve: async (root, _, __) => {
-        return await ProjectService.getLikedProjectsOfUser(root.id);
+      resolve: (root, _, __) => {
+        return ProjectService.getLikedProjectsOfUser(root.id);
       },
     });
     t.list.field("liked_portfolios", {
       type: "Portfolio",
-      resolve: async (root, _, __) => {
-        return await PortfolioService.getLikedPortfoliosOfUser(root.id);
+      resolve: (root, _, __) => {
+        return PortfolioService.getLikedPortfoliosOfUser(root.id);
       },
     });
   },

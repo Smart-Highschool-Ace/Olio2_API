@@ -36,18 +36,18 @@ export const Portfolio = objectType({
       type: "PortfolioView",
     });
     t.int("view", {
-      resolve: async (root, _, __) => {
-        return root.PortfolioView == undefined ? 0 : root.PortfolioView.length;
+      resolve: (root, _, __) => {
+        return root.PortfolioView?.length || 0;
       },
     });
     t.int("like", {
-      resolve: async (root, _, __) => {
-        return root.PortfolioLike == undefined ? 0 : root.PortfolioLike.length;
+      resolve: (root, _, __) => {
+        return root.PortfolioLike?.length || 0;
       },
     });
     t.boolean("liked", {
-      resolve: async (root, __, ctx) => {
-        return await PortfolioService.portfolioHaveLike(root.id, ctx.userId);
+      resolve: (root, __, ctx) => {
+        return PortfolioService.portfolioHaveLike(root.id, ctx.userId);
       },
     });
   },
@@ -70,8 +70,8 @@ export const PortfolioSkill = objectType({
     t.int("skill_id");
     t.field("skill", {
       type: "Skill",
-      resolve: async (root, _, __) => {
-        return await SkillService.getSkillByID(root.skill_id);
+      resolve: (root, _, __) => {
+        return SkillService.getSkillByID(root.skill_id);
       },
     });
     t.int("level");
@@ -83,8 +83,8 @@ export const PortfolioProject = objectType({
   definition(t) {
     t.field("project", {
       type: "Project",
-      resolve: async (root, _, __) => {
-        return await ProjectService.getProject(root.project_id);
+      resolve: (root, _, __) => {
+        return ProjectService.getProject(root.project_id);
       },
     });
     t.int("project_id");
@@ -118,8 +118,8 @@ export const PortfolioLike = objectType({
     t.int("id");
     t.field("user", {
       type: "User",
-      resolve: async (root, _, __) => {
-        return await UserService.getUser(root.user_id);
+      resolve: (root, _, __) => {
+        return UserService.getUser(root.user_id);
       },
     });
     t.int("user_id");

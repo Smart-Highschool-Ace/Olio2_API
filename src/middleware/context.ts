@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
-import { verifyToken } from "./util/token";
+import { verifyToken } from "../util/token";
 
 export const createContext: Function = async ({
   event,
-  context,
+  _,
 }: any): Promise<{
-  userId: number;
+  userId?: number;
 }> => {
   const prisma = new PrismaClient();
   const token =
@@ -24,4 +24,5 @@ export const createContext: Function = async ({
       return { userId: user.id };
     }
   }
+  return {};
 };

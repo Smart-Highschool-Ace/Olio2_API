@@ -3,18 +3,26 @@ import {
   PortfolioPrize,
   PortfolioProject,
 } from "@prisma/client";
-import { getViewAboutPortfolio } from "service/portfolio";
 
 export interface PortfolioUpdateArgs {
   email?: string;
   introduction?: string;
-  certificates?: PortfolioCertificate[];
-  prizes?: PortfolioPrize[];
-  projects?: PortfolioProject[];
-  skills?: portfolioInputSkill[];
+  PortfolioCertificate?: PortfolioCertificate[];
+  PortfolioPrize?: PortfolioPrize[];
+  PortfolioProject?: PortfolioProject[];
+  PortfolioSkill?: PortfolioSkill[];
 }
 
-type portfolioInputSkill = {
+export interface PortfolioModifyDTO {
+  email?: string;
+  introduction?: string;
+  PortfolioCertificate?: { create: PortfolioCertificate[] };
+  PortfolioPrize?: { create: PortfolioPrize[] };
+  PortfolioProject?: { create: PortfolioProject[] };
+  PortfolioSkill?: { create: { skill_id: number; level: number }[] };
+}
+
+type PortfolioSkill = {
   id: number;
   portfolio_id: number;
   name: string;

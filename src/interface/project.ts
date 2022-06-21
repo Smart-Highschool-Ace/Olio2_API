@@ -5,7 +5,7 @@ import {
   Project,
 } from "@prisma/client";
 
-export interface ProjectCreateArgs {
+interface ProjectBaseArgs {
   name: string;
   introduction: string;
   description?: string;
@@ -13,11 +13,30 @@ export interface ProjectCreateArgs {
   logo?: string;
   start_at?: Date;
   end_at?: Date;
-  skills?: ProjectInputSkill[];
-  members?: ProjectMember[];
-  fields?: ProjectField[];
-  images?: ProjectImage[];
 }
+export interface ProjectDTO extends ProjectBaseArgs {
+  ProjectSkill?: ProjectInputSkill[];
+  ProjectMember?: ProjectMember[];
+  ProjectField?: ProjectField[];
+  ProjectImage?: ProjectImage[];
+}
+export interface ProjectCreateArgs extends ProjectBaseArgs {
+  ProjectSkill?: { create: BaseProjectSkill[] };
+  ProjectMember?: { create: ProjectMember[] };
+  ProjectField?: { create: ProjectField[] };
+  ProjectImage?: { create: ProjectImage[] };
+}
+
+export interface ProjectUpdateArgs extends ProjectBaseArgs {
+  ProjectSkill?: { deleteMany: {}; create: BaseProjectSkill[] };
+  ProjectMember?: { deleteMany: {}; create: ProjectMember[] };
+  ProjectField?: { deleteMany: {}; create: ProjectField[] };
+  ProjectImage?: { deleteMany: {}; create: ProjectImage[] };
+}
+
+type BaseProjectSkill = {
+  skill_id: number;
+};
 
 type ProjectInputSkill = {
   id: number;
