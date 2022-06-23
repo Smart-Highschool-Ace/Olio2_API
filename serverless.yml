@@ -1,8 +1,12 @@
 service: olio-graphql-lambda
+useDotenv: true
+
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   region: ap-northeast-2
+  stage: dev
+  lambdaHashingVersion: 20201221
 
 resources:
   Resources:
@@ -44,11 +48,13 @@ package:
   patterns:
     - "!node_modules/**/query-engine-**"
     - "!node_modules/@prisma/engines/**"
+    - "!prisma/migrations/**"
     - node_modules/.prisma/client/query-engine-rhel-*
+
 plugins:
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-offline
-  - serverless-dotenv-plugin
 
 custom:
   dotenv:
