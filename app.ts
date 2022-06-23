@@ -8,16 +8,8 @@ const DEBUG = STAGE == "dev" ? true : false;
 const apollo = new ApolloServer({
   schema,
   context: createContext,
-  playground: {
-    endpoint: `/${STAGE}/graphql`,
-  },
   debug: DEBUG,
 });
 
-const graphqlHandler = apollo.createHandler({
-  cors: {
-    origin: "*",
-    credentials: true,
-  },
-});
+const graphqlHandler = apollo.createHandler({});
 export { graphqlHandler };
