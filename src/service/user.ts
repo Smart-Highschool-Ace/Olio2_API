@@ -87,3 +87,7 @@ export const findUserByEmail: Function = (email: string): Promise<User[]> =>
 
 export const findUserByName: Function = (name: string): Promise<User[]> =>
   UserRepository.findUserByName(name);
+
+export const getUsers: Function = async (): Promise<User[]> => {
+  return UserRepository.findUserByName();
+};

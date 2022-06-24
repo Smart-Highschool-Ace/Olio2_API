@@ -5,15 +5,12 @@ import { Context } from "../../../interface/Context";
 export const portfolio = {
   type: "Portfolio",
   args: { id: intArg() },
-  resolve: (_: any, args: any, ctx: Context) => {
-    // PortfolioService.createPortfolioView(ctx.userId, args.id);
-    return PortfolioService.getPortfolio(args.id);
-  },
+  resolve: (_: any, args: any, ctx: Context) =>
+    PortfolioService.joinPortfolio(args.id, ctx.userId),
 };
 
 export const allPortfolio = {
   type: "Portfolio",
-  resolve: (_: any, __: any, ___: any): Promise<Portfolio[]> => {
-    return PortfolioService.getPortfolios();
-  },
+  resolve: (_: any, __: any, ___: any): Promise<Portfolio[]> =>
+    PortfolioService.getPortfolios(),
 };
