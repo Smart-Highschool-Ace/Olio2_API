@@ -149,6 +149,11 @@ export const createPortfolioView = async (
   userId?: number,
 ) => PortfolioRepository.insertView(portfolioId, userId);
 
+export const joinPortfolio: Function = async (id: number, userId: number) => {
+  await createPortfolioView(userId, id);
+  return getPortfolio(id);
+};
+
 const getLikeFirst: Function = (orderAscDesc: OrderDirectionType) => ({
   Portfolio: {
     PortfolioLike: {

@@ -146,6 +146,11 @@ export const getOwnLikeOfProjects: Function = (
 export const createProjectView = async (projectId: number, userId?: number) =>
   ProjectRepository.addView(projectId, userId);
 
+export const joinProject: Function = async (id: number, userId: number) => {
+  await createProjectView(userId, id);
+  return getProject(id);
+};
+
 const getLikeFirst: Function = (orderAscDesc: OrderDirectionType) => ({
   ProjectLike: {
     count: orderAscDesc,

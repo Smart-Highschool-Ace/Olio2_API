@@ -12,9 +12,8 @@ export const skillSearch = {
   args: {
     search_word: nonNull(stringArg()),
   },
-  resolve: (_: any, args: any, __: any): Promise<Skill[]> => {
-    return SkillService.findSkillByName(args.search_word);
-  },
+  resolve: (_: any, args: any, __: any): Promise<Skill[]> =>
+    SkillService.findSkillByName(args.search_word),
 };
 
 export const nameSearch = {
@@ -22,9 +21,8 @@ export const nameSearch = {
   args: {
     name: nonNull(stringArg()),
   },
-  resolve: (_: any, args: any, __: any): Promise<User[]> => {
-    return UserService.findUserByName(args.name);
-  },
+  resolve: (_: any, args: any, __: any): Promise<User[]> =>
+    UserService.findUserByName(args.name),
 };
 
 export const emailSearch = {
@@ -32,9 +30,8 @@ export const emailSearch = {
   args: {
     email: nonNull(stringArg()),
   },
-  resolve: (_: any, args: any, __: any): Promise<User[]> => {
-    return UserService.findUserByEmail(args.email);
-  },
+  resolve: (_: any, args: any, __: any): Promise<User[]> =>
+    UserService.findUserByEmail(args.email),
 };
 
 export const portfolioSearch = {
@@ -44,13 +41,12 @@ export const portfolioSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: (_: any, args: any, __: any): Promise<Portfolio[]> => {
-    return PortfolioService.findPortfolioByName({
+  resolve: (_: any, args: any, __: any): Promise<Portfolio[]> =>
+    PortfolioService.findPortfolioByName({
       name: args.name,
       orderBy: PortfolioService.orderAboutPortfolioList[args.orderBy]("asc"),
       page: args.page,
-    });
-  },
+    }),
 };
 
 export const projectSearch = {
@@ -60,18 +56,10 @@ export const projectSearch = {
     orderBy: stringArg(),
     page: intArg(),
   },
-  resolve: (_: any, args: any, __: any): Promise<Project[]> => {
-    return ProjectService.findProjectByName({
+  resolve: (_: any, args: any, __: any): Promise<Project[]> =>
+    ProjectService.findProjectByName({
       name: args.name,
       orderBy: ProjectService.orderAboutProjectList[args.orderBy]("asc"),
       page: args.page,
-    });
-  },
-};
-export const explore = {
-  type: "ExploreResult",
-  resolve: () => {
-    // TODO : explore(메인화면에 표시될 객체들) 구현
-    return;
-  },
+    }),
 };
