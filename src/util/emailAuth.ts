@@ -1,4 +1,4 @@
-import * as nodemailer from "nodemailer";
+import { createTransport, Transporter, SendMailOptions } from "nodemailer";
 import { PrismaClient } from "@prisma/client";
 import { Result } from "../interface";
 
@@ -7,11 +7,12 @@ type TransporterType = {
   User: string;
   Pass: string;
 };
+
 const Transporter: TransporterType = {
   User: process.env.NODEMAILER_USER || "gsm",
   Pass: process.env.NODEMAILER_PASS || "gsm123123",
 };
-const transporter: nodemailer.Transporter = nodemailer.createTransport({
+const transporter: Transporter = createTransport({
   //이메일 transporter 정보
   service: "gmail",
   auth: {
@@ -30,7 +31,7 @@ export const sendAuthCode: Function = async (
     auth_code -= 100000;
   }
   auth_code = auth_code.toString();
-  const mailOptions: nodemailer.SendMailOptions = {
+  const mailOptions: SendMailOptions = {
     //메일 정보 설정
     from: `Olio development ${Transporter.User}`,
     to: `${receiver}`,
