@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import * as crypto from "crypto";
-import * as AWS from "aws-sdk";
+import { S3 } from "aws-sdk";
+import { generateRandomString } from "./token";
 
-const s3bucket: AWS.S3 = new AWS.S3({
+const s3bucket = new S3({
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   params: { Bucket: process.env.AWS_BUCKET_NAME },
@@ -14,6 +14,7 @@ type ImageUpload = {
   Body: fs.ReadStream;
   ACL: string;
 };
+
 export const uploadToS3: Function = async (
   fileName: string,
 ): Promise<string> => {
@@ -24,14 +25,11 @@ export const uploadToS3: Function = async (
   const year = String(today.getFullYear());
 
   // 랜덤 키를 사용하여 파일 이름 생성
-  const randomKey: Function = (): String => {
-    return crypto.randomBytes(20).toString("hex");
-  };
 
-  let key = randomKey();
+  let key: string = generateRandomString();
 
   while (await getImage(key)) {
-    key = randomKey();
+    key = generateRandomString();
   }
 
   // 올해년도 폴더 안에 key의 이름을 가진 파일로 저장
@@ -42,7 +40,7 @@ export const uploadToS3: Function = async (
     ACL: "public-read",
   };
 
-  const upload: AWS.S3.ManagedUpload.SendData = await s3bucket
+  const upload: S3.ManagedUpload.SendData = await s3bucket
     .upload(params)
     .promise();
 

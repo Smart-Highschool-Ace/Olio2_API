@@ -17,3 +17,6 @@ export const generateToken: Function = (payload: Object): String => {
 export const verifyToken: Function = (token: string): JwtPayload | string => {
   return verify(token, jwtSecret);
 };
+
+export const generateRandomString: Function = () =>
+  [...Array(16)].map((_) => (~~(Math.random() * 36)).toString(36)).join("");
