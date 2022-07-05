@@ -153,3 +153,6 @@ schema.graphql
 
 # yarn
 yarn.lock
+
+#layer
+layer/*.zip

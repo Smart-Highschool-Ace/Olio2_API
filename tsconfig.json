@@ -3,17 +3,17 @@
     "module": "commonjs",
     "target": "es2020",
     "lib": ["ES6"],
-    "outDir": "dist", // It doesn't work for serverless
+    "outDir": ".build", // It doesn't work for serverless
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
+    "strictNullChecks": true,
     "moduleResolution": "Node",
+    "allowJs": true,
+    "rootDir": "./",
     "sourceMap": true,
-    "baseUrl": "./src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": true,
     "esModuleInterop": true
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+  }
 }

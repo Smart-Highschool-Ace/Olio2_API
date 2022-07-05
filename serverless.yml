@@ -6,7 +6,8 @@ provider:
   runtime: nodejs14.x
   region: ap-northeast-2
   stage: dev
-  lambdaHashingVersion: 20201221
+  environment:
+    NODE_PATH: "/opt/nodejs/node_modules"
 
 resources:
   Resources:
@@ -32,6 +33,8 @@ resources:
 functions:
   graphql:
     handler: app.graphqlHandler
+    layers:
+      - arn:aws:lambda:ap-northeast-2:022357019924:layer:olioNodeModules:latest
     environment:
       STAGE: ${sls:stage}
     events:
@@ -46,14 +49,14 @@ functions:
 
 package:
   patterns:
-    - "!node_modules/**/query-engine-**"
-    - "!node_modules/@prisma/engines/**"
+    - "!node_modules/**"
     - "!prisma/migrations/**"
-    - node_modules/.prisma/client/query-engine-rhel-*
+    - "!package.json"
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-plugin-typescript
+  - serverless-latest-layer-version
   - serverless-offline
 
 custom:
@@ -66,3 +69,7 @@ custom:
         - NODEMAILER_PASS
         - AWS_BUCKET_NAME
         - DATABASE_URL
+        - STAGE
+        - PORT
+        - GOOGLE_ANDROID_CLIENT_ID
+        - GOOGLE_WEB_CLIEND_ID

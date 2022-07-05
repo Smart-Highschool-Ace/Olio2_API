@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server-lambda";
+import { ApolloServer } from "apollo-server-lambda/dist";
 import { schema } from "./src/schema";
 import { createContext } from "./src/middleware/context";
 

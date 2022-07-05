@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { intArg } from "nexus";
-import { UserService } from "service";
+import { UserService } from "../../../service";
 
 export const allUser = {
   type: "User",
