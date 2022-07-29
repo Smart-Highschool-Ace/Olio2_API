@@ -25,6 +25,8 @@ model User {
   ProjectMember  ProjectMember[]
   PortfolioView  PortfolioView[]
   ProjectView    ProjectView[]
+
+  @@index([google_sub, email, name])
 }
 
 model Portfolio {
@@ -48,9 +50,11 @@ model PortfolioLike {
   id           Int       @id @default(autoincrement())
   portfolio    Portfolio @relation(fields: [portfolio_id], references: [id])
   user         User      @relation(fields: [user_id], references: [id])
-  portfolio_id Int
-  user_id      Int
+  portfolio_id Int       @unique
+  user_id      Int       @unique
   created_at   DateTime  @default(now())
+
+  @@index([portfolio_id, user_id])
 }
 
 model PortfolioView {
@@ -59,8 +63,10 @@ model PortfolioView {
   user         User?     @relation(fields: [user_id], references: [id])
   portfolio_id Int
   user_id      Int?
-  source_ip    String?
+  ip_hash      String?
   created_at   DateTime  @default(now())
+
+  @@index([portfolio_id, user_id, ip_hash])
 }
 
 model PortfolioSkill {
@@ -134,6 +140,8 @@ model ProjectLike {
   project_id Int
   user_id    Int
   created_at DateTime @default(now())
+
+  @@index([project_id, user_id])
 }
 
 model ProjectView {
@@ -142,8 +150,10 @@ model ProjectView {
   user       User?    @relation(fields: [user_id], references: [id])
   project_id Int
   user_id    Int?
-  source_ip  String?
+  ip_hash    String?
   created_at DateTime @default(now())
+
+  @@index([project_id, user_id, ip_hash])
 }
 
 model ProjectSkill {
@@ -193,7 +203,7 @@ model ProjectImage {
 
 model EmailAuth {
   id         Int      @id @default(autoincrement())
-  email      String
+  email      String   @unique
   auth_code  String
   created_at DateTime @default(now())
 }
