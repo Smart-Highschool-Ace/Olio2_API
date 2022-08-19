@@ -143,8 +143,10 @@ export const getOwnLikeOfProjects: Function = (
   id: number,
 ): Promise<ProjectLike[]> => ProjectRepository.getLikesOfProject(id);
 
-export const createProjectView = async (projectId: number, userId?: number) =>
+export const createProjectView = async (projectId: number, userId?: number) => {
+  ProjectRepository.incrementView(projectId);
   ProjectRepository.addView(projectId, userId);
+};
 
 export const joinProject: Function = async (id: number, userId: number) => {
   await createProjectView(userId, id);

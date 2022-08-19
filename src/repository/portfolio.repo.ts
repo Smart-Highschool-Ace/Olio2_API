@@ -12,6 +12,11 @@ export const insertView: Function = async (
   user_id?: number,
 ) => prisma.portfolioView.create({ data: { portfolio_id, user_id } });
 
+export const incrementView: Function = async (id: number) =>
+  prisma.portfolio.update({
+    where: { id },
+    data: { view_count: { increment: 1 } },
+  });
 export const getLikeByUserIdPortfolioId: Function = async (
   portfolio_id: number,
   user_id: number,

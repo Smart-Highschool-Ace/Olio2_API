@@ -147,7 +147,10 @@ export const findPortfolioByName: Function = async (
 export const createPortfolioView = async (
   portfolioId: number,
   userId?: number,
-) => PortfolioRepository.insertView(portfolioId, userId);
+) => {
+  PortfolioRepository.incrementView(portfolioId);
+  PortfolioRepository.insertView(portfolioId, userId);
+};
 
 export const joinPortfolio: Function = async (id: number, userId: number) => {
   await createPortfolioView(userId, id);

@@ -134,3 +134,9 @@ export const removeLikeAtProject: Function = async (
 
 export const addView = async (project_id: number, user_id?: number) =>
   prisma.projectView.create({ data: { user_id, project_id } });
+
+export const incrementView = async (id: number) =>
+  prisma.project.update({
+    where: { id },
+    data: { view_count: { increment: 1 } },
+  });
