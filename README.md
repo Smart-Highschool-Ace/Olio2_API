@@ -10,7 +10,7 @@
 
 - [Typescript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/)
-- [Koa.js](https://koajs.com/)
+- [Serverless](https://www.serverless.com/)
 - [Prisma](https://www.prisma.io/)
 - [Apollo Server](https://www.apollographql.com/)
 - [Nexus.js](https://nexusjs.org/)
@@ -77,10 +77,8 @@ NODEMAILER_PASS={이메일 비밀번호}
 BUCKET_NAME={AWS S3 버킷 이름}
 ACCESS_KEY_ID={엑세스 키 아이디}
 SECRET_ACCESS_KEY={시크릿 엑세스 키}
-```
-
-### /prisma/.env
-
-```sh
+STAGE={스테이지, 개발 시 dev}
 DATABASE_URL="mysql://{id}:{password}@{DB_HOST}:{DB_PORT}/{database_name}"
+GOOGLE_ANDROID_CLIENT_ID={구글 안드로이드 클라이언트 아이디}
+GOOGLE_WEB_CLIEND_ID={구글 웹 클라이언트 아이디}
 ```
