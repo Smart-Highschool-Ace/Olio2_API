@@ -13,8 +13,8 @@ export const authGoogleToken: Function = async (
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: [
-      process.env.GOOGLE_WEB_CLIEND_ID,
-      process.env.GOOGLE_ANDROID_CLIEND_ID,
+      process.env.GOOGLE_WEB_CLIENT_ID,
+      process.env.GOOGLE_ANDROID_CLIENT_ID,
     ] as string[],
   });
   const payload = ticket.getPayload();
