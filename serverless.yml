@@ -72,4 +72,4 @@ custom:
         - STAGE
         - PORT
         - GOOGLE_ANDROID_CLIENT_ID
-        - GOOGLE_WEB_CLIEND_ID
+        - GOOGLE_WEB_CLIENT_ID
