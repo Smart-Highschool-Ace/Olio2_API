@@ -24,9 +24,6 @@ jobs:
       - name: setting layer packages
         run: cd layer/nodejs && yarn || cd ../../
 
-      - name: Setup Prisma
-        run: yarn migrate:deploy
-
       - name: Deploy using Serverless
         uses: serverless/github-action@master
         with:
