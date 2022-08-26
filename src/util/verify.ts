@@ -9,7 +9,7 @@ export const getGeneration: Function = (email: string): number =>
 export const authGoogleToken: Function = async (
   token: string,
 ): Promise<TokenPayload | undefined> => {
-  const client = new OAuth2Client(process.env.GOOGLE_WEB_CLIEND_ID);
+  const client = new OAuth2Client(process.env.GOOGLE_WEB_CLIENT_ID);
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: [
