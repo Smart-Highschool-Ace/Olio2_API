@@ -28,6 +28,7 @@ export const login: Function = async (token: string): Promise<LoginResult> => {
         email: user.email,
         userId: user.id,
       }),
+      joined: true,
     };
   }
 
@@ -47,6 +48,7 @@ export const login: Function = async (token: string): Promise<LoginResult> => {
       email: signInUser.email,
       userId: signInUser.id,
     }),
+    joined: false,
   };
 };
 
