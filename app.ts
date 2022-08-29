@@ -5,11 +5,10 @@ import { createContext } from "./src/middleware/context";
 const STAGE = process.env.STAGE || "dev";
 const DEBUG = STAGE == "dev" ? true : false;
 
-const apollo = new ApolloServer({
+const graphqlHandler = new ApolloServer({
   schema,
   context: createContext,
   debug: DEBUG,
-});
+}).createHandler({});
 
-const graphqlHandler = apollo.createHandler({});
 export { graphqlHandler };
