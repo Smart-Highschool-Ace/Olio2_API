@@ -54,6 +54,7 @@ export const loginResult = objectType({
   definition(t) {
     t.string("token");
     t.string("error");
+    t.boolean("joined");
   },
 });
 
