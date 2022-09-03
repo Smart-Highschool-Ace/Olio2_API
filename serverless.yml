@@ -67,7 +67,6 @@ custom:
         - SALT
         - NODEMAILER_USER
         - NODEMAILER_PASS
-        - AWS_BUCKET_NAME
         - DATABASE_URL
         - STAGE
         - PORT
