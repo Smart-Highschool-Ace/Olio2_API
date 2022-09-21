@@ -49,7 +49,7 @@ export const updateUser = {
   args: {
     user: nonNull(arg({ type: "UserUpdateInput" })),
   },
-  resolve: (_: any, user: UserUpdateArgs, ctx: Context) => {
+  resolve: (_: any, { user }: UserUpdateArgs, ctx: Context) => {
     return UserService.updateUser(ctx.userId, user);
   },
   type: "User",
