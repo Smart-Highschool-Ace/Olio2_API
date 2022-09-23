@@ -17,9 +17,7 @@ export const login: Function = async (token: string): Promise<LoginResult> => {
   }
   const { sub, email, name } = userInformation;
 
-  const user = UserRepository.getUserFromSub(sub, {
-    select: { name: true, email: true, id: true },
-  });
+  const user = UserRepository.getUserFromSub(sub, { name: true, email: true, id: true });
 
   if (user) {
     return {
